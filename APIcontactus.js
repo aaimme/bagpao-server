@@ -10,7 +10,7 @@ app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
   extended: true
 })); 
 
-/*app.post('/', (req, res) => {
+app.post('/post', (req, res) => {
 
 		console.log(req.body);
 		mongo.connect(connection, (error, database) => {
@@ -25,14 +25,14 @@ app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
 			});
    		 }); 
 
-		res.send('success !!');
+		res.send('success input POST in database !!');
 	
-});*/
+});
 
-app.get('/contact', (req, res) => {
+app.get('/get', (req, res) => {
 
 		console.log(req.params);
-	/*	mongo.connect(connection, (error, database) => {
+		mongo.connect(connection, (error, database) => {
 		database
 		.collection('contactus')  
 		.insert({ 
@@ -42,12 +42,12 @@ app.get('/contact', (req, res) => {
 			email:`${req.params.email}` ,
 			message :`${req.params.message}` 
 			});
-   		 }); */
+   		 }); 
 
-		res.send(req.params);
+		res.send('success input GET in database !!');
 		
 	
 });
-app.listen(1200);
+app.listen(8080);
 
 
