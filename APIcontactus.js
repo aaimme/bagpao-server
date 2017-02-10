@@ -25,7 +25,7 @@ app.post('/post', (req, res) => {
 			});
    		 }); 
 
-		res.send('success input POST in database !!');
+		res.send(req.body);
 	
 });
 
@@ -48,6 +48,6 @@ app.get('/get', (req, res) => {
 		
 	
 });
-app.listen(8080);
+app.listen(1200);
 
 
