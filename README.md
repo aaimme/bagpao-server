@@ -1,6 +1,3 @@
-# bagpoa-server
-backend
-
 #use in cmd
 
 $ node namefile.js 
