@@ -1,5 +1,4 @@
 # bagpoa-server
-backend
 
 open teminal
 
