@@ -1,5 +1,8 @@
 # bagpoa-server
 backend
+
+open teminal
+
 `npm install`
 
 run 
