@@ -84,4 +84,6 @@ app.post(`/signup`, (req, res) => {
 		res.send('success input GET(query) in database !!');
 });*/
 
-app.listen(1200);
+app.listen(1200, function () {
+  console.log('Server running on port 1200...')
+});
