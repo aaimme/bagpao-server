@@ -54,6 +54,22 @@ app.get(`/get/:name/:email/:subject/:message`, (req, res) => {
 	
 });
 
+app.post(`/signup`, (req, res) => {
+
+		console.log(req.body);
+		mongo.connect(connection, (error, database) => {
+		database
+		.collection('member')
+		.insert({ 
+			username:`${req.body.username}`,
+			password:`${req.body.password}`,
+			});
+   		 }); 
+
+		res.send(req.body);
+	
+});
+
 /*app.get(`/get`, (req, res) => {
 
 		console.log(req.query);
