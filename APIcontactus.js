@@ -32,7 +32,6 @@ app.post(`/post`, (req, res) => {
    		 }); 
 
 		res.send(req.body);
-	
 });
 
 app.get(`/get/:name/:email/:subject/:message`, (req, res) => {
@@ -49,9 +48,7 @@ app.get(`/get/:name/:email/:subject/:message`, (req, res) => {
 			});
    		 }); 
 
-		res.send('success input GET(params) in database !!');
-		
-	
+		res.send('success input GET(params) in database !!');	
 });
 
 app.post(`/signup`, (req, res) => {
@@ -63,11 +60,11 @@ app.post(`/signup`, (req, res) => {
 		.insert({ 
 			username:`${req.body.username}`,
 			password:`${req.body.password}`,
+			email:`${req.body.email}`
 			});
    		 }); 
 
-		res.send(req.body);
-	
+		res.send(req.body);	
 });
 
 /*app.get(`/get`, (req, res) => {
