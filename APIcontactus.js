@@ -19,52 +19,68 @@ app.use(function(req, res, next) {
 
 app.post(`/post`, (req, res) => {
 
-		console.log(req.body);
-		mongo.connect(connection, (error, database) => {
-		database
-		.collection('contactus')
-		.insert({ 
-			name:`${req.body.name}`,
-			subject:`${req.body.subject}`,
-			email:`${req.body.email}` ,
-			message :`${req.body.message}` 
-			});
-   		 }); 
+	console.log(req.body);
+	mongo.connect(connection, (error, database) => {
+	database
+	.collection('contactus')
+	.insert({ 
+		name:`${req.body.name}`,
+		email:`${req.body.email}` ,
+		subject:`${req.body.subject}`,
+		message :`${req.body.message}` 
+		});
+   	}); 
 
-		res.send(req.body);
+	res.send(req.body);
 });
 
 app.get(`/get/:name/:email/:subject/:message`, (req, res) => {
 
-		console.log(req.params);
-		mongo.connect(connection, (error, database) => {
-		database
-		.collection('contactus')  
-		.insert({ 
-			name:`${req.params.name}`,
-			subject:`${req.params.subject}`,
-			email:`${req.params.email}` ,
-			message :`${req.params.message}` 
-			});
-   		 }); 
+	console.log(req.params);
+	mongo.connect(connection, (error, database) => {
+	database
+	.collection('contactus')  
+	.insert({ 
+		name:`${req.params.name}`,
+		email:`${req.params.email}` ,
+		subject:`${req.params.subject}`,
+		message :`${req.params.message}` 
+		});
+   	}); 
 
-		res.send('success input GET(params) in database !!');	
+	res.send(req.params);	
 });
 
 app.post(`/signup`, (req, res) => {
 
-		console.log(req.body);
-		mongo.connect(connection, (error, database) => {
-		database
-		.collection('member')
-		.insert({ 
-			username:`${req.body.username}`,
-			password:`${req.body.password}`,
-			email:`${req.body.email}`
-			});
-   		 }); 
+	console.log(req.body);
+	mongo.connect(connection, (error, database) => {
+	database
+	.collection('member')
+	.insert({ 
+		username:`${req.body.username}`,
+		password:`${req.body.password}`,
+		email:`${req.body.email}`
+		});
+   	}); 
 
-		res.send(req.body);	
+	res.send(req.body);	
+});
+
+app.get(`/search/:name/:email`, (req, res) => {
+
+	console.log(req.params);
+    mongo.connect(connection, (error, database) => {
+    database
+    .collection('contactus')
+    .find({"name": req.params.name, "email": req.params.email}).toArray((error, documents) => {
+        if (error) {
+            res.status(500).send(error)
+        } else {
+            res.send (documents)
+        }
+    	});
+	});
 });
 
 /*app.get(`/get`, (req, res) => {
