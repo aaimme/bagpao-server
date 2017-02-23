@@ -34,7 +34,7 @@ app.post(`/post`, (req, res) => {
 	res.send(req.body);
 });
 
-app.get(`/get/:name/:email/:subject/:message`, (req, res) => {
+app.get(`/contactus/:name/:email/:subject/:message`, (req, res) => {
 
 	console.log(req.params);
 	mongo.connect(connection, (error, database) => {
@@ -83,22 +83,6 @@ app.get(`/search/:name/:email`, (req, res) => {
 	});
 });
 
-/*app.get(`/get`, (req, res) => {
-
-		console.log(req.query);
-		mongo.connect(connection, (error, database) => {
-		database
-		.collection('contactus')  
-		.insert({ 
-			name:`${req.query.name}`,
-			subject:`${req.query.subject}`,
-			email:`${req.query.email}` ,
-			message :`${req.query.message}` 
-			});
-   		 }); 
-
-		res.send('success input GET(query) in database !!');
-});*/
 
 app.listen(1200, function () {
   console.log('Server running on port 1200...')

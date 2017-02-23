@@ -1,0 +1,39 @@
+{
+  "name": "bagpao-server",
+  "version": "1.0.0",
+  "description": "api for bagpaotravel",
+  "main": "app.js",
+  "dependencies": {
+    "assert": "^1.4.1",
+    "body-parser": "^1.16.0",
+    "express": "^4.14.1",
+    "mongodb": "^2.2.22",
+    "whatwg-fetch": "^2.0.2"
+  },
+  "devDependencies": {
+    "body-parser": "*",
+    "connect-mongo": "*",
+    "cookie-parser": "*",
+    "emailjs": "*",
+    "errorhandler": "*",
+    "express": "*",
+    "express-session": "*",
+    "jade": "*",
+    "moment": "*",
+    "mongodb": "*",
+    "stylus": "*"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/aaimme/bagpao-server.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/aaimme/bagpao-server/issues"
+  },
+  "homepage": "https://github.com/aaimme/bagpao-server#readme"
+}
