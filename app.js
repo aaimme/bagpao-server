@@ -33,7 +33,8 @@ app.post(`/signup`, (req, res) => {
 		var signup_obj ={
 			'message' : 'signup success'
 		}
-		res.send(signup_obj);
+		res.json(signup_obj);
+		console.log('signup success');
 	
 });
 
@@ -58,7 +59,9 @@ app.post(`/login`, (req, res) => {
      			'email': result[0].email
      		} 
      		res.json(result_obj);
+     		console.log('login success');
      	}
+
      	
      }); 
 	});
@@ -90,38 +93,44 @@ app.post(`/editprofile`, (req, res) => {
 		mongo.connect(connection, (error, database) => {
 		database
 		.collection('member')  
-		.update({ 
+		.update({username:`${req.body.username}` },
+			{ $set : {
 			username:`${req.body.username}`,
-			password:`${req.body.pass}`,
+			password:`${req.body.password}`,
 			email:`${req.body.email}`,
 			displayname:`${req.body.displayname}`,
 			birthday:`${req.body.birthday}`,
 			currentcity:`${req.body.currentcity}`,
 			interest:`${req.body.interest}`,
 			bio:`${req.body.bio}`
-			});
+			}
+		});
    		 }); 
 });
 
 
-app.get(`/contactus/:name/:email/:subject/:message`, (req, res) => {
+app.post(`/contactus`, (req, res) => {
 
-	console.log(req.params);
-	mongo.connect(connection, (error, database) => {
-	database
-	.collection('contactus')  
-	.insert({ 
-		name:`${req.params.name}`,
-		email:`${req.params.email}` ,
-		subject:`${req.params.subject}`,
-		message :`${req.params.message}` 
-		});
-   	}); 
-	var contactus_obj = {
+		console.log(req.body);
+		mongo.connect(connection, (error, database) => {
+		database
+		.collection('contactus')
+		.insert({ 
+		name:`${req.body.name}`,
+		email:`${req.body.email}` ,
+		subject:`${req.body.subject}`,
+		message :`${req.body.message}` 			
+			});
+   		 }); 
+
+		var contactus_obj = {
 		'message' : 'send success!!'
 	}
-	res.send(contactus_obj);	
+	res.json(contactus_obj);
+	
 });
+
+
 
 app.listen(1200, function () {
   console.log('Server running on port 1200...')
