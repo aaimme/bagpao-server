@@ -106,9 +106,59 @@ app.post(`/editprofile`, (req, res) => {
 			}
 		});
    		 }); 
+		var editprofile_obj = {
+		'message' : 'edit success!!',
+		'value' : req.body
+	}
+	res.json(editprofile_obj);
 });
 
+app.post(`/places`, (req, res) => {
 
+	console.log(req.body);
+    mongo.connect(connection, (error, database) => {
+     serchPlace(database, req, (error, result) => {
+     	if (error) {
+     		console.log(error);
+     		var error_obj = {
+     			'message' : `${error}`
+     		}
+     		res.json(error_obj);
+     	}
+     	else{
+     		console.log(result);
+     		var result_obj = {
+     			'message' : `found success!!`,
+     			'idplace' : result[0].idplace,
+     			'contact' : result[0].contact,
+     			'picture' : result[0].picture,
+     			'description' : result[0].description
+     		} 
+     		res.json(result_obj);
+     		console.log('searchTrip success');
+     	}
+     	
+     }); 
+	});
+});
+
+var serchPlace = function(db, req, callback) {
+  // Get the documents collection 
+  var collection = db.collection('place');
+  // Find some documents 
+  collection.find({name:`${req.body.name}`}).toArray(function(err, docs) {
+  	if (err) {
+  		callback('cannot connect to database', undefined);
+  	}else{
+  		if (docs.length !== 0) {
+  			callback(undefined, docs);
+  	}else{
+  			callback('cannot found this place',undefined);
+  		}
+  	}
+
+  });
+}
 app.post(`/contactus`, (req, res) => {
 
 		console.log(req.body);
