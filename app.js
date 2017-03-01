@@ -28,7 +28,7 @@ app.post(`/signup`, (req, res) => {
 			password:`${req.body.password}`,
 			email:`${req.body.email}`			
 			});
-   		 }); 
+    }); 
 
 		var signup_obj = {
 			'message' : 'signup success'
@@ -83,7 +83,6 @@ var checkUserLogin = function(db, req, callback) {
   });
 }
 
-
 //update member to database
 app.post(`/editprofile`, (req, res) => {
 
@@ -115,7 +114,7 @@ app.post(`/places`, (req, res) => {
 
 	console.log(req.body);
     mongo.connect(connection, (error, database) => {
-     serchPlace(database, req, (error, result) => {
+     searchPlace(database, req, (error, result) => {
      	if (error) {
      		console.log(error);
      		var error_obj = {
@@ -140,17 +139,17 @@ app.post(`/places`, (req, res) => {
 	});
 });
 
-var serchPlace = function(db, req, callback) {
+var searchPlace = function(db, req, callback) {
   // Get the documents collection 
   var collection = db.collection('place');
   // Find some documents 
   collection.find({name:`${req.body.name}`}).toArray(function(err, docs) {
   	if (err) {
   		callback('cannot connect to database', undefined);
-  	}else{
+  	} else{
   		if (docs.length !== 0) {
   			callback(undefined, docs);
-  	}else{
+  	} else{
   			callback('cannot found this place',undefined);
   		}
   	}
@@ -177,8 +176,6 @@ app.post(`/contactus`, (req, res) => {
 	res.json(contactus_obj);
 	
 });
-
-
 
 app.listen(1200, function () {
   console.log('Server running on port 1200...')
