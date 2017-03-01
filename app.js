@@ -30,7 +30,7 @@ app.post(`/signup`, (req, res) => {
 			});
    		 }); 
 
-		var signup_obj ={
+		var signup_obj = {
 			'message' : 'signup success'
 		}
 		res.json(signup_obj);
@@ -60,9 +60,7 @@ app.post(`/login`, (req, res) => {
      		} 
      		res.json(result_obj);
      		console.log('login success');
-     	}
-
-     	
+     	}     	
      }); 
 	});
 });
@@ -74,10 +72,10 @@ var checkUserLogin = function(db, req, callback) {
   collection.find({username:`${req.body.username}`, password:`${req.body.password}`}).toArray(function(err, docs) {
   	if (err) {
   		callback('cannot connect to database', undefined);
-  	}else{
+  	} else {
   		if (docs.length === 1) {
   			callback(undefined, docs);
-  	}else{
+  	} else {
   			callback('invalid username or password',undefined);
   		}
   	}
@@ -174,7 +172,7 @@ app.post(`/contactus`, (req, res) => {
    		 }); 
 
 		var contactus_obj = {
-		'message' : 'send success!!'
+		'message' : 'Success'
 	}
 	res.json(contactus_obj);
 	
