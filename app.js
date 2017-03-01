@@ -19,22 +19,23 @@ app.use(function(req, res, next) {
 
 app.post(`/signup`, (req, res) => {
 
-		console.log(req.body);
-		mongo.connect(connection, (error, database) => {
-		database
-		.collection('member')
-		.insert({ 
-			username:`${req.body.username}`,
-			password:`${req.body.password}`,
-			email:`${req.body.email}`			
-			});
-    }); 
+	console.log(req.body);
+	mongo.connect(connection, (error, database) => {
+	database
+	.collection('member')
+	.insert({ 
+		username:`${req.body.username}`,
+		password:`${req.body.password}`,
+		email:`${req.body.email}`			
+		});
+  }); 
 
-		var signup_obj = {
-			'message' : 'signup success'
-		}
-		res.json(signup_obj);
-		console.log('signup success');
+	var signup_obj = {
+		'message' : 'signup success'
+	}
+	
+  res.json(signup_obj);
+	console.log('signup success');
 	
 });
 
@@ -42,26 +43,27 @@ app.post(`/signup`, (req, res) => {
 app.post(`/login`, (req, res) => {
 
 	console.log(req.body);
-    mongo.connect(connection, (error, database) => {
-     checkUserLogin(database, req, (error, result) => {
-     	if (error) {
-     		console.log(error);
-     		var error_obj = {
-     			'message' : `${error}`
-     		}
-     		res.json(error_obj);
+  mongo.connect(connection, (error, database) => {
+  checkUserLogin(database, req, (error, result) => {
+    if (error) {
+     	console.log(error);
+     	var error_obj = {
+  		  'message' : `${error}`
      	}
-     	else{
-     		console.log(result);
-     		var result_obj = {
-     			'message' : `success!!`,
-     			'username' : result[0].username,
-     			'email': result[0].email
-     		} 
-     		res.json(result_obj);
-     		console.log('login success');
-     	}     	
-     }); 
+     	res.json(error_obj);
+    }
+    else {
+     	console.log(result);
+     	var result_obj = {
+     		'message' : `success!!`,
+     		'username' : result[0].username,
+     		'email': result[0].email
+     } 
+     	
+      res.json(result_obj);
+     	console.log('login success');
+    }     	
+  }); 
 	});
 });
 
