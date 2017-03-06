@@ -55,7 +55,7 @@ app.post(`/login`, (req, res) => {
     else {
      	console.log(result);
      	var result_obj = {
-     		'message' : `success!!`,
+     		'message' : `success`,
      		'username' : result[0].username,
      		'email': result[0].email
      }
