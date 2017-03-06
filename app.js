@@ -31,7 +31,7 @@ app.post(`/signup`, (req, res) => {
   });
 
 	var signup_obj = {
-		'message' : 'signup success'
+		'message' : 'success'
 	}
 
   res.json(signup_obj);
@@ -127,7 +127,7 @@ app.post(`/places`, (req, res) => {
      	else{
      		console.log(result);
      		var result_obj = {
-     			'message' : `found success!!`,
+     			'message' : `success`,
      			'idplace' : result[0].idplace,
      			'contact' : result[0].contact,
      			'picture' : result[0].picture,
