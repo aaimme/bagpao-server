@@ -10,6 +10,8 @@ app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
   extended: true
 }));
 
+var search = require('./modules/Search');
+
 //can recieve api from another domain
 app.use(function(req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
@@ -116,7 +118,7 @@ app.post(`/places`, (req, res) => {
 
 	console.log(req.body);
     mongo.connect(connection, (error, database) => {
-     searchPlace(database, req, (error, result) => {
+     search.searchPlace(database, req, (error, result) => {
      	if (error) {
      		console.log(error);
      		var error_obj = {
@@ -134,14 +136,43 @@ app.post(`/places`, (req, res) => {
      			'description' : result[0].description
      		}
      		res.json(result_obj);
-     		console.log('searchTrip success');
+     		console.log('search success');
      	}
 
      });
 	});
 });
 
-var searchPlace = function(db, req, callback) {
+app.post(`/trips`, (req, res) => {
+
+	console.log(req.body);
+    mongo.connect(connection, (error, database) => {
+     search.searchTrip(database, req, (error, result) => {
+     	if (error) {
+     		console.log(error);
+     		var error_obj = {
+     			'message' : `${error}`
+     		}
+     		res.json(error_obj);
+     	}
+     	else{
+     		console.log(result);
+     		var result_obj = {
+     			'message' : `success`,
+     			'idplace' : result[0].idplace,
+     			'contact' : result[0].contact,
+     			'picture' : result[0].picture,
+     			'description' : result[0].description
+     		}
+     		res.json(result_obj);
+     		console.log('search success');
+     	}
+
+     });
+	});
+});
+
+/*var searchPlace = function(db, req, callback) {
   // Get the documents collection
   var collection = db.collection('place');
   // Find some documents
@@ -157,7 +188,8 @@ var searchPlace = function(db, req, callback) {
   	}
 
   });
-}
+}*/
+
 app.post(`/contactus`, (req, res) => {
 
 		console.log(req.body);
