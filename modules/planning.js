@@ -15,10 +15,10 @@ exports.addTripToMongo = function(req) {
 		console.log(req.body);
 		mongo.connect(connection, (error, database) => {
 		database
-		.collection('trips')
+		.collection('trip')
 		.insert({ 
 			by:`${req.body.username}`,
-			tripname:`${req.body.name}`,
+			name:`${req.body.name}`,
 			daytrip:`${req.body.contact}`,
 			origin:`${req.body.latitude}`,
 			desination:`${req.body.longitude}`	

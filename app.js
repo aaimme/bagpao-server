@@ -116,10 +116,9 @@ app.post(`/places`, (req, res) => {
      		console.log(result);
      		var result_obj = {
      			'message' : `success`,
-     			'idplace' : result[0].idplace,
-     			'contact' : result[0].contact,
-     			'picture' : result[0].picture,
-     			'description' : result[0].description
+     			'name' : result[0].name,
+     			'city' : result[0].city,
+     			'picture' : result[0].picture
      		}
      		res.json(result_obj);
      		console.log('search success');
@@ -145,10 +144,10 @@ app.post(`/trips`, (req, res) => {
      		console.log(result);
      		var result_obj = {
      			'message' : `success`,
-     			'idplace' : result[0].idplace,
-     			'contact' : result[0].contact,
+     			'by' : result[0].by,
+     			'name' : result[0].name,
      			'picture' : result[0].picture,
-     			'description' : result[0].description
+     			
      		}
      		res.json(result_obj);
      		console.log('search success');
