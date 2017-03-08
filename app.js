@@ -10,7 +10,11 @@ app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
   extended: true
 }));
 
+var mandrill = require('node-mandrill')('wIonE-z4VA6qXMXWJxRHrQ');  // sent email
+
 var search = require('./modules/Search');
+var login = require('./modules/login');
+var add = require('./modules/add');
 
 //can recieve api from another domain
 app.use(function(req, res, next) {
@@ -23,30 +27,30 @@ app.post(`/signup`, (req, res) => {
 
 	console.log(req.body);
 	mongo.connect(connection, (error, database) => {
-	database
-	.collection('member')
-	.insert({
-		username:`${req.body.username}`,
-		password:`${req.body.password}`,
-		email:`${req.body.email}`
-		});
-  });
-
-	var signup_obj = {
-		'message' : 'success'
-	}
-
-  res.json(signup_obj);
-	console.log('signup success');
-
+	login.checkUserSignup(database, req, (error, result) => {
+    if (error) {
+     	console.log(error);
+     	var error_obj = {
+  		  'message' : `${error}`
+     	}
+     	res.json(error_obj);
+    }
+    else {
+     	console.log(result);
+     	var result_obj = {
+     		'message' : `That username is taken. Try another.`
+     }
+      res.json(result_obj);
+    }
+   	});
+	});
 });
-
 
 app.post(`/login`, (req, res) => {
 
 	console.log(req.body);
-  mongo.connect(connection, (error, database) => {
-  checkUserLogin(database, req, (error, result) => {
+  	mongo.connect(connection, (error, database) => {
+  	login.checkUserLogin(database, req, (error, result) => {
     if (error) {
      	console.log(error);
      	var error_obj = {
@@ -68,24 +72,6 @@ app.post(`/login`, (req, res) => {
   });
 	});
 });
-
-var checkUserLogin = function(db, req, callback) {
-  // Get the documents collection
-  var collection = db.collection('member');
-  // Find some documents
-  collection.find({username:`${req.body.username}`, password:`${req.body.password}`}).toArray(function(err, docs) {
-  	if (err) {
-  		callback('cannot connect to database', undefined);
-  	} else {
-  		if (docs.length === 1) {
-  			callback(undefined, docs);
-  	} else {
-  			callback('invalid username or password',undefined);
-  		}
-  	}
-
-  });
-}
 
 //update member to database
 app.post(`/editprofile`, (req, res) => {
@@ -172,23 +158,6 @@ app.post(`/trips`, (req, res) => {
 	});
 });
 
-/*var searchPlace = function(db, req, callback) {
-  // Get the documents collection
-  var collection = db.collection('place');
-  // Find some documents
-  collection.find({name:`${req.body.name}`}).toArray(function(err, docs) {
-  	if (err) {
-  		callback('cannot connect to database', undefined);
-  	} else{
-  		if (docs.length !== 0) {
-  			callback(undefined, docs);
-  	} else{
-  			callback('cannot found this place',undefined);
-  		}
-  	}
-
-  });
-}*/
 
 app.post(`/contactus`, (req, res) => {
 
@@ -210,6 +179,35 @@ app.post(`/contactus`, (req, res) => {
 	res.json(contactus_obj);
 
 });
+
+// define your own email api which points to your server.
+
+app.post( '/api/sendemail/', function(req, res){
+
+    var _name = req.body.name;
+    var _email = req.body.email;
+    var _subject = req.body.subject;
+    var _message = req.body.message;
+    console.log(req.body);
+    //implement your spam protection or checks. 
+
+    sendEmail ( _name, _email, _subject, _message );
+
+});
+
+function sendEmail ( _name, _email, _subject, _message) {
+    mandrill('/messages/send', {
+        message: {
+            to: [{email: _email , name: _name}],
+            from_email: 'noreply@yourdomain.com',
+            subject: _subject,
+            text: _message
+        }
+    }, function(error, response){
+        if (error) console.log( error );
+        else console.log(response);
+    });
+}
 
 app.listen(1200, function () {
   console.log('Server running on port 1200...')
