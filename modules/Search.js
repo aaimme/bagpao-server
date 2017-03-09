@@ -8,7 +8,7 @@ let connection = 'mongodb://localhost:27017/bagpaotravel';
 exports.searchPlace = function(db, req, callback) {
   // Get the documents collection
   var collection = db.collection('place');
-  // Find some documents
+  // Find by name
   collection.find({name:`${req.body.name}`}).toArray(function(err, docs) {
   	if (err) {
   		callback('cannot connect to database', undefined);
@@ -16,17 +16,28 @@ exports.searchPlace = function(db, req, callback) {
   		if (docs.length !== 0) {
   			callback(undefined, docs);
   	} else{
-  			callback('cannot found this place',undefined);
+           //Find by city
+           collection.find({city:`${req.body.name}`}).toArray(function(err, docs) {
+           if (err) {
+               callback('cannot connect to database', undefined);
+            } else{
+                if (docs.length !== 0) {
+                    callback(undefined, docs);
+                 } else{
+                     callback('cannot found this place',undefined);
+                }
+            }
+            });
   		}
   	}
-
-  });
+});
 }
+
 
 exports.searchTrip = function(db, req, callback) {
   // Get the documents collection
   var collection = db.collection('trip');
-  // Find some documents
+  // Find by name
   collection.find({name:`${req.body.name}`}).toArray(function(err, docs) {
   	if (err) {
   		callback('cannot connect to database', undefined);
@@ -34,9 +45,30 @@ exports.searchTrip = function(db, req, callback) {
   		if (docs.length !== 0) {
   			callback(undefined, docs);
   	} else{
-  			callback('cannot found this trip',undefined);
-  		}
+        //Find by username
+           collection.find({by:`${req.body.name}`}).toArray(function(err, docs) {
+           if (err) {
+               callback('cannot connect to database', undefined);
+            } else{
+                if (docs.length !== 0) {
+                    callback(undefined, docs);
+                 } else{
+                    //Find by place
+                     collection.find({place:`${req.body.name}`}).toArray(function(err, docs) {
+                     if (err) {
+                        callback('cannot connect to database', undefined);
+                     } else{
+                     if (docs.length !== 0) {
+                        callback(undefined, docs);
+                      } else{
+                          callback('cannot found this trip',undefined);
+                      }
+                      }
+                    });
+                  }
+                 }
+            });	
   	}
-
+  	}
   });
 }

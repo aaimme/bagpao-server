@@ -14,7 +14,8 @@ var mandrill = require('node-mandrill')('wIonE-z4VA6qXMXWJxRHrQ');  // sent emai
 
 var search = require('./modules/Search');
 var login = require('./modules/login');
-var add = require('./modules/add');
+var admin = require('./modules/admin');
+var member = require('./modules/member');
 
 //can recieve api from another domain
 app.use(function(req, res, next) {
@@ -76,29 +77,22 @@ app.post(`/login`, (req, res) => {
 //update member to database
 app.post(`/editprofile`, (req, res) => {
 
-		console.log(req.body);
-		mongo.connect(connection, (error, database) => {
-		database
-		.collection('member')
-		.update({username:`${req.body.username}` },
-			{ $set : {
-			username:`${req.body.username}`,
-			password:`${req.body.password}`,
-			email:`${req.body.email}`,
-			displayname:`${req.body.displayname}`,
-			birthday:`${req.body.birthday}`,
-			currentcity:`${req.body.currentcity}`,
-			interest:`${req.body.interest}`,
-			bio:`${req.body.bio}`
-			}
-		});
-   		 });
-		var editprofile_obj = {
-		'message' : 'edit success!!',
-		'value' : req.body
+		member.editProfile(req, (error, result) => {
+		 if (error) {
+     		console.log(error);
+     		var error_obj = {
+     			'message' : `${error}`
+     		}
+     		res.json(error_obj);
+     	}
+     	else{
+     		var editprofile_obj = {
+		'message' : result	
 	}
 	res.json(editprofile_obj);
-});
+     	}
+	});	
+	});
 
 app.post(`/places`, (req, res) => {
 
@@ -118,8 +112,9 @@ app.post(`/places`, (req, res) => {
      			'message' : `success`,
      			'name' : result[0].name,
      			'city' : result[0].city,
-     			'picture' : result[0].picture
-     		}
+     			'picture' : result[0].picture,
+     			'data' : result
+      		}
      		res.json(result_obj);
      		console.log('search success');
      	}
@@ -157,6 +152,25 @@ app.post(`/trips`, (req, res) => {
 	});
 });
 
+app.post(`/admin/places`, (req, res) =>{
+	admin.addPlaceToMongo(req, (error, result) => {
+		 if (error) {
+     		console.log(error);
+     		var error_obj = {
+     			'message' : `${error}`
+     		}
+     		res.json(error_obj);
+     	}
+     	else{
+     		var add_obj ={
+			'message' : result
+			}
+			res.json(add_obj);
+			console.log('add data success');
+     		     		
+     	}
+	});
+});
 
 app.post(`/contactus`, (req, res) => {
 
