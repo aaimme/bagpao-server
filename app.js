@@ -107,14 +107,18 @@ app.post(`/places`, (req, res) => {
      		res.json(error_obj);
      	}
      	else{
-     		console.log(result);
-     		var result_obj = {
+     		console.log(result.length);
+     		var i
+     		for(i = 0; i < result.length; i++){
+     			var _name = result[i].name;
+     			var _city = result[i].city;
+     			var _picture = result[i].picture;
+
+       		}
+     			var result_obj = {
      			'message' : `success`,
-     			'name' : result[0].name,
-     			'city' : result[0].city,
-     			'picture' : result[0].picture,
-     			'data' : result
-      		}
+     			result
+       		}
      		res.json(result_obj);
      		console.log('search success');
      	}
