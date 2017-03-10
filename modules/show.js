@@ -1,15 +1,14 @@
 "use strict";
 var assert = require('assert');
-var express = require('express');
-var app = express();
 let mongo = require('mongodb').MongoClient;
 let connection = 'mongodb://localhost:27017/bagpaotravel';
 
 exports.showpopular = function(db, req, callback) {
   // Get the documents collection 
- 	 var collection = db.collection('place');
-  // Find some documents 
-  collection.sort({ view : -1 }).toArray(function(err, docs) {
+  mongo.connect(connection, (err, database) => {
+      database
+      .collection('place')
+      .find().sort({view : -1}).toArray(function(err, docs) {
   	if (err) {
   		callback('cannot connect to database', undefined);
   	}else{
@@ -19,7 +18,7 @@ exports.showpopular = function(db, req, callback) {
   			callback('please input data',undefined);
   		}
   	}
-
   });
+});
 }
 

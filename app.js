@@ -108,7 +108,7 @@ app.post(`/editprofile`, (req, res) => {
      	}
      	else{
      		var editprofile_obj = {
-		'message' : result	
+		    'message' : result	
 	}
 	res.json(editprofile_obj);
      	}
@@ -128,19 +128,17 @@ app.post(`/places`, (req, res) => {
      		res.json(error_obj);
      	}
      	else{
-     		console.log(result.length);
-     		var i
-     		for(i = 0; i < result.length; i++){
-     			var _name = result[i].name;
-     			var _city = result[i].city;
-     			var _picture = result[i].picture;
-
-       		}
-     			var result_obj = {
-     			'message' : `success`,
-     			result
-       		}
-     		res.json(result_obj);
+            var results = []
+            for(var i = 0; i < result.length; i++) {
+            var result_obj = {
+                'message' : `success`,
+                'name' : result[i].name,
+                'city' : result[i].city,
+                'picture' : result[i].picture
+            }
+            results[i] = result_obj
+          }
+            res.json(results);   		
      		console.log('search success');
      	}
 
@@ -168,14 +166,12 @@ app.post(`/trips`, (req, res) => {
      			'message' : `success`,
      			'by' : result[i].by,
      			'name' : result[i].name,
-     			'picture' : result[i].picture,
+     			'picture' : result[i].picture
      		}
-     		//res.json(result_obj);
-     		//console.log('search success');
-        results[i] = result_obj
+     	    results[i] = result_obj
      	  }
-        console.log(results);
-        res.json(results);
+          res.json(results);
+          console.log('search success');
       }
      });
 	});
