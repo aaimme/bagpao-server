@@ -141,18 +141,22 @@ app.post(`/trips`, (req, res) => {
      		res.json(error_obj);
      	}
      	else{
-     		console.log(result);
+     		//console.log(result);
+        var results = []
+        for(var i = 0; i < result.length; i++) {
      		var result_obj = {
      			'message' : `success`,
-     			'by' : result[0].by,
-     			'name' : result[0].name,
-     			'picture' : result[0].picture,
-     			
+     			'by' : result[i].by,
+     			'name' : result[i].name,
+     			'picture' : result[i].picture,
      		}
-     		res.json(result_obj);
-     		console.log('search success');
-     	}
-
+     		//res.json(result_obj);
+     		//console.log('search success');
+        results[i] = result_obj
+     	  }
+        console.log(results);
+        res.json(results);
+      }
      });
 	});
 });
@@ -188,7 +192,7 @@ app.post( '/api/sendemail/', function(req, res){
     var _subject = req.body.subject;
     var _message = req.body.message;
     console.log(req.body);
-    //implement your spam protection or checks. 
+    //implement your spam protection or checks.
 
     sendEmail ( _name, _email, _subject, _message );
 
