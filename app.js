@@ -16,6 +16,7 @@ var search = require('./modules/Search');
 var login = require('./modules/login');
 var admin = require('./modules/admin');
 var member = require('./modules/member');
+var show = require('./modules/show');
 
 //can recieve api from another domain
 app.use(function(req, res, next) {
@@ -23,6 +24,26 @@ app.use(function(req, res, next) {
   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
   next();
 });
+
+app.post(`/show`, (req, res) =>{
+	res.send('<h1>Hello Node.jsh1>');
+	show.showpopular(req, (error, result) => {
+		 if (error) {
+     		console.log(error);
+     		var error_obj = {
+     			'message' : `${error}`
+     		}
+     		res.json(error_obj);
+     	}
+     	else{
+     		var add_obj ={
+			'message' : result
+			}
+			res.json(add_obj);    		     		
+     	}
+	});
+});
+
 
 app.post(`/signup`, (req, res) => {
 
