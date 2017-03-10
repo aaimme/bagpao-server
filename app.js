@@ -87,11 +87,11 @@ app.post(`/editprofile`, (req, res) => {
      	}
      	else{
      		var editprofile_obj = {
-		'message' : result	
+		'message' : result
 	}
 	res.json(editprofile_obj);
      	}
-	});	
+	});
 	});
 
 app.post(`/places`, (req, res) => {
@@ -147,7 +147,7 @@ app.post(`/trips`, (req, res) => {
      			'message' : `success`,
      			'by' : result[i].by,
      			'name' : result[i].name,
-     			'picture' : result[i].picture,
+     			'place' : result[i].place
      		}
      		//res.json(result_obj);
      		//console.log('search success');
@@ -175,7 +175,7 @@ app.post(`/admin/places`, (req, res) =>{
 			}
 			res.json(add_obj);
 			console.log('add data success');
-     		     		
+
      	}
 	});
 });
