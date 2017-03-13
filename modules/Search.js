@@ -44,7 +44,7 @@ exports.searchTrip = function(db, req, callback) {
   			callback(undefined, docs);
   	} else{
         //Find by username
-           collection.find({by:`${req.body.name}`}).toArray(function(err, docs) {
+           collection.find({creator:`${req.body.name}`}).toArray(function(err, docs) {
            if (err) {
                callback('cannot connect to database', undefined);
             } else{
@@ -70,3 +70,26 @@ exports.searchTrip = function(db, req, callback) {
   	}
   });
 }
+
+exports.searchTripAll = function(db, req, callback) {
+  // Get the documents collection
+  var collection = db.collection('trip');
+  // Find by name
+  collection.find({$or : [
+    {name:`${req.body.name}`},
+    {creator:`${req.body.name}`},
+    {place:`${req.body.name}`}
+    ]}
+    ).toArray(function(err, docs) {
+    if (err) {
+      callback('cannot connect to database', undefined);
+    } else{
+      if (docs.length !== 0) {
+        callback(undefined, docs);
+    } else{
+           callback('cannot found this trip',undefined);
+          }
+    }
+    });
+   }
+             

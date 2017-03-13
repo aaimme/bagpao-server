@@ -3,9 +3,8 @@ var assert = require('assert');
 let mongo = require('mongodb').MongoClient;
 let connection = 'mongodb://localhost:27017/bagpaotravel';
 
-exports.showpopular = function(db, req, callback) {
-  // Get the documents collection 
-  mongo.connect(connection, (err, database) => {
+exports.showpopular = function(callback) {
+    mongo.connect(connection, (err, database) => {
       database
       .collection('place')
       .find().sort({view : -1}).toArray(function(err, docs) {

@@ -1,33 +1,86 @@
 "use strict";
 var assert = require('assert');
-var express = require('express');
-var app = express();
 let mongo = require('mongodb').MongoClient;
 let connection = 'mongodb://localhost:27017/bagpaotravel';
-var bodyParser = require('body-parser')
-app.use( bodyParser.json() );       // to support JSON-encoded bodies
-app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
-  extended: true
-})); 
 
 
-exports.addTripToMongo = function(req) {
+exports.step1 = function(req) {
 		console.log(req.body);
 		mongo.connect(connection, (error, database) => {
 		database
 		.collection('trip')
 		.insert({ 
-			by:`${req.body.username}`,
-			name:`${req.body.name}`,
-			daytrip:`${req.body.contact}`,
-			origin:`${req.body.latitude}`,
-			desination:`${req.body.longitude}`	
+			creator:`${req.body.username}`,
+			tripid:`${req.body.tripid}`,
+			daytrip:`${req.body.daytrip}`,
+			origin:`${req.body.origin}`,
+			destination:`${req.body.desination}`
 			});
    		 }); 
 
-		var signup_obj ={
+		var step1_obj ={
 			'message' : 'create trip success'
 		}
-		res.json(signup_obj);
+		res.json(step1_obj);
 		console.log('create trip success');
+	}	
+
+	exports.step2 = function(req) {
+		console.log(req.body);
+		mongo.connect(connection, (error, database) => {
+		database
+		.collection('transport')
+		.insert({ 
+			origin:`${req.body.origin}`,
+			destination:`${req.body.desination}`,
+			transport: `${req.body.transport}`	
+			});
+   		 }); 
+
+		var step2_obj ={
+			'message' : 'transportation...'
+		}
+		res.json(step2_obj);
+		console.log('create trip success');
+	}	
+
+	exports.step3 = function(req) {
+		console.log(req.body);
+		mongo.connect(connection, (error, database) => {
+		database
+		.collection('trip')
+		.update({ tripid:`${req.body.tripid}`},
+		{	$set : {
+			place:`${req.body.place}`,
+			time:`${req.body.time}`
+			}
+		});			
+   	}); 
+
+		var step3_obj ={
+			'message' : 'planning...'
+		}
+		res.json(step3_obj);
+		console.log('planning');
+	}	
+
+	exports.step4 = function(req) {
+		console.log(req.body);
+		mongo.connect(connection, (error, database) => {
+		database
+		.collection('trip')
+		.update({ tripid:`${req.body.tripid}`},
+		{	$set : {
+			picture:`${req.body.picture}`,
+			name:`${req.body.name}`,
+			privicy:`${req.body.privicy}`
+			}
+		});			
+   	}); 
+
+		var step4_obj ={
+			'message' : 'plan success'
+		}
+		res.json(step4_obj);
+		console.log('plan trip success');
 	}	

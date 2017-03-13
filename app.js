@@ -16,6 +16,7 @@ var search = require('./modules/Search');
 var login = require('./modules/login');
 var admin = require('./modules/admin');
 var member = require('./modules/member');
+var plan = require('./modules/planning');
 var show = require('./modules/show');
 
 //can recieve api from another domain
@@ -26,8 +27,8 @@ app.use(function(req, res, next) {
 });
 
 app.post(`/show`, (req, res) =>{
-	res.send('<h1>Hello Node.jsh1>');
-	show.showpopular(req, (error, result) => {
+	res.send('finding data...');
+	show.showpopular((error, result) => {
 		 if (error) {
      		console.log(error);
      		var error_obj = {
@@ -95,7 +96,6 @@ app.post(`/login`, (req, res) => {
 	});
 });
 
-//update member to database
 app.post(`/editprofile`, (req, res) => {
 
 		member.editProfile(req, (error, result) => {
@@ -109,10 +109,10 @@ app.post(`/editprofile`, (req, res) => {
      	else{
      		var editprofile_obj = {
 		    'message' : result	
-	}
+    }
 	res.json(editprofile_obj);
      	}
-	});	
+	});
 	});
 
 app.post(`/places`, (req, res) => {
@@ -147,10 +147,9 @@ app.post(`/places`, (req, res) => {
 });
 
 app.post(`/trips`, (req, res) => {
-
 	console.log(req.body);
     mongo.connect(connection, (error, database) => {
-     search.searchTrip(database, req, (error, result) => {
+     search.searchTripAll(database, req, (error, result) => {
      	if (error) {
      		console.log(error);
      		var error_obj = {
@@ -164,9 +163,9 @@ app.post(`/trips`, (req, res) => {
         for(var i = 0; i < result.length; i++) {
      		var result_obj = {
      			'message' : `success`,
-     			'by' : result[i].by,
+     			'creator' : result[i].creator,
      			'name' : result[i].name,
-     			'picture' : result[i].picture
+     			'place' : result[i].place
      		}
      	    results[i] = result_obj
      	  }
@@ -175,6 +174,24 @@ app.post(`/trips`, (req, res) => {
       }
      });
 	});
+});
+
+app.post(`/planning`, (req, res) =>{
+    plan.step1((error, result) => {
+         if (error) {
+            console.log(error);
+            var error_obj = {
+                'message' : `${error}`
+            }
+            res.json(error_obj);
+        }
+        else{
+            var add_obj ={
+            'message' : result
+            }
+            res.json(add_obj);                      
+        }
+    });
 });
 
 app.post(`/admin/places`, (req, res) =>{
@@ -192,7 +209,7 @@ app.post(`/admin/places`, (req, res) =>{
 			}
 			res.json(add_obj);
 			console.log('add data success');
-     		     		
+
      	}
 	});
 });
@@ -216,6 +233,20 @@ app.post(`/contactus`, (req, res) => {
 	}
 	res.json(contactus_obj);
 
+});
+
+app.post(`/addtrip`, (req, res) => {
+
+        console.log(req.body);
+        mongo.connect(connection, (error, database) => {
+        database
+        .collection('trip')
+        .insert({
+            by:`${req.body.username}`,
+            name:`${req.body.name}`,
+            place: `${req.body.place}`
+     });
+   });
 });
 
 // define your own email api which points to your server.
