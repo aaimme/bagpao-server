@@ -131,7 +131,7 @@ app.post(`/places`, (req, res) => {
             var results = []
             for(var i = 0; i < result.length; i++) {
             var result_obj = {
-                'message' : `success`,
+                'message' : `success`+i,
                 'name' : result[i].name,
                 'city' : result[i].city,
                 'picture' : result[i].picture
@@ -162,7 +162,7 @@ app.post(`/trips`, (req, res) => {
         var results = []
         for(var i = 0; i < result.length; i++) {
      		var result_obj = {
-     			'message' : `success`,
+     			'message' : `success`+i,
      			'creator' : result[i].creator,
      			'name' : result[i].name,
      			'place' : result[i].place
@@ -177,7 +177,7 @@ app.post(`/trips`, (req, res) => {
 });
 
 app.post(`/planning`, (req, res) =>{
-    plan.step1((error, result) => {
+    plan.planning((error, result) => {
          if (error) {
             console.log(error);
             var error_obj = {
@@ -189,7 +189,7 @@ app.post(`/planning`, (req, res) =>{
             var add_obj ={
             'message' : result
             }
-            res.json(add_obj);                      
+            res.json(result);                      
         }
     });
 });

@@ -4,7 +4,7 @@ let mongo = require('mongodb').MongoClient;
 let connection = 'mongodb://localhost:27017/bagpaotravel';
 
 
-exports.step1 = function(req) {
+exports.planning = function(req) {
 		console.log(req.body);
 		mongo.connect(connection, (error, database) => {
 		database
@@ -14,7 +14,11 @@ exports.step1 = function(req) {
 			tripid:`${req.body.tripid}`,
 			daytrip:`${req.body.daytrip}`,
 			origin:`${req.body.origin}`,
-			destination:`${req.body.desination}`
+			destination:`${req.body.desination}`,
+			picture:`${req.body.picture}`,
+			name:`${req.body.name}`,
+			privicy:`${req.body.privicy}`,
+			place :`${req.body.place}`
 			});
    		 }); 
 
@@ -44,43 +48,4 @@ exports.step1 = function(req) {
 		console.log('create trip success');
 	}	
 
-	exports.step3 = function(req) {
-		console.log(req.body);
-		mongo.connect(connection, (error, database) => {
-		database
-		.collection('trip')
-		.update({ tripid:`${req.body.tripid}`},
-		{	$set : {
-			place:`${req.body.place}`,
-			time:`${req.body.time}`
-			}
-		});			
-   	}); 
-
-		var step3_obj ={
-			'message' : 'planning...'
-		}
-		res.json(step3_obj);
-		console.log('planning');
-	}	
-
-	exports.step4 = function(req) {
-		console.log(req.body);
-		mongo.connect(connection, (error, database) => {
-		database
-		.collection('trip')
-		.update({ tripid:`${req.body.tripid}`},
-		{	$set : {
-			picture:`${req.body.picture}`,
-			name:`${req.body.name}`,
-			privicy:`${req.body.privicy}`
-			}
-		});			
-   	}); 
-
-		var step4_obj ={
-			'message' : 'plan success'
-		}
-		res.json(step4_obj);
-		console.log('plan trip success');
-	}	
+	//connect API
