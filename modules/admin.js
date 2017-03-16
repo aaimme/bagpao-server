@@ -8,20 +8,20 @@ var bodyParser = require('body-parser')
 app.use( bodyParser.json() );       // to support JSON-encoded bodies
 app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
   extended: true
-})); 
+}));
 
-		
+
 	exports.addPlaceToMongo = function(req, callback) {
 		console.log(req.body);
 		mongo.connect(connection, (err, database) => {
 			if (err) {
   			callback('cannot connect to database', undefined);
-  			} 
+  			}
   			else {
   			callback(undefined, 'add data success');
   			database
 			.collection('place')
-			.insert({ 
+			.insert({
 				idplace:`${req.body.idplace}`,
 				name:`${req.body['name']}`,
 				contact:`${req.body.contact}`,
@@ -30,18 +30,18 @@ app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
 				longitude:`${req.body.longitude}`,
 				categories:`${req.body.categories}`,
 				picture:`${req.body.picture}`,
-				description:`${req.body.description}`			
+				description:`${req.body.description}`
 			});
-   		  } 	
-  		});	
-	}	
+   		  }
+  		});
+	}
 
 	exports.updatePlaceToMongo = function(req, callback) {
 		console.log(req.body);
 		mongo.connect(connection, (err, database) => {
 			if (err) {
   			callback('cannot connect to database', undefined);
-  			} 
+  			}
   			else {
   			callback(undefined, 'update data success');
   			database
@@ -56,24 +56,75 @@ app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
 				longitude:`${req.body.longitude}`,
 				categories:`${req.body.categories}`,
 				picture:`${req.body.picture}`,
-				description:`${req.body.description}`		
+				description:`${req.body.description}`
 				}
 			});
-   		  } 	
+   		  }
 		});
-	}	
+	}
 
 exports.deletePlaceToMongo = function(req, callback) {
 		console.log(req.body);
 		mongo.connect(connection, (err, database) => {
 			if (err) {
   			callback('cannot connect to database', undefined);
-  			} 
+  			}
   			else {
   			callback(undefined, 'delete data success');
   			database
 			.collection('place')
 			.delete({ name:`${req.body.name}` });
-			} 	
+			}
 		});
-	}	
+	}
+
+  exports.addTourToMongo = function(req, callback) {
+		console.log(req.body);
+		mongo.connect(connection, (err, database) => {
+			if (err) {
+  			callback('cannot connect to database', undefined);
+  			}
+  			else {
+  			callback(undefined, 'add data success');
+  			database
+			.collection('tour')
+			.insert({
+        route:`${req.body.route}`,
+        name:`${req.body.name}`,
+        stationstart:`${req.body.stationstart}`,
+        timestart:`${req.body.timestart}`,
+        stationend:`${req.body.stationend}`,
+        timeend:`${req.body.timeend}`,
+        class:`${req.body.class}`,
+        type:`${req.body.type}`,
+        number:`${req.body.type}`,
+        price:`${req.body.price}`
+			});
+   		  }
+  		});
+	}
+
+  exports.addTrainToMongo = function(req, callback) {
+    console.log(req.body);
+    mongo.connect(connection, (err, database) => {
+      if (err) {
+        callback('cannot connect to database', undefined);
+        }
+        else {
+        callback(undefined, 'add data success');
+        database
+      .collection('train')
+      .insert({
+        route:`${req.body.route}`,
+        stationstart:`${req.body.stationstart}`,
+        timestart:`${req.body.timestart}`,
+        stationend:`${req.body.stationend}`,
+        timeend:`${req.body.timeend}`,
+        class:`${req.body.class}`,
+        type:`${req.body.type}`,
+        trainnumber:`${req.body.number}`,
+        price:`${req.body.price}`
+      });
+        }
+      });
+  }

@@ -40,7 +40,7 @@ app.post(`/show`, (req, res) =>{
      		var add_obj ={
 			'message' : result
 			}
-			res.json(add_obj);    		     		
+			res.json(add_obj);
      	}
 	});
 });
@@ -108,7 +108,7 @@ app.post(`/editprofile`, (req, res) => {
      	}
      	else{
      		var editprofile_obj = {
-		    'message' : result	
+		    'message' : result
     }
 	res.json(editprofile_obj);
      	}
@@ -138,7 +138,7 @@ app.post(`/places`, (req, res) => {
             }
             results[i] = result_obj
           }
-            res.json(results);   		
+            res.json(results);
      		console.log('search success');
      	}
 
@@ -177,25 +177,38 @@ app.post(`/trips`, (req, res) => {
 });
 
 app.post(`/planning`, (req, res) =>{
-    plan.planning((error, result) => {
-         if (error) {
-            console.log(error);
-            var error_obj = {
-                'message' : `${error}`
-            }
-            res.json(error_obj);
-        }
-        else{
-            var add_obj ={
-            'message' : result
-            }
-            res.json(result);                      
-        }
-    });
+
+    if(req.body.numstep == 1){
+
+    }
+    else if(req.body.numstep == 2){
+
+    }
+    else if(req.body.numstep == 3){
+      plan.planning((error, result) => {
+        if (error) {
+           console.log(error);
+           var error_obj = {
+               'message' : `${error}`
+           }
+           res.json(error_obj);
+       }
+       else{
+           var add_obj ={
+           'message' : result
+           }
+           res.json(result);
+       }
+   });
+    }
+
+
 });
 
 app.post(`/admin/places`, (req, res) =>{
-	admin.addPlaceToMongo(req, (error, result) => {
+  console.log(req.body.admin);
+	 if(req.body.admin == 'place'){
+     admin.addPlaceToMongo(req, (error, result) => {
 		 if (error) {
      		console.log(error);
      		var error_obj = {
@@ -209,9 +222,46 @@ app.post(`/admin/places`, (req, res) =>{
 			}
 			res.json(add_obj);
 			console.log('add data success');
+    }
+  });
+}
+ if(req.body.admin == 'train'){
+   admin.addTrainToMongo(req, (error, result) => {
+ 		 if (error) {
+      		console.log(error);
+      		var error_obj = {
+      			'message' : `${error}`
+      		}
+      		res.json(error_obj);
+      	}
+      	else{
+      		var add_obj ={
+ 			'message' : result
+ 			}
+ 			res.json(add_obj);
+ 			console.log('add data success');
+      }
+    });
+	}
 
-     	}
-	});
+  if(req.body.admin == 'tour'){
+    admin.addTourToMongo(req, (error, result) => {
+      if (error) {
+           console.log(error);
+           var error_obj = {
+             'message' : `${error}`
+           }
+           res.json(error_obj);
+         }
+         else{
+           var add_obj ={
+       'message' : result
+       }
+       res.json(add_obj);
+       console.log('add data success');
+      }
+    });
+  }
 });
 
 app.post(`/contactus`, (req, res) => {
