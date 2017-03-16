@@ -24,6 +24,7 @@ app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
 			.insert({
 				idplace:`${req.body.idplace}`,
 				name:`${req.body['name']}`,
+        zone:`${req.body.zone}`,
 				contact:`${req.body.contact}`,
 				city:`${req.body.city}`,
 				latitude:`${req.body.latitude}`,
@@ -50,6 +51,7 @@ app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
 			{ $set : {
 				idplace:`${req.body.idplace}`,
 				name:`${req.body['name']}`,
+        zone:`${req.body.zone}`,
 				contact:`${req.body.contact}`,
 				city:`${req.body.city}`,
 				latitude:`${req.body.latitude}`,
@@ -89,15 +91,14 @@ exports.deletePlaceToMongo = function(req, callback) {
   			database
 			.collection('tour')
 			.insert({
-        route:`${req.body.route}`,
         name:`${req.body.name}`,
+        origin:`${req.body.origin}`,
         stationstart:`${req.body.stationstart}`,
         timestart:`${req.body.timestart}`,
+        destination:`${req.body.destination}`,
         stationend:`${req.body.stationend}`,
         timeend:`${req.body.timeend}`,
         class:`${req.body.class}`,
-        type:`${req.body.type}`,
-        number:`${req.body.type}`,
         price:`${req.body.price}`
 			});
    		  }
@@ -116,12 +117,13 @@ exports.deletePlaceToMongo = function(req, callback) {
       .collection('train')
       .insert({
         route:`${req.body.route}`,
+        origin:`${req.body.origin}`,
         stationstart:`${req.body.stationstart}`,
         timestart:`${req.body.timestart}`,
+        destination:`${req.body.destination}`,
         stationend:`${req.body.stationend}`,
         timeend:`${req.body.timeend}`,
         class:`${req.body.class}`,
-        type:`${req.body.type}`,
         trainnumber:`${req.body.number}`,
         price:`${req.body.price}`
       });

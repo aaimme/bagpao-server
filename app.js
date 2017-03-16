@@ -179,14 +179,70 @@ app.post(`/trips`, (req, res) => {
 });
 
 app.post(`/planning`, (req, res) =>{
+    mongo.connect(connection, (error, database) => {
     if(req.body.numstep == 1){
-
+      if(req.body.type == 'tour'){
+        plan.tour(database, req, (error, result) => {
+          if (error) {
+             console.log(error);
+             var error_obj = {
+                 'message' : `${error}`
+             }
+             res.json(error_obj);
+         }
+         else{
+           var results = []
+           for(var i = 0; i < result.length; i++) {
+           var result_obj = {
+               'number' : i,
+               'name' : result[i].name,
+               'stationstart' : result[i].stationstart,
+               'timestart' : result[i].timestart,
+               'stationend' : result[i].stationend,
+               'timeend' : result[i].timeend,
+               'class' : result[i].class,
+               'price' : result[i].price
+           }
+           results[i] = result_obj
+         }
+           res.json(results);
+           console.log('find route success');
+         }
+       });
+      }
+      if(req.body.type == 'train'){
+        plan.train(database, req, (error, result) => {
+          if (error) {
+             console.log(error);
+             var error_obj = {
+                 'message' : `${error}`
+             }
+             res.json(error_obj);
+         }
+         else{
+           var results = []
+           for(var i = 0; i < result.length; i++) {
+           var result_obj = {
+               'number' : i,
+               'route' : result[i].route,
+               'trainnumber' : result[i].trainnumber,
+               'stationstart' : result[i].stationstart,
+               'timestart' : result[i].timestart,
+               'stationend' : result[i].stationend,
+               'timeend' : result[i].timeend,
+               'class' : result[i].class,
+               'price' : result[i].price
+           }
+           results[i] = result_obj
+         }
+           res.json(results);
+           console.log('find route success');
+         }
+       });
+      }
     }
     else if(req.body.numstep == 2){
-
-    }
-    else if(req.body.numstep == 3){
-      plan.planning((error, result) => {
+      plan.plan(database, req, (error, result) => {
         if (error) {
            console.log(error);
            var error_obj = {
@@ -195,13 +251,38 @@ app.post(`/planning`, (req, res) =>{
            res.json(error_obj);
        }
        else{
-           var add_obj ={
-           'message' : result
+         var results = []
+         for(var i = 0; i < result.length; i++) {
+         var result_obj = {
+             'number' : i,
+             'name' : result[i].name,
+             'picture' : result[i].picture,
+             'zone' : result[i].zone,
+             'city' : result[i].city,
+             'categories' : result[i].categories
+         }
+         results[i] = result_obj
+       }
+         res.json(results);
+         console.log('find place success');
+       }
+     });
+    }
+    else if(req.body.numstep == 3){
+      plan.end((error, result) => {
+        if (error) {
+           console.log(error);
+           var error_obj = {
+               'message' : `${error}`
            }
+           res.json(error_obj);
+       }
+       else{
            res.json(result);
        }
    });
     }
+});
 });
 
 app.post(`/admin`, (req, res) =>{

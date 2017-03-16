@@ -4,12 +4,12 @@ let mongo = require('mongodb').MongoClient;
 let connection = 'mongodb://localhost:27017/bagpaotravel';
 
 
-exports.planning = function(req) {
+exports.end = function(req) {
 		console.log(req.body);
 		mongo.connect(connection, (error, database) => {
 		database
 		.collection('trip')
-		.insert({ 
+		.insert({
 			creator:`${req.body.username}`,
 			tripid:`${req.body.tripid}`,
 			daytrip:`${req.body.daytrip}`,
@@ -20,32 +20,58 @@ exports.planning = function(req) {
 			privicy:`${req.body.privicy}`,
 			place :`${req.body.place}`
 			});
-   		 }); 
+   		 });
 
-		var step1_obj ={
+		var step3_obj ={
 			'message' : 'create trip success'
 		}
-		res.json(step1_obj);
+		res.json(step3_obj);
 		console.log('create trip success');
-	}	
+	}
 
-	exports.step2 = function(req) {
-		console.log(req.body);
-		mongo.connect(connection, (error, database) => {
-		database
-		.collection('transport')
-		.insert({ 
-			origin:`${req.body.origin}`,
-			destination:`${req.body.desination}`,
-			transport: `${req.body.transport}`	
-			});
-   		 }); 
+		exports.tour = function(db, req, callback) {
+			 var collection = db.collection('tour');
+		  collection.find({origin:`${req.body.origin}`, destination:`${req.body.destination}`}).toArray(function(err, docs) {
+		    if (err) {
+		      callback('cannot connect to database', undefined);
+		    } else{
+		      if (docs.length !== 0) {
+		        callback(undefined, docs);
+		    } else{
+		           callback('cannot found',undefined);
+		          }
+		    }
+		   });
+		   }
 
-		var step2_obj ={
-			'message' : 'transportation...'
-		}
-		res.json(step2_obj);
-		console.log('create trip success');
-	}	
+			 exports.train = function(db, req, callback) {
+	 			 var collection = db.collection('train');
+	 		  collection.find({stationstart:`${req.body.origin}`, stationend:`${req.body.destination}`}).toArray(function(err, docs) {
+	 		    if (err) {
+	 		      callback('cannot connect to database', undefined);
+	 		    } else{
+	 		      if (docs.length !== 0) {
+	 		        callback(undefined, docs);
+	 		    } else{
+	 		           callback('cannot found',undefined);
+	 		          }
+	 		    }
+	 		   });
+	 		   }
+
+				 exports.plan = function(db, req, callback) {
+		 			var collection = db.collection('place');
+		 		 collection.find({city:`${req.body.destination}`}).toArray(function(err, docs) {
+		 			 if (err) {
+		 				 callback('cannot connect to database', undefined);
+		 			 } else{
+		 				 if (docs.length !== 0) {
+		 					 callback(undefined, docs);
+		 			 } else{
+		 							callback('cannot found',undefined);
+		 						 }
+		 			 }
+		 			});
+		 			}
 
 	//connect API
