@@ -12,12 +12,14 @@ app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
 
 var mandrill = require('node-mandrill')('wIonE-z4VA6qXMXWJxRHrQ');  // sent email
 
-var search = require('./modules/Search');
+var search = require('./modules/search');
 var login = require('./modules/login');
 var admin = require('./modules/admin');
 var member = require('./modules/member');
 var plan = require('./modules/planning');
 var show = require('./modules/show');
+
+var transportation = require('./modules/transportation'); //pleng's
 
 //can recieve api from another domain
 app.use(function(req, res, next) {
@@ -177,7 +179,6 @@ app.post(`/trips`, (req, res) => {
 });
 
 app.post(`/planning`, (req, res) =>{
-
     if(req.body.numstep == 1){
 
     }
@@ -201,11 +202,9 @@ app.post(`/planning`, (req, res) =>{
        }
    });
     }
-
-
 });
 
-app.post(`/admin/places`, (req, res) =>{
+app.post(`/admin`, (req, res) =>{
   console.log(req.body.admin);
 	 if(req.body.admin == 'place'){
      admin.addPlaceToMongo(req, (error, result) => {
@@ -285,20 +284,6 @@ app.post(`/contactus`, (req, res) => {
 
 });
 
-app.post(`/addtrip`, (req, res) => {
-
-        console.log(req.body);
-        mongo.connect(connection, (error, database) => {
-        database
-        .collection('trip')
-        .insert({
-            by:`${req.body.username}`,
-            name:`${req.body.name}`,
-            place: `${req.body.place}`
-     });
-   });
-});
-
 // define your own email api which points to your server.
 
 app.post( '/api/sendemail/', function(req, res){
@@ -327,6 +312,43 @@ function sendEmail ( _name, _email, _subject, _message) {
         else console.log(response);
     });
 }
+
+// pleng's
+
+app.post(`/transportation`, (req, res) => {
+
+	console.log(req.body);
+    mongo.connect(connection, (error, database) => {
+     transportation.steptwo(database, req, (error, result) => {
+     	if (error) {
+     		console.log(error);
+     		var error_obj = {
+     			'message' : `${error}`
+     		}
+     		res.json(error_obj);
+     	}
+     	else{
+            var results = []
+            for(var i = 0; i < result.length; i++) {
+            var result_obj = {
+                'message' : `success`,
+                'vehicles' : result[i].vehicles,
+                'id' : result[i].id,
+                'origin' : result[i].origin,
+                'depart' : result[i].depart,
+                'destination' : result[i].destination,
+                'arrive' : result[i].arrive,
+                'price' : result[i].price
+            }
+            results[i] = result_obj
+          }
+            res.json(results);
+     		console.log('success');
+     	}
+
+     });
+	});
+});
 
 app.listen(1200, function () {
   console.log('Server running on port 1200...')
