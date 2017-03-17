@@ -29,24 +29,9 @@ exports.end = function(req) {
 		console.log('create trip success');
 	}
 
-		exports.tour = function(db, req, callback) {
-			 var collection = db.collection('tour');
-		  collection.find({origin:`${req.body.origin}`, destination:`${req.body.destination}`}).toArray(function(err, docs) {
-		    if (err) {
-		      callback('cannot connect to database', undefined);
-		    } else{
-		      if (docs.length !== 0) {
-		        callback(undefined, docs);
-		    } else{
-		           callback('cannot found',undefined);
-		          }
-		    }
-		   });
-		   }
-
-			 exports.train = function(db, req, callback) {
-	 			 var collection = db.collection('train');
-	 		  collection.find({stationstart:`${req.body.origin}`, stationend:`${req.body.destination}`}).toArray(function(err, docs) {
+					 exports.transportation = function(db, req, callback) {
+	 			 var collection = db.collection('transportation');
+	 		  collection.find({origin:`${req.body.origin}`, destination:`${req.body.destination}`}).toArray(function(err, docs) {
 	 		    if (err) {
 	 		      callback('cannot connect to database', undefined);
 	 		    } else{

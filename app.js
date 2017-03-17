@@ -181,8 +181,7 @@ app.post(`/trips`, (req, res) => {
 app.post(`/planning`, (req, res) =>{
     mongo.connect(connection, (error, database) => {
     if(req.body.numstep == 1){
-      if(req.body.type == 'tour'){
-        plan.tour(database, req, (error, result) => {
+      plan.transportation(database, req, (error, result) => {
           if (error) {
              console.log(error);
              var error_obj = {
@@ -195,41 +194,14 @@ app.post(`/planning`, (req, res) =>{
            for(var i = 0; i < result.length; i++) {
            var result_obj = {
                'number' : i,
-               'name' : result[i].name,
-               'stationstart' : result[i].stationstart,
-               'timestart' : result[i].timestart,
-               'stationend' : result[i].stationend,
-               'timeend' : result[i].timeend,
-               'class' : result[i].class,
-               'price' : result[i].price
-           }
-           results[i] = result_obj
-         }
-           res.json(results);
-           console.log('find route success');
-         }
-       });
-      }
-      if(req.body.type == 'train'){
-        plan.train(database, req, (error, result) => {
-          if (error) {
-             console.log(error);
-             var error_obj = {
-                 'message' : `${error}`
-             }
-             res.json(error_obj);
-         }
-         else{
-           var results = []
-           for(var i = 0; i < result.length; i++) {
-           var result_obj = {
-               'number' : i,
+               'type' : result[i].type,
                'route' : result[i].route,
+               'name' : result[i].name,
                'trainnumber' : result[i].trainnumber,
                'stationstart' : result[i].stationstart,
-               'timestart' : result[i].timestart,
+               'depart' : result[i].depart,
                'stationend' : result[i].stationend,
-               'timeend' : result[i].timeend,
+               'arrive' : result[i].arrive,
                'class' : result[i].class,
                'price' : result[i].price
            }
@@ -239,7 +211,7 @@ app.post(`/planning`, (req, res) =>{
            console.log('find route success');
          }
        });
-      }
+
     }
     else if(req.body.numstep == 2){
       plan.plan(database, req, (error, result) => {
@@ -268,7 +240,7 @@ app.post(`/planning`, (req, res) =>{
        }
      });
     }
-    else if(req.body.numstep == 3){
+    else if(req.body.numstep == 4){
       plan.end((error, result) => {
         if (error) {
            console.log(error);
@@ -324,8 +296,8 @@ app.post(`/admin`, (req, res) =>{
     });
 	}
 
-  if(req.body.admin == 'tour'){
-    admin.addTourToMongo(req, (error, result) => {
+  if(req.body.admin == 'bus'){
+    admin.addBusToMongo(req, (error, result) => {
       if (error) {
            console.log(error);
            var error_obj = {

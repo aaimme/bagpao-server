@@ -80,7 +80,7 @@ exports.deletePlaceToMongo = function(req, callback) {
 		});
 	}
 
-  exports.addTourToMongo = function(req, callback) {
+  exports.addBusToMongo = function(req, callback) {
 		console.log(req.body);
 		mongo.connect(connection, (err, database) => {
 			if (err) {
@@ -89,15 +89,16 @@ exports.deletePlaceToMongo = function(req, callback) {
   			else {
   			callback(undefined, 'add data success');
   			database
-			.collection('tour')
+			.collection('transportation')
 			.insert({
+        type:`bus`,
         name:`${req.body.name}`,
         origin:`${req.body.origin}`,
         stationstart:`${req.body.stationstart}`,
-        timestart:`${req.body.timestart}`,
+        depart:`${req.body.depart}`,
         destination:`${req.body.destination}`,
         stationend:`${req.body.stationend}`,
-        timeend:`${req.body.timeend}`,
+        arrive:`${req.body.arrive}`,
         class:`${req.body.class}`,
         price:`${req.body.price}`
 			});
@@ -114,15 +115,16 @@ exports.deletePlaceToMongo = function(req, callback) {
         else {
         callback(undefined, 'add data success');
         database
-      .collection('train')
+      .collection('transportation')
       .insert({
+        type:`train`,
         route:`${req.body.route}`,
         origin:`${req.body.origin}`,
         stationstart:`${req.body.stationstart}`,
-        timestart:`${req.body.timestart}`,
+        depart:`${req.body.depart}`,
         destination:`${req.body.destination}`,
         stationend:`${req.body.stationend}`,
-        timeend:`${req.body.timeend}`,
+        arrive:`${req.body.arrive}`,
         class:`${req.body.class}`,
         trainnumber:`${req.body.number}`,
         price:`${req.body.price}`
