@@ -28,21 +28,24 @@ app.use(function(req, res, next) {
 
 app.post(`/show`, (req, res) =>{
 	res.send('finding data...');
-	show.showpopular((error, result) => {
-		 if (error) {
-     		console.log(error);
-     		var error_obj = {
-     			'message' : `${error}`
-     		}
-     		res.json(error_obj);
-     	}
-     	else{
-     		var add_obj ={
-			'message' : result
-			}
-			res.json(add_obj);
-     	}
-	});
+    if(req.body.show =='popular'){
+    show.showpopular((error, result) => {
+  		 if (error) {
+       		console.log(error);
+       		var error_obj = {
+       			'message' : `${error}`
+       		}
+       		res.json(error_obj);
+       	}
+       	else{
+       		var add_obj ={
+  			'message' : result
+  			}
+  			res.json(add_obj);
+       	}
+  	});
+  }
+
 });
 
 
@@ -107,10 +110,10 @@ app.post(`/editprofile`, (req, res) => {
      		res.json(error_obj);
      	}
      	else{
-     		var editprofile_obj = {
+     		var result_obj = {
 		    'message' : result
     }
-	res.json(editprofile_obj);
+	res.json(result_obj);
      	}
 	});
 	});
@@ -267,10 +270,10 @@ app.post(`/admin`, (req, res) =>{
      		res.json(error_obj);
      	}
      	else{
-     		var add_obj ={
+     		var result_obj ={
 			'message' : result
 			}
-			res.json(add_obj);
+			res.json(result_obj);
 			console.log('add data success');
     }
   });
@@ -285,10 +288,10 @@ app.post(`/admin`, (req, res) =>{
       		res.json(error_obj);
       	}
       	else{
-      		var add_obj ={
+      		var result_obj ={
  			'message' : result
  			}
- 			res.json(add_obj);
+ 			res.json(result_obj);
  			console.log('add data success');
       }
     });
@@ -304,10 +307,10 @@ app.post(`/admin`, (req, res) =>{
            res.json(error_obj);
          }
          else{
-           var add_obj ={
+           var result_obj ={
        'message' : result
        }
-       res.json(add_obj);
+       res.json(result_obj);
        console.log('add data success');
       }
     });

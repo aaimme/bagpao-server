@@ -1,6 +1,3 @@
-//cd bagpao-server
-//mongoimport -d bagpaotravel -c transportation transportation.json
-
 {"type" : "train","route" : "สายเหนือ","origin" : "กรุงเทพ","stationstart" : "กรุงเทพ","depart" : "04.20","destination" : "ลพบุรี","stationend" : "ลพบุรี","arrive" : "07.05","class" : "รถชานเมือง","trainnumber" : "303","price" : "ฟรี"}
 {"type" : "train","route" : "สายเหนือ","origin" : "กรุงเทพ","stationstart" : "กรุงเทพ","depart" : "04.40","destination" : "ปทุมธานี","stationend" : "รังสิต","arrive" : "05.25","class" : "รถชานเขาไป","trainnumber" : "311","price" : "ฟรี"}
 {"type" : "train","route" : "สายเหนือ","origin" : "นครสวรรค์","stationstart" : "นครสวรรค์","depart" : "05.00","destination" : "เชียงใหม่","stationend" : "เชียงใหม่","arrive" : "14.35","class" : "รถท้องถิ่น","trainnumber" : "undefined","price" : "ฟรี"}
