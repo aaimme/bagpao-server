@@ -44,7 +44,7 @@ exports.end = function(req) {
 	 		   });
 	 		   }
 
-				 exports.plan = function(db, req, callback) {
+				 exports.plan = function(db, req, callback) { 
 		 			var collection = db.collection('place');
 		 		 collection.find({city:`${req.body.destination}`}).toArray(function(err, docs) {
 		 			 if (err) {
