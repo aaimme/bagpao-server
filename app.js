@@ -19,8 +19,6 @@ var member = require('./modules/member');
 var plan = require('./modules/planning');
 var show = require('./modules/show');
 
-var transportation = require('./modules/transportation'); //pleng's
-
 //can recieve api from another domain
 app.use(function(req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
@@ -365,43 +363,6 @@ function sendEmail ( _name, _email, _subject, _message) {
         else console.log(response);
     });
 }
-
-// pleng's
-
-app.post(`/transportation`, (req, res) => {
-
-	console.log(req.body);
-    mongo.connect(connection, (error, database) => {
-     transportation.steptwo(database, req, (error, result) => {
-     	if (error) {
-     		console.log(error);
-     		var error_obj = {
-     			'message' : `${error}`
-     		}
-     		res.json(error_obj);
-     	}
-     	else{
-            var results = []
-            for(var i = 0; i < result.length; i++) {
-            var result_obj = {
-                'message' : `success`,
-                'vehicles' : result[i].vehicles,
-                'id' : result[i].id,
-                'origin' : result[i].origin,
-                'depart' : result[i].depart,
-                'destination' : result[i].destination,
-                'arrive' : result[i].arrive,
-                'price' : result[i].price
-            }
-            results[i] = result_obj
-          }
-            res.json(results);
-     		console.log('success');
-     	}
-
-     });
-	});
-});
 
 app.listen(1200, function () {
   console.log('Server running on port 1200...')
