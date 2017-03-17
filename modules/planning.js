@@ -18,8 +18,8 @@ let connection = 'mongodb://localhost:27017/bagpaotravel';
 							picture:`${req.body.picture}`,
 							name:`${req.body.name}`,
 							privicy:`${req.body.privicy}`,
-							place[i] :`${req.body.place[i]}`,
-							time[i] :`${req.body.time[i]}`,
+		//					place[i] :`${req.body.place[i]}`,
+		//					time[i] :`${req.body.time[i]}`,
 							status:`${req.body.status}`
 							});
 				   		 });
