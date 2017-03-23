@@ -27,26 +27,37 @@ app.use(function(req, res, next) {
 });
 
 app.post(`/show`, (req, res) =>{
-	res.send('finding data...');
-    if(req.body.show =='popular'){
-    show.showpopular((error, result) => {
-  		 if (error) {
-       		console.log(error);
-       		var error_obj = {
-       			'message' : `${error}`
-       		}
-       		res.json(error_obj);
-       	}
-       	else{
-       		var add_obj ={
-  			'message' : result
-  			}
-  			res.json(add_obj);
-       	}
-  	});
+  if(req.body.do == "aa"){
+  show.placeCategories(req, (error, result) => {
+  if (error) {
+    console.log(error);
+    var error_obj = {
+      'message' : `${error}`
+    }
+    res.json(error_obj);
   }
-
+  else {
+    res.json(results);
+  }
+  });
+}
+if(req.body.do == "tp"){
+  show.tripsPopular((error, result) => {
+  if (error) {
+    console.log(error);
+    var error_obj = {
+      'message' : `${error}`
+    }
+    res.json(error_obj);
+  }
+  else {
+        res.json(results);
+  }
+  });
+}
 });
+
+
 
 
 app.post(`/signup`, (req, res) => {
@@ -116,7 +127,8 @@ app.post(`/editprofile`, (req, res) => {
 	res.json(result_obj);
      	}
 	});
-	});
+});
+
 
 app.post(`/places`, (req, res) => {
 
