@@ -2,6 +2,9 @@
 var assert = require('assert');
 let mongo = require('mongodb').MongoClient;
 let connection = 'mongodb://localhost:27017/bagpaotravel';
+var googleMapsClient = require('@google/maps').createClient({
+  key: 'AIzaSyAnz9lnXlaGYpDV_zpyrx9ecKgJDmlLOPI'
+});
 
 
 		exports.end = function(req) {
@@ -62,3 +65,11 @@ let connection = 'mongodb://localhost:27017/bagpaotravel';
 	 }
 
 	//connect API
+	// Geocode an address.
+googleMapsClient.geocode({
+  address: '1600 Amphitheatre Parkway, Mountain View, CA'
+}, function(err, response) {
+  if (!err) {
+    console.log(response.json.results);
+  }
+});
