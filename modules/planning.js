@@ -51,7 +51,7 @@ var googleMapsClient = require('@google/maps').createClient({
 
 	 exports.plan = function(db, req, callback) {
 		 			var collection = db.collection('place');
-		 		  collection.find({city:`${req.body.destination}`}).toArray(function(err, docs) {
+		 		  collection.find({name:`${req.body.search}`}).toArray(function(err, docs) {
 		 			 if (err) {
 		 				 callback('cannot connect to database', undefined);
 		 			 } else{
