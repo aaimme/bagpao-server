@@ -27,8 +27,18 @@ app.use(function(req, res, next) {
 });
 
 app.post(`/show`, (req, res) =>{
-  if(req.body.do == "cat"){
-  show.placeCategories(req, (error, result) => {
+    var showtype;
+    if(req.body.do == "cat"){
+      showtype = "placeCategories";
+    }
+    else if(req.body.do == "tp"){
+      showtype = "tripsPopular";
+    }
+    else if(req.body.do == "tr"){
+      showtype = "tripsRecent";
+    }
+ console.log(showtype);
+  show.showtype(req, (error, result) => {
   if (error) {
     console.log(error);
     var error_obj = {
@@ -40,21 +50,6 @@ app.post(`/show`, (req, res) =>{
     res.json(result);
   }
   });
-}
-if(req.body.do == "tp"){
-  show.tripsPopular((error, result) => {
-  if (error) {
-    console.log(error);
-    var error_obj = {
-      'message' : `${error}`
-    }
-    res.json(error_obj);
-  }
-  else {
-        res.json(result);
-  }
-  });
-}
 });
 
 
@@ -156,8 +151,7 @@ app.post(`/places`, (req, res) => {
             res.json(results);
      		console.log('search success');
      	}
-
-     });
+    });
 	});
 });
 
@@ -251,6 +245,32 @@ app.post(`/planning`, (req, res) =>{
          res.json(results);
          console.log('find place success');
        }
+     });
+    }
+    else if(req.body.numstep == 3){
+      search.searchPlace(database, req, (error, result) => {
+      	if (error) {
+      		console.log(error);
+      		var error_obj = {
+      			'message' : `${error}`
+      		}
+      		res.json(error_obj);
+      	}
+      	else{
+             var results = []
+             for(var i = 0; i < result.length; i++) {
+             var result_obj = {
+                 'message' : `success`+i,
+                 'name' : result[i].name,
+                 'city' : result[i].city,
+                 'picture' : result[i].picture,
+                 'categories' : result[i].categories
+             }
+             results[i] = result_obj
+           }
+             res.json(results);
+      		console.log('search success');
+      	}
      });
     }
     else if(req.body.numstep == 4){
