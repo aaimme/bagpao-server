@@ -27,18 +27,7 @@ app.use(function(req, res, next) {
 });
 
 app.post(`/show`, (req, res) =>{
-    var showtype;
-    if(req.body.do == "cat"){
-      showtype = "placeCategories";
-    }
-    else if(req.body.do == "tp"){
-      showtype = "tripsPopular";
-    }
-    else if(req.body.do == "tr"){
-      showtype = "tripsRecent";
-    }
- console.log(showtype);
-  show.showtype(req, (error, result) => {
+  var showtype = (error, result) => {
   if (error) {
     console.log(error);
     var error_obj = {
@@ -49,7 +38,16 @@ app.post(`/show`, (req, res) =>{
   else {
     res.json(result);
   }
-  });
+}
+    if(req.body.do == "cat"){
+      show.placeCategories(req,showtype);
+    }
+    else if(req.body.do == "tp"){
+      show.tripsPopular(req,showtype);
+    }
+    else if(req.body.do == "tr"){
+      show.tripsRecent(req,showtype);
+    }
 });
 
 
