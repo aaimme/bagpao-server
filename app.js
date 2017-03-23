@@ -214,7 +214,7 @@ app.post(`/planning`, (req, res) =>{
        });
 
     }
-    else if(req.body.numstep == 2){
+    else if(req.body.numstep == 3){
       plan.plan(database, req, (error, result) => {
         if (error) {
            console.log(error);
