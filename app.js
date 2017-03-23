@@ -27,7 +27,7 @@ app.use(function(req, res, next) {
 });
 
 app.post(`/show`, (req, res) =>{
-  if(req.body.do == "aa"){
+  if(req.body.do == "cat"){
   show.placeCategories(req, (error, result) => {
   if (error) {
     console.log(error);
@@ -37,7 +37,7 @@ app.post(`/show`, (req, res) =>{
     res.json(error_obj);
   }
   else {
-    res.json(results);
+    res.json(result);
   }
   });
 }
@@ -51,7 +51,7 @@ if(req.body.do == "tp"){
     res.json(error_obj);
   }
   else {
-        res.json(results);
+        res.json(result);
   }
   });
 }
