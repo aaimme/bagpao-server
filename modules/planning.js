@@ -38,10 +38,8 @@ var googleMapsClient = require('@google/maps').createClient({
 	 			 var collection = db.collection('transportation');
 	 		   collection.find(
            {$or : [
-             {origin:`${req.body.origin}`},
-             {destination:{ $regex: `${req.body.destination}`}},
-             {origin:`${req.body.destination}`},
-             {destination:{ $regex: `${req.body.origin}`}}
+             {origin:`${req.body.origin}`,destination:`${req.body.destination}`},
+             {origin:`${req.body.destination}`,destination:`${req.body.origin}`}
              ]}
           ).toArray(function(err, docs) {
 	 		    if (err) {
