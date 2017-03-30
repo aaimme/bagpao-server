@@ -48,6 +48,7 @@ app.post(`/show`, (req, res) =>{
     else if(req.body.do == "tr"){
       show.tripsRecent(req,showtype);
     }
+
 });
 
 
@@ -245,7 +246,7 @@ app.post(`/planning`, (req, res) =>{
        }
      });
     }
-    else if(req.body.numstep == 3){
+    else if(req.body.numstep == 4){
       search.searchPlace(database, req, (error, result) => {
       	if (error) {
       		console.log(error);
@@ -271,7 +272,7 @@ app.post(`/planning`, (req, res) =>{
       	}
      });
     }
-    else if(req.body.numstep == 4){
+    else if(req.body.numstep == 5){
       plan.end((error, result) => {
         if (error) {
            console.log(error);

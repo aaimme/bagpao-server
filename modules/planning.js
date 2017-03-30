@@ -36,7 +36,14 @@ var googleMapsClient = require('@google/maps').createClient({
 
 		exports.transportation = function(db, req, callback) {
 	 			 var collection = db.collection('transportation');
-	 		   collection.find({origin:`${req.body.origin}`, destination:`${req.body.destination}`}).toArray(function(err, docs) {
+	 		   collection.find(
+           {$or : [
+             {origin:`${req.body.origin}`},
+             {destination:{ $regex: `${req.body.destination}`}},
+             {origin:`${req.body.destination}`},
+             {destination:{ $regex: `${req.body.origin}`}}
+             ]}
+          ).toArray(function(err, docs) {
 	 		    if (err) {
 	 		      callback('cannot connect to database', undefined);
 	 		    } else{
