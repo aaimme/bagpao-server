@@ -10,7 +10,8 @@ exports.searchPlace = function(db, req, callback) {
   // Find by name
   collection.find({$or : [
     {name:{ $regex: `${req.body.name}`}},
-    {city:{ $regex: `${req.body.name}`}} 
+    {categories:{ $regex: `${req.body.name}`}},
+    {city:{ $regex: `${req.body.name}`}}
     ]}
     ).toArray(function(err, docs) {
     if (err) {
@@ -30,8 +31,8 @@ exports.searchTripAll = function(db, req, callback) {
   // Get the documents collection
   var collection = db.collection('trip');
   // Find by name
-  collection.find({$or : [ 
-    { name: { $regex: `${req.body.name}`}}, 
+  collection.find({$or : [
+    { name: { $regex: `${req.body.name}`}},
     { creator: { $regex: `${req.body.name}`}},
     { place: { $regex: `${req.body.name}`}}
     ]}
@@ -47,4 +48,3 @@ exports.searchTripAll = function(db, req, callback) {
     }
     });
    }
-             
