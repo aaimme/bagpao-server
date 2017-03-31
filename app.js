@@ -203,12 +203,12 @@ app.post(`/planning`, (req, res) =>{
                'type' : result[i].type,
                'route' : result[i].route,
                'name' : result[i].name,
-               'trainnumber' : result[i].trainnumber,
+               'origin' : result[i].origin,
                'stationstart' : result[i].stationstart,
                'depart' : result[i].depart,
+               'destination' : result[i].destination,
                'stationend' : result[i].stationend,
                'arrive' : result[i].arrive,
-               'class' : result[i].class,
                'price' : result[i].price
            }
            results[i] = result_obj
