@@ -51,9 +51,6 @@ app.post(`/show`, (req, res) =>{
 
 });
 
-
-
-
 app.post(`/signup`, (req, res) => {
 
 	console.log(req.body);
@@ -140,7 +137,6 @@ app.post(`/places`, (req, res) => {
             var results = []
             for(var i = 0; i < result.length; i++) {
             var result_obj = {
-                'message' : `success`+i,
                 'name' : result[i].name,
                 'city' : result[i].city,
                 'picture' : result[i].picture
@@ -170,10 +166,10 @@ app.post(`/trips`, (req, res) => {
         var results = []
         for(var i = 0; i < result.length; i++) {
      		var result_obj = {
-     			'message' : `success`+i,
      			'creator' : result[i].creator,
      			'name' : result[i].name,
-     			'place' : result[i].place
+     			'picture' : result[i].picture,
+          'place' : result[i].place
      		}
      	    results[i] = result_obj
      	  }
