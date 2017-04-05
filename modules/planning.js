@@ -21,8 +21,8 @@ var googleMapsClient = require('@google/maps').createClient({
 							picture:`${req.body.picture}`,
 							name:`${req.body.name}`,
 							privicy:`${req.body.privicy}`,
-		//					place[i] :`${req.body.place[i]}`,
-		//					time[i] :`${req.body.time[i]}`,
+							place :`${req.body.place}`,
+							time :`${req.body.time}`,
 							status:`${req.body.status}`
 							});
 				   		 });

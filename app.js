@@ -18,6 +18,7 @@ var admin = require('./modules/admin');
 var member = require('./modules/member');
 var plan = require('./modules/planning');
 var show = require('./modules/show');
+var path = require('./modules/path');
 
 //can recieve api from another domain
 app.use(function(req, res, next) {
@@ -25,6 +26,7 @@ app.use(function(req, res, next) {
   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
   next();
 });
+
 
 app.post(`/show`, (req, res) =>{
   var showtype = (error, result) => {
@@ -50,8 +52,6 @@ app.post(`/show`, (req, res) =>{
     }
 
 });
-
-
 
 
 app.post(`/signup`, (req, res) => {
@@ -93,8 +93,12 @@ app.post(`/login`, (req, res) => {
      	console.log(result);
      	var result_obj = {
      		'message' : `success`,
-     		'username' : result[0].username,
-     		'email': result[0].email
+      	'username' : result[0].username,
+        'status': result[0].status,
+     		'interest': result[0].interest,
+        'bio': result[0].bio,
+        'picture': result[0].picture,
+        'mytrip': result[0].mytrip
      }
 
       res.json(result_obj);
@@ -397,6 +401,10 @@ function sendEmail ( _name, _email, _subject, _message) {
         else console.log(response);
     });
 }
+
+
+//image
+
 
 app.listen(1200, function () {
   console.log('Server running on port 1200...')

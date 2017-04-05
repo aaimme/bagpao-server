@@ -10,7 +10,6 @@ exports.searchPlace = function(db, req, callback) {
   // Find by name
   collection.find({$or : [
     {name:{ $regex: `${req.body.name}`}},
-    {categories:{ $regex: `${req.body.name}`}},
     {city:{ $regex: `${req.body.name}`}}
     ]}
     ).toArray(function(err, docs) {

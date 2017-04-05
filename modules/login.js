@@ -5,9 +5,9 @@ let connection = 'mongodb://localhost:27017/bagpaotravel';
 
 
 exports.checkUserLogin = function(db, req, callback) {
-  // Get the documents collection 
+  // Get the documents collection
  	 var collection = db.collection('member');
-  // Find some documents 
+  // Find some documents
   collection.find({username:`${req.body.username}`, password:`${req.body.password}`}).toArray(function(err, docs) {
   	if (err) {
   		callback('cannot connect to database', undefined);
@@ -20,6 +20,7 @@ exports.checkUserLogin = function(db, req, callback) {
   	}
 
   });
+
 }
 
 
