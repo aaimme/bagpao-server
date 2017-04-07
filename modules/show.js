@@ -22,10 +22,11 @@ let connection = 'mongodb://localhost:27017/bagpaotravel';
 // }
 
 exports.placeCategories = function(req, callback) {
-    mongo.connect(req, connection, (err, database) => {
+   console.log(req.body);
+    mongo.connect(connection, (err, database) => {
       database
       .collection('place')
-      .find({categories:`${req.body.categories}`}).toArray(function(err, docs) {
+      .find({categories: req.body.categories}).toArray(function(err, docs) {
   	if (err) {
   		callback('cannot connect to database', undefined);
   	}else{

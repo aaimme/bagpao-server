@@ -18,7 +18,7 @@ var admin = require('./modules/admin');
 var member = require('./modules/member');
 var plan = require('./modules/planning');
 var show = require('./modules/show');
-var path = require('./modules/path');
+// var path = require('./modules/path');
 
 //can recieve api from another domain
 app.use(function(req, res, next) {
@@ -29,26 +29,27 @@ app.use(function(req, res, next) {
 
 
 app.post(`/show`, (req, res) =>{
-  var showtype = (error, result) => {
-  if (error) {
-    console.log(error);
-    var error_obj = {
-      'message' : `${error}`
-    }
-    res.json(error_obj);
+
+var showtype = (error, result) => {
+if (error) {
+  console.log(error);
+  var error_obj = {
+    'message' : `${error}`
   }
-  else {
-    res.json(result);
-  }
+  res.json(error_obj);
+}
+else {
+  res.json(result);
+}
 }
     if(req.body.do == "cat"){
-      show.placeCategories(req,showtype);
+      show.placeCategories(req, showtype);
     }
     else if(req.body.do == "tp"){
-      show.tripsPopular(req,showtype);
+      show.tripsPopular(showtype);
     }
     else if(req.body.do == "tr"){
-      show.tripsRecent(req,showtype);
+      show.tripsRecent(showtype);
     }
 
 });
@@ -144,7 +145,6 @@ app.post(`/places`, (req, res) => {
             var results = []
             for(var i = 0; i < result.length; i++) {
             var result_obj = {
-                'message' : `success`+i,
                 'name' : result[i].name,
                 'city' : result[i].city,
                 'picture' : result[i].picture
@@ -174,10 +174,10 @@ app.post(`/trips`, (req, res) => {
         var results = []
         for(var i = 0; i < result.length; i++) {
      		var result_obj = {
-     			'message' : `success`+i,
      			'creator' : result[i].creator,
      			'name' : result[i].name,
-     			'place' : result[i].place
+     			'picture' : result[i].picture,
+          'place' : result[i].place
      		}
      	    results[i] = result_obj
      	  }
@@ -207,12 +207,12 @@ app.post(`/planning`, (req, res) =>{
                'type' : result[i].type,
                'route' : result[i].route,
                'name' : result[i].name,
-               'trainnumber' : result[i].trainnumber,
+               'origin' : result[i].origin,
                'stationstart' : result[i].stationstart,
                'depart' : result[i].depart,
+               'destination' : result[i].destination,
                'stationend' : result[i].stationend,
                'arrive' : result[i].arrive,
-               'class' : result[i].class,
                'price' : result[i].price
            }
            results[i] = result_obj
