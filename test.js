@@ -7,7 +7,7 @@ var Schema = mongoose.Schema;
 var imgPath = '/Users/Ami/Documents/bagpao-server/picture/ท้องฟ้าจำลอง.jpg';
 
 // connect to mongo
-mongoose.connect('localhost', 'testing_storeImg');
+mongoose.connect('localhost', 'pathimage');
 
 // example schema
 var schema = new Schema({

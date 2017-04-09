@@ -18,7 +18,7 @@ var admin = require('./modules/admin');
 var member = require('./modules/member');
 var plan = require('./modules/planning');
 var show = require('./modules/show');
-// var path = require('./modules/path');
+ var path = require('./modules/path');
 
 //can recieve api from another domain
 app.use(function(req, res, next) {
@@ -28,22 +28,26 @@ app.use(function(req, res, next) {
 });
 
 
+
 app.post(`/show`, (req, res) =>{
 
-var showtype = (error, result) => {
-if (error) {
-  console.log(error);
-  var error_obj = {
-    'message' : `${error}`
+  var showtype = (error, result) => {
+  if (error) {
+    console.log(error);
+    var error_obj = {
+      'message' : `${error}`
+    }
+    res.json(error_obj);
   }
-  res.json(error_obj);
-}
-else {
-  res.json(result);
-}
-}
-    if(req.body.do == "cat"){
+  else {
+    res.json(result);
+  }
+  }
+    if(req.body.do == "pc"){
       show.placeCategories(req, showtype);
+    }
+    else if(req.body.do == "pp"){
+      show.placePopular(showtype);
     }
     else if(req.body.do == "tp"){
       show.tripsPopular(showtype);
@@ -250,8 +254,9 @@ app.post(`/planning`, (req, res) =>{
        }
      });
     }
-    else if(req.body.numstep == 4){
-      search.searchPlace(database, req, (error, result) => {
+    // search placeCategories reqeuir numstep and categories and(name or city)
+    else if(req.body.numstep == 3){
+        search.searchCategories(database, req, (error, result) => {
       	if (error) {
       		console.log(error);
       		var error_obj = {
@@ -272,11 +277,12 @@ app.post(`/planning`, (req, res) =>{
              results[i] = result_obj
            }
              res.json(results);
+
       		console.log('search success');
       	}
      });
     }
-    else if(req.body.numstep == 5){
+    else if(req.body.numstep == 4){
       plan.end((error, result) => {
         if (error) {
            console.log(error);
@@ -295,60 +301,32 @@ app.post(`/planning`, (req, res) =>{
 
 app.post(`/admin`, (req, res) =>{
   console.log(req.body.admin);
+  var json_object = (error, result) => {
+  if (error) {
+     console.log(error);
+     var error_obj = {
+       'message' : `${error}`
+     }
+     res.json(error_obj);
+   }
+   else{
+     var result_obj ={
+   'message' : result
+   }
+   res.json(result_obj);
+   console.log('add data success');
+ }
+ }
+
 	 if(req.body.admin == 'place'){
-     admin.addPlaceToMongo(req, (error, result) => {
-		 if (error) {
-     		console.log(error);
-     		var error_obj = {
-     			'message' : `${error}`
-     		}
-     		res.json(error_obj);
-     	}
-     	else{
-     		var result_obj ={
-			'message' : result
-			}
-			res.json(result_obj);
-			console.log('add data success');
-    }
-  });
-}
+     admin.addPlaceToMongo(req,json_object);
+   }
  if(req.body.admin == 'train'){
-   admin.addTrainToMongo(req, (error, result) => {
- 		 if (error) {
-      		console.log(error);
-      		var error_obj = {
-      			'message' : `${error}`
-      		}
-      		res.json(error_obj);
-      	}
-      	else{
-      		var result_obj ={
- 			'message' : result
- 			}
- 			res.json(result_obj);
- 			console.log('add data success');
-      }
-    });
+   admin.addTrainToMongo(req, json_object);
 	}
 
   if(req.body.admin == 'bus'){
-    admin.addBusToMongo(req, (error, result) => {
-      if (error) {
-           console.log(error);
-           var error_obj = {
-             'message' : `${error}`
-           }
-           res.json(error_obj);
-         }
-         else{
-           var result_obj ={
-       'message' : result
-       }
-       res.json(result_obj);
-       console.log('add data success');
-      }
-    });
+    admin.addBusToMongo(req, json_object);
   }
 });
 
@@ -374,34 +352,34 @@ app.post(`/contactus`, (req, res) => {
 });
 
 // define your own email api which points to your server.
-
-app.post( '/api/sendemail/', function(req, res){
-
-    var _name = req.body.name;
-    var _email = req.body.email;
-    var _subject = req.body.subject;
-    var _message = req.body.message;
-    console.log(req.body);
-    //implement your spam protection or checks.
-
-    sendEmail ( _name, _email, _subject, _message );
-
-});
-
-function sendEmail ( _name, _email, _subject, _message) {
-    mandrill('/messages/send', {
-        message: {
-            to: [{email: _email , name: _name}],
-            from_email: 'noreply@yourdomain.com',
-            subject: _subject,
-            text: _message
-        }
-    }, function(error, response){
-        if (error) console.log( error );
-        else console.log(response);
-    });
-}
-
+//
+// app.post( '/api/sendemail/', function(req, res){
+//
+//     var _name = req.body.name;
+//     var _email = req.body.email;
+//     var _subject = req.body.subject;
+//     var _message = req.body.message;
+//     console.log(req.body);
+//     //implement your spam protection or checks.
+//
+//     sendEmail ( _name, _email, _subject, _message );
+//
+// });
+//
+// function sendEmail ( _name, _email, _subject, _message) {
+//     mandrill('/messages/send', {
+//         message: {
+//             to: [{email: _email , name: _name}],
+//             from_email: 'noreply@yourdomain.com',
+//             subject: _subject,
+//             text: _message
+//         }
+//     }, function(error, response){
+//         if (error) console.log( error );
+//         else console.log(response);
+//     });
+// }
+//
 
 //image
 

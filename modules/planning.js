@@ -54,6 +54,7 @@ var googleMapsClient = require('@google/maps').createClient({
 	 		   });
 	 	}
 
+
 	 exports.plan = function(db, req, callback) {
 		 			var collection = db.collection('place');
 		 		  collection.find({city:`${req.body.destination}`}).toArray(function(err, docs) {
@@ -71,10 +72,10 @@ var googleMapsClient = require('@google/maps').createClient({
 
 	//connect API
 	// Geocode an address.
-googleMapsClient.geocode({
-  address: '1600 Amphitheatre Parkway, Mountain View, CA'
-}, function(err, response) {
-  if (!err) {
-    console.log(response.json.results);
-  }
-});
+// googleMapsClient.geocode({
+//   address: '1600 Amphitheatre Parkway, Mountain View, CA'
+// }, function(err, response) {
+//   if (!err) {
+//     console.log(response.json.results);
+//   }
+// });

@@ -25,6 +25,27 @@ exports.searchPlace = function(db, req, callback) {
     });
    }
 
+   exports.searchCategories = function(db, req, callback) {
+     // Get the documents collection
+     var collection = db.collection('place');
+     // Find by name
+     collection.find({$or : [
+       {categories:`${req.body.categories}`},
+       {city:{$regex: `${req.body.destination}`,$options:"$i"}},
+       {name:{$regex: `${req.body.name}`,$options:"$i"}}
+       ]}
+       ).toArray(function(err, docs) {
+       if (err) {
+         callback('cannot connect to database', undefined);
+       } else{
+         if (docs.length !== 0) {
+           callback(undefined, docs);
+       } else{
+              callback('cannot found this place',undefined);
+             }
+       }
+       });
+      }
 
 exports.searchTripAll = function(db, req, callback) {
   // Get the documents collection
