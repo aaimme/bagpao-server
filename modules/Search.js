@@ -32,7 +32,7 @@ exports.searchPlace = function(db, req, callback) {
      collection.find({$or : [
        {categories:`${req.body.categories}`},
        {city:{$regex: `${req.body.destination}`,$options:"$i"}},
-       {name:{$regex: `${req.body.name}`,$options:"$i"}}
+       {name:{$regex: `${req.body.search}`,$options:"$i"}}
        ]}
        ).toArray(function(err, docs) {
        if (err) {
