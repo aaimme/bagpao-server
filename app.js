@@ -287,19 +287,8 @@ app.post(`/planning`, (req, res) =>{
      });
     }
     else if(req.body.numstep == 4){
-      plan.end((error, result) => {
-        if (error) {
-           console.log(error);
-           var error_obj = {
-               'message' : `${error}`
-           }
-           res.json(error_obj);
-       }
-       else{
-           res.json(result);
-       }
-   });
-    }
+      plan.end(req);
+}
 });
 });
 
