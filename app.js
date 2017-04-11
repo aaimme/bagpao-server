@@ -18,7 +18,7 @@ var admin = require('./modules/admin');
 var member = require('./modules/member');
 var plan = require('./modules/planning');
 var show = require('./modules/show');
- var path = require('./modules/path');
+// var path = require('./modules/path');
 
 //can recieve api from another domain
 app.use(function(req, res, next) {
@@ -30,7 +30,7 @@ app.use(function(req, res, next) {
 
 
 app.post(`/show`, (req, res) =>{
-
+ console.log(req.body);
   var showtype = (error, result) => {
   if (error) {
     console.log(error);
@@ -46,15 +46,18 @@ app.post(`/show`, (req, res) =>{
     if(req.body.do == "pc"){
       show.placeCategories(req, showtype);
     }
-    else if(req.body.do == "pp"){
-      show.placePopular(showtype);
-    }
-    else if(req.body.do == "tp"){
-      show.tripsPopular(showtype);
+    else if(req.body.do == "home"){
+    show.home(showtype);
     }
     else if(req.body.do == "tr"){
       show.tripsRecent(showtype);
     }
+    else if(req.body.do == "pp"){
+    show.placePopular(showtype);
+    }
+    else if(req.body.do == "tp"){
+    show.tripsPopular(showtype);
+   }
 
 });
 
