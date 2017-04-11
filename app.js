@@ -18,7 +18,10 @@ var admin = require('./modules/admin');
 var member = require('./modules/member');
 var plan = require('./modules/planning');
 var show = require('./modules/show');
+
 // var path = require('./modules/path');
+
+
 
 //can recieve api from another domain
 app.use(function(req, res, next) {
@@ -26,8 +29,6 @@ app.use(function(req, res, next) {
   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
   next();
 });
-
-
 
 app.post(`/show`, (req, res) =>{
  console.log(req.body);
