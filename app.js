@@ -271,11 +271,11 @@ app.post(`/planning`, (req, res) =>{
              var results = []
              for(var i = 0; i < result.length; i++) {
              var result_obj = {
-                 'message' : `success`+i,
-                 'name' : result[i].name,
-                 'city' : result[i].city,
-                 'picture' : result[i].picture,
-                 'categories' : result[i].categories
+               'placeid' : result[i].placeid,
+               'name' : result[i].name,
+               'picture' : result[i].picture,
+               'city' : result[i].city,
+               'category' : result[i].category
              }
              results[i] = result_obj
            }
