@@ -47,9 +47,6 @@ app.post(`/show`, (req, res) =>{
     if(req.body.do == "pc"){
       show.placeCategories(req, showtype);
     }
-    else if(req.body.do == "home"){
-    show.home(showtype);
-    }
     else if(req.body.do == "tr"){
       show.tripsRecent(showtype);
     }
