@@ -19,25 +19,21 @@ console.log(date.toISOString());
 						database
 						.collection('trip')
 						.insert({
-							creator:`${req.body.username}`,
-							tripid:`${req.body.tripid}`,
-							daytrip:`${req.body.daytrip}`,
-							origin:`${req.body.origin}`,
-							destination:`${req.body.desination}`,
-							picture:`${req.body.picture}`,
-							name:`${req.body.name}`,
-							privacy:`${req.body.privicy}`,
+		//					tripid:`${req.body.tripid}`,
+                name:`${req.body.name}`,
+    //					creator:`${req.body.username}`,
+                origin:`${req.body.origin}`,
+                destination:`${req.body.destination}`,
+							  daytrip:`${req.body.daytrip}`,
+		//					picture:`${req.body.picture}`,
 		//					place[i] :`${req.body.place[i]}`,
 		//					time[i] :`${req.body.time[i]}`,
-							status:`${req.body.status}`,
-              datesubmit: date.toISOString()
+                privacy:`${req.body.privacy}`,
+							  status:`active`,
+                datesubmit: date.toISOString()
 							});
 				   		 });
 
-						var result_obj ={
-							'message' : 'create trip success'
-						}
-						res.json(result_obj);
 						console.log('create trip success');
 		}
 

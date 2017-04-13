@@ -256,7 +256,7 @@ app.post(`/planning`, (req, res) =>{
     }
     // search placeCategories reqeuir numstep and categories and(name or city)
     else if(req.body.numstep == 3){
-        search.searchCategories(database, req, (error, result) => {
+        search.searchPlace(database, req, (error, result) => {
       	if (error) {
       		console.log(error);
       		var error_obj = {
