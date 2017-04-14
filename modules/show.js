@@ -26,7 +26,7 @@ exports.placeCategories = function(req, callback) {
     mongo.connect(connection, (err, database) => {
       database
       .collection('place')
-      .find({categories: req.body.categories}).toArray(function(err, docs) {
+      .find({category: req.body.category}).toArray(function(err, docs) {
   	if (err) {
   		callback('cannot connect to database', undefined);
   	}else{
