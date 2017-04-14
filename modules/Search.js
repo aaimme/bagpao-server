@@ -14,7 +14,7 @@ exports.searchPlace = function(db, req, callback) {
     ]}
     ).toArray(function(err, docs) {
     if (err) {
-      callback('cannot connect to database', undefined);
+      callback('cannot connect to database', undefined );
     } else{
       if (docs.length !== 0) {
         callback(undefined, docs);
@@ -29,10 +29,10 @@ exports.searchPlace = function(db, req, callback) {
      // Get the documents collection
      var collection = db.collection('place');
      // Find by name
-     collection.find({$or : [
-       {city:{$regex: `${req.body.search}`,$options:"$i"}},
-       {name:{$regex: `${req.body.search}`,$options:"$i"}}
-       ]}
+     collection.find({
+       categories :{$regex: `${req.body.search}`,$options:"$i"},
+       name:{$regex: `${req.body.search}`,$options:"$i"}
+       }
        ).toArray(function(err, docs) {
        if (err) {
          callback('cannot connect to database', undefined);

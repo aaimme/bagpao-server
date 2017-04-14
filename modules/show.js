@@ -7,7 +7,7 @@ exports.placePopular = function(callback) {
     mongo.connect(connection, (err, database) => {
       database
       .collection('place')
-      .find({}).sort({ view : -1}).toArray(function(err, docs) {
+      .find({}).limit(3).sort({ view : -1}).toArray(function(err, docs) {
   	if (err) {
   		callback('cannot connect to database', undefined);
   	}else{
@@ -42,9 +42,9 @@ exports.placeCategories = function(req, callback) {
 
 exports.tripsPopular = function(callback) {
     mongo.connect(connection, (err, database) => {
-      database
+      var cursor = database
       .collection('trip')
-      .aggregate(
+      .aggregate([
       {
        $project:
          {
@@ -60,7 +60,7 @@ exports.tripsPopular = function(callback) {
       {
         $sort : {totalAmount : -1}
       }
-      ).toArray(function(err, docs) {
+    ]).toArray(function(err, docs) {
   	if (err) {
   		callback('cannot connect to database', undefined);
   	}else{
