@@ -22,22 +22,11 @@ exports.findUser = function(db, req, callback) {
 }
 
 
-exports.editProfile = function(req, callback) {
-		console.log(req.body);
-		 var collection = db.collection('member');
-	  // Find some documents
-	  collection.find({username:`${req.body.username}`}).toArray(function(err, docs) {
-	  	if (err) {
-	  		callback('cannot connect to database', undefined);
-	  	}else{
-	  		if (docs.length === 1) {
-	  			callback(undefined, docs);
-	  	}else{
-	  			callback('cannot found data',undefined);
-	  		}
-	  	}
-	  });
 
+
+exports.editProfile = function(req, callback) {
+    var birthday = new Date();
+    console.log(req.body);
 		mongo.connect(connection, (err, database) => {
 			if (err) {
   			callback('cannot connect to database', undefined);
@@ -51,7 +40,7 @@ exports.editProfile = function(req, callback) {
 			password:`${req.body.password}`,
 			email:`${req.body.email}`,
 			displayname:`${req.body.displayname}`,
-			birthday:`${req.body.birthday}`,
+			birthday: birthday,
 			currentcity:`${req.body.currentcity}`,
 			interest:`${req.body.interest}`,
 			bio:`${req.body.bio}`

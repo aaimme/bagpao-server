@@ -10,8 +10,6 @@ var isodate = require("isodate");
 var date;
 // Write current date as ISO 8601 string.
 date = new Date();
-console.log(date.toISOString());
-
 
 		exports.end = function(req) {
 						console.log(req.body);
@@ -30,7 +28,7 @@ console.log(date.toISOString());
 		//					time[i] :`${req.body.time[i]}`,
                 privacy:`${req.body.privacy}`,
 							  status:`active`,
-                datesubmit: date.toISOString()
+                datesubmit: date
 							});
 				   		 });
 

@@ -61,6 +61,11 @@ app.post(`/show`, (req, res) =>{
     }
     else if(req.body.do == "tp"){
     show.tripsPopular(showtype);
+    }
+    else if (req.body.do == "mem"){
+      mongo.connect(connection, (error, database) => {
+        member.findUser(database ,req , showtype);
+      });
    }
 
 });

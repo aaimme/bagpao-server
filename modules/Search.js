@@ -14,7 +14,7 @@ exports.searchPlace = function(db, req, callback) {
     ]}
     ).toArray(function(err, docs) {
     if (err) {
-      callback('cannot connect to database', undefined);
+      callback('cannot connect to database', undefined );
     } else{
       if (docs.length !== 0) {
         callback(undefined, docs);
@@ -24,6 +24,7 @@ exports.searchPlace = function(db, req, callback) {
     }
     });
    }
+
 
 exports.searchTripAll = function(db, req, callback) {
   // Get the documents collection
