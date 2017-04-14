@@ -157,7 +157,9 @@ app.post(`/places`, (req, res) => {
             var result_obj = {
                 'name' : result[i].name,
                 'city' : result[i].city,
-                'picture' : result[i].picture
+                'picture' : result[i].picture,
+                'description' : result[i].description,
+                'contact' : result[i].contact
             }
             results[i] = result_obj
           }
@@ -261,7 +263,7 @@ app.post(`/planning`, (req, res) =>{
     }
     // search placeCategories reqeuir numstep and categories and(name or city)
     else if(req.body.numstep == 3){
-        search.searchCategories(database, req, (error, result) => {
+        search.searchPlace(database, req, (error, result) => {
       	if (error) {
       		console.log(error);
       		var error_obj = {
