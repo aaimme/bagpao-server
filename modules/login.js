@@ -2,15 +2,11 @@
 var assert = require('assert');
 let mongo = require('mongodb').MongoClient;
 let connection = 'mongodb://localhost:27017/bagpaotravel';
-let cookie  = require('cookie-parser');
-let crypto  = require('crypto');
-let tokens  = [];
 
-function encrypt(password) {
-	return crypto.createHash('sha256').update(password).digest('hex');
-}
 
-exports.checkUserLogin = function(db, req, callback) {
+
+
+exports.checkUserLogin = function(db, req, res, callback) {
   // Get the documents collection
  	 var collection = db.collection('member');
   // Find some documents
@@ -21,10 +17,6 @@ exports.checkUserLogin = function(db, req, callback) {
     	}else{
 			if (result.length == 1) {
         callback(undefined, result);
-				let token = Date.now() + '-' +
-					parseInt(Math.random() * 1000000000000);
-				tokens[token] = result[0];
-				res.cookie('token', token, {maxAge: 60000});
 				console.log('login success');
 			} else {
         callback('invalid username or password',undefined);
@@ -32,8 +24,6 @@ exports.checkUserLogin = function(db, req, callback) {
 			}
     }
 		});
-
-
 }
 
 

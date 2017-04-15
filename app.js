@@ -10,11 +10,6 @@ app.use(body.urlencoded({     // to support URL-encoded bodies
   extended: true
 }));
 
-let cookie  = require('cookie-parser');
-let tokens  = [];
-app.use(cookie());
-app.use(express.static('public'));
-
 var mandrill = require('node-mandrill')('wIonE-z4VA6qXMXWJxRHrQ');  // sent email
 
 const jwt = require('express-jwt');
@@ -130,12 +125,6 @@ app.post(`/login`, (req, res) => {
 });
 
 app.post(`/editprofile`, (req, res) => {
-  if (req.cookies == null ||
-    req.cookies.token == null ||
-    tokens[req.cookies.token] == null) {
-      console.log('cookies null');
-      // res.redirect('/login');
-  } else {
     member.editProfile(req, (error, result) => {
      if (error) {
         console.log(error);
@@ -151,7 +140,6 @@ app.post(`/editprofile`, (req, res) => {
   res.json(result_obj);
       }
   });
-  }
 });
 
 
@@ -217,11 +205,7 @@ app.post(`/trips`, (req, res) => {
 });
 
 app.post(`/planning`, (req, res) =>{
-  if (req.cookies == null ||
-		req.cookies.token == null ||
-		tokens[req.cookies.token] == null) {
-			console.log('cookies null');
-	} else {
+
     mongo.connect(connection, (error, database) => {
       if(req.body.numstep == 1){
         plan.transportation(database, req, (error, result) => {
@@ -314,15 +298,10 @@ app.post(`/planning`, (req, res) =>{
         plan.end(req);
   }
   });
-	}
+
 });
 
 app.post(`/admin`, (req, res) =>{
-  if (req.cookies == null ||
-    req.cookies.token == null ||
-    tokens[req.cookies.token] == null) {
-      console.log('cookies null');
-  } else {
     console.log(req.body.admin);
     var json_object = (error, result) => {
     if (error) {
@@ -351,7 +330,7 @@ app.post(`/admin`, (req, res) =>{
     if(req.body.admin == 'bus'){
       admin.addBusToMongo(req, json_object);
     }
-  }
+
 
 });
 
