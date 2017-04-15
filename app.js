@@ -24,8 +24,7 @@ var admin = require('./modules/admin');
 var member = require('./modules/member');
 var plan = require('./modules/planning');
 var show = require('./modules/show');
-
-// var path = require('./modules/path');
+var path = require('./modules/path');
 
 
 
@@ -332,6 +331,23 @@ app.post(`/admin`, (req, res) =>{
   }
 });
 
+app.post(`/reviews`, (req, res) => {
+		mongo.connect(connection, (error, database) => {
+		database
+		.collection('trip')
+		.update({ name:`${req.body.name}` },
+    { $set : {
+      reviews.number :`${req.body.review}`,
+    }
+    });
+   });
+
+		var contactus_obj = {
+		'message' : 'success'
+	}
+	res.json(contactus_obj);
+
+});
 app.post(`/contactus`, (req, res) => {
 
 		console.log(req.body);
