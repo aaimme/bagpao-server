@@ -6,9 +6,15 @@
   "dependencies": {
     "@google/maps": "^0.3.1",
     "assert": "^1.4.1",
+<<<<<<< HEAD
     "body-parser": "^1.17.1",
     "crypto": "0.0.3",
     "express": "^4.15.2",
+=======
+    "body-parser": "^1.16.0",
+    "express": "^4.14.1",
+    "express-jwt": "^5.1.0",
+>>>>>>> dd247fb0e1e49b0c9668b84c3acfc4a2adad3921
     "formidable": "^1.1.1",
     "isodate": "^0.1.4",
     "jsonwebtoken": "^7.3.0",
