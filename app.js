@@ -412,10 +412,10 @@ app.post(`/contactus`, (req, res) => {
 //
 
 //image
-app.use(ErrorHandler);
-function ErrorHandler(req, res, next) {
-	res.status(404).send('File not found');
-}
+//app.use(ErrorHandler);
+//function ErrorHandler(req, res, next) {
+	//res.status(404).send('File not found');
+//}
 
 app.listen(1200, function() {
   console.log('Server running on port 1200...')

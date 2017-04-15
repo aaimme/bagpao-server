@@ -14,7 +14,7 @@ exports.checkUserLogin = function(db, req, callback) {
   // Get the documents collection
  	 var collection = db.collection('member');
   // Find some documents
-	 collection.find({username:req.body.name, password: encrypt(req.body.password)})
+	 collection.find({username:req.body.username, password: encrypt(req.body.password)})
 		.toArray((error, result) => {
       if (error) {
     		callback('cannot connect to database', undefined);
@@ -48,7 +48,7 @@ exports.checkUserSignup = function(db, req, callback) {
     if (result.length == 0) {
       callback(undefined,'success');
       collection.insert({
-      username:     req.body.name,
+      username:     req.body.username,
       password: encrypt(req.body.password),
       email:    req.body.email
     });
