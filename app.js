@@ -337,7 +337,7 @@ app.post(`/reviews`, (req, res) => {
 		.collection('trip')
 		.update({ name:`${req.body.name}` },
     { $set : {
-      reviews.number :`${req.body.review}`,
+      //reviews.number :`${req.body.review}`
     }
     });
    });
