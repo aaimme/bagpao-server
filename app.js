@@ -48,6 +48,7 @@ app.post(`/show`, (req, res) =>{
     res.json(result);
   }
   }
+
     if(req.body.do == "pc"){
       show.placeCategories(req, showtype);
     }
@@ -59,6 +60,12 @@ app.post(`/show`, (req, res) =>{
     }
     else if(req.body.do == "tp"){
     show.tripsPopular(showtype);
+    }
+    else if(req.body.do == "ph"){
+    show.placePopularHome(showtype);
+    }
+    else if(req.body.do == "ph"){
+    show.tripsPopularHome(showtype);
     }
     else if (req.body.do == "mem"){
       mongo.connect(connection, (error, database) => {
@@ -141,7 +148,6 @@ app.post(`/editprofile`, (req, res) => {
       }
   });
 });
-
 
 app.post(`/places`, (req, res) => {
 

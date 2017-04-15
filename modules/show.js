@@ -3,11 +3,59 @@ var assert = require('assert');
 let mongo = require('mongodb').MongoClient;
 let connection = 'mongodb://localhost:27017/bagpaotravel';
 
-exports.placePopular = function(callback) {
+exports.placePopularHome = function(callback) {
     mongo.connect(connection, (err, database) => {
       database
       .collection('place')
       .find({}).limit(3).sort({ view : -1}).toArray(function(err, docs) {
+  	if (err) {
+  		callback('cannot connect to database', undefined);
+  	}else{
+  		if (docs.length !== 0) {
+  			callback(undefined, docs);
+  	}else{
+  			callback('please input data',undefined);
+  		}
+  	}
+  });
+});
+}
+
+exports.placePopular = function(callback) {
+    mongo.connect(connection, (err, database) => {
+      database
+      .collection('place')
+      .find({}).sort({ view : -1}).toArray(function(err, docs) {
+  	if (err) {
+  		callback('cannot connect to database', undefined);
+  	}else{
+  		if (docs.length !== 0) {
+  			callback(undefined, docs);
+  	}else{
+  			callback('please input data',undefined);
+  		}
+  	}
+  });
+});
+}
+exports.tripsPopular = function(callback) {
+    mongo.connect(connection, (err, database) => {
+      database
+      .collection('trip')
+      .aggregate([
+      {
+       $project:
+         {
+           name:"$name",
+           creator:"$creator",
+           picture:"$picture",
+           totalAmount: { $sum: [ "$like", "$share" ]}
+         }
+      },
+      {
+        $sort : {totalAmount : -1}
+      }
+    ]).toArray(function(err, docs) {
   	if (err) {
   		callback('cannot connect to database', undefined);
   	}else{
@@ -40,9 +88,9 @@ exports.placeCategories = function(req, callback) {
 });
 }
 
-exports.tripsPopular = function(callback) {
+exports.tripsPopularHome = function(callback) {
     mongo.connect(connection, (err, database) => {
-      var cursor = database
+      database
       .collection('trip')
       .aggregate([
       {
