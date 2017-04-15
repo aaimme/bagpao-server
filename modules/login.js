@@ -33,7 +33,7 @@ exports.checkUserSignup = function(db, req, callback) {
   // Get the documents collection
   var collection = db.collection('member');
   // Find some documents
-  collection.find({username :req.body.name}).toArray((error, result) => {
+  collection.find({username :req.body.username}).toArray((error, result) => {
   if (error) {
     callback('cannot connect to database', undefined);
   } else {
