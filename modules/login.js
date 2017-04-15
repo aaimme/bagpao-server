@@ -2,11 +2,13 @@
 var assert = require('assert');
 let mongo = require('mongodb').MongoClient;
 let connection = 'mongodb://localhost:27017/bagpaotravel';
+let crypto  = require('crypto');
 
+function encrypt(password) {
+	return crypto.createHash('sha256').update(password).digest('hex');
+}
 
-
-
-exports.checkUserLogin = function(db, req, res, callback) {
+exports.checkUserLogin = function(db, req, callback) {
   // Get the documents collection
  	 var collection = db.collection('member');
   // Find some documents
@@ -31,7 +33,7 @@ exports.checkUserSignup = function(db, req, callback) {
   // Get the documents collection
   var collection = db.collection('member');
   // Find some documents
-  collection.find({username :req.body.username}).toArray((error, result) => {
+  collection.find({username :req.body.name}).toArray((error, result) => {
   if (error) {
     callback('cannot connect to database', undefined);
   } else {
