@@ -76,6 +76,16 @@ app.post(`/show`, (req, res) =>{
         member.findUser(database ,req , showtype);
       });
    }
+   else if (req.body.do == "detailtrip"){
+     mongo.connect(connection, (error, database) => {
+       search.searchTripAll(database, req, showtype);
+     });
+  }
+  else if (req.body.do == "detailplace"){
+    mongo.connect(connection, (error, database) => {
+      search.searchPlace(database, req, showtype);
+    });
+ }
 
 });
 
@@ -347,50 +357,14 @@ app.post(`/admin`, (req, res) =>{
 
 app.post(`/reviews`, (req, res) => {
 		mongo.connect(connection, (error, database) => {
-      database.collection('trip').find({creator :req.body.username ,name: `${req.body.tripname}`})
-   		.toArray((error, result) =>{
-        if(result.length == 1){
-          database
-          .collection('trip')
-          .update(
-         { name: `${req.body.tripname}`  },
-         {
-           $push: {
-                reviews: {
-                $each: [ {
-                  user :`${req.body.username}`,
-                  comment :`${req.body.comment}`,
-                  creator: true,
-                  date : date} ]
-             }
-           }
-         }
-        );
-        }
-        else {
-          database
-      		.collection('trip')
-          .update(
-         { name: `${req.body.tripname}`  },
-         {
-           $push: {
-                reviews: {
-                $each: [ {
-                  user :`${req.body.name}`,
-                  comment :`${req.body.comment}`,
-                  date : date} ]
-             }
-           }
-         }
-      );
-        }
+      plan.review(database, req);
     		var contactus_obj = {
     		'message' : 'success'
     	}
     	res.json(contactus_obj);
-    });
 });
 });
+
 app.post(`/contactus`, (req, res) => {
 
 		console.log(req.body);

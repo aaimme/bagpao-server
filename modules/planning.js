@@ -71,6 +71,46 @@ date = new Date();
 		 			});
 	 }
 
+   exports.review = function (database, req){
+     database.collection('trip').find({creator :req.body.username ,name: `${req.body.tripname}`})
+     .toArray((error, result) =>{
+       if(result.length == 1){
+         database
+         .collection('trip')
+         .update(
+        { name: `${req.body.tripname}`  },
+        {
+          $push: {
+               reviews: {
+               $each: [ {
+                 user :`${req.body.username}`,
+                 comment :`${req.body.comment}`,
+                 creator: true,
+                 date : date} ]
+            }
+          }
+        }
+       );
+       }
+       else {
+         database
+         .collection('trip')
+         .update(
+        { name: `${req.body.tripname}`  },
+        {
+          $push: {
+               reviews: {
+               $each: [ {
+                 user :`${req.body.username}`,
+                 comment :`${req.body.comment}`,
+                 date : date} ]
+            }
+          }
+        }
+     );
+       }
+         });
+   }
 	//connect API
 	// Geocode an address.
 // googleMapsClient.geocode({
