@@ -4,11 +4,18 @@ var express = require('express');
 var app = express();
 let mongo = require('mongodb').MongoClient;
 let connection = 'mongodb://localhost:27017/bagpaotravel';
-var bodyParser = require('body-parser')
-app.use( bodyParser.json() );       // to support JSON-encoded bodies
-app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
+let body    = require('body-parser');
+app.use( body.json() );       // to support JSON-encoded bodies
+app.use(body.urlencoded({     // to support URL-encoded bodies
   extended: true
 }));
+
+let cookie  = require('cookie-parser');
+let tokens  = [];
+app.use(cookie());
+app.use(express.static('public'));
+
+var mandrill = require('node-mandrill')('wIonE-z4VA6qXMXWJxRHrQ');  // sent email
 
 const jwt = require('express-jwt');
 const authCheck = jwt({
@@ -16,7 +23,6 @@ const authCheck = jwt({
   audience: '39OEQrij8jRT7q2s7SxGPJzxzp64ZcAx'
 });
 
-var mandrill = require('node-mandrill')('wIonE-z4VA6qXMXWJxRHrQ');  // sent email
 
 var search = require('./modules/search');
 var login = require('./modules/login');
@@ -25,8 +31,6 @@ var member = require('./modules/member');
 var plan = require('./modules/planning');
 var show = require('./modules/show');
 var path = require('./modules/path');
-
-
 
 //can recieve api from another domain
 app.use(function(req, res, next) {
@@ -69,9 +73,12 @@ app.post(`/show`, (req, res) =>{
 
 });
 
+app.get ('/logout',   (req, res) => {
+	delete tokens[req.cookies.token];
+	console.log('logout');
+});
 
 app.post(`/signup`, (req, res) => {
-
 	console.log(req.body);
 	mongo.connect(connection, (error, database) => {
 	login.checkUserSignup(database, req, (error, result) => {
@@ -85,7 +92,7 @@ app.post(`/signup`, (req, res) => {
     else {
      	console.log(result);
      	var result_obj = {
-     		'message' : `That username is taken. Try another.`
+     		'message' : result
      }
       res.json(result_obj);
     }
@@ -116,31 +123,35 @@ app.post(`/login`, (req, res) => {
         'picture': result[0].picture,
         'mytrip': result[0].mytrip
      }
-
       res.json(result_obj);
-     	console.log('login success');
     }
   });
 	});
 });
 
 app.post(`/editprofile`, (req, res) => {
-
-		member.editProfile(req, (error, result) => {
-		 if (error) {
-     		console.log(error);
-     		var error_obj = {
-     			'message' : `${error}`
-     		}
-     		res.json(error_obj);
-     	}
-     	else{
-     		var result_obj = {
-		    'message' : result
+  if (req.cookies == null ||
+    req.cookies.token == null ||
+    tokens[req.cookies.token] == null) {
+      console.log('cookies null');
+      // res.redirect('/login');
+  } else {
+    member.editProfile(req, (error, result) => {
+     if (error) {
+        console.log(error);
+        var error_obj = {
+          'message' : `${error}`
+        }
+        res.json(error_obj);
+      }
+      else{
+        var result_obj = {
+        'message' : result
     }
-	res.json(result_obj);
-     	}
-	});
+  res.json(result_obj);
+      }
+  });
+  }
 });
 
 
@@ -206,9 +217,47 @@ app.post(`/trips`, (req, res) => {
 });
 
 app.post(`/planning`, (req, res) =>{
+  if (req.cookies == null ||
+		req.cookies.token == null ||
+		tokens[req.cookies.token] == null) {
+			console.log('cookies null');
+	} else {
     mongo.connect(connection, (error, database) => {
-    if(req.body.numstep == 1){
-      plan.transportation(database, req, (error, result) => {
+      if(req.body.numstep == 1){
+        plan.transportation(database, req, (error, result) => {
+            if (error) {
+               console.log(error);
+               var error_obj = {
+                   'message' : `${error}`
+               }
+               res.json(error_obj);
+           }
+           else{
+             var results = []
+             for(var i = 0; i < result.length; i++) {
+             var result_obj = {
+                 'number' : i,
+                 'type' : result[i].type,
+                 'route' : result[i].route,
+                 'name' : result[i].name,
+                 'origin' : result[i].origin,
+                 'stationstart' : result[i].stationstart,
+                 'depart' : result[i].depart,
+                 'destination' : result[i].destination,
+                 'stationend' : result[i].stationend,
+                 'arrive' : result[i].arrive,
+                 'price' : result[i].price
+             }
+             results[i] = result_obj
+           }
+             res.json(results);
+             console.log('find route success');
+           }
+         });
+
+      }
+      else if(req.body.numstep == 2){
+        plan.plan(database, req, (error, result) => {
           if (error) {
              console.log(error);
              var error_obj = {
@@ -220,134 +269,95 @@ app.post(`/planning`, (req, res) =>{
            var results = []
            for(var i = 0; i < result.length; i++) {
            var result_obj = {
-               'number' : i,
-               'type' : result[i].type,
-               'route' : result[i].route,
-               'name' : result[i].name,
-               'origin' : result[i].origin,
-               'stationstart' : result[i].stationstart,
-               'depart' : result[i].depart,
-               'destination' : result[i].destination,
-               'stationend' : result[i].stationend,
-               'arrive' : result[i].arrive,
-               'price' : result[i].price
-           }
-           results[i] = result_obj
-         }
-           res.json(results);
-           console.log('find route success');
-         }
-       });
-
-    }
-    else if(req.body.numstep == 2){
-      plan.plan(database, req, (error, result) => {
-        if (error) {
-           console.log(error);
-           var error_obj = {
-               'message' : `${error}`
-           }
-           res.json(error_obj);
-       }
-       else{
-         var results = []
-         for(var i = 0; i < result.length; i++) {
-         var result_obj = {
-             'placeid' : result[i].placeid,
-             'name' : result[i].name,
-             'picture' : result[i].picture,
-             'city' : result[i].city,
-             'category' : result[i].category
-         }
-         results[i] = result_obj
-       }
-         res.json(results);
-         console.log('find place success');
-       }
-     });
-    }
-    // search placeCategories reqeuir numstep and categories and(name or city)
-    else if(req.body.numstep == 3){
-        search.searchPlace(database, req, (error, result) => {
-      	if (error) {
-      		console.log(error);
-      		var error_obj = {
-      			'message' : `${error}`
-      		}
-      		res.json(error_obj);
-      	}
-      	else{
-             var results = []
-             for(var i = 0; i < result.length; i++) {
-             var result_obj = {
                'placeid' : result[i].placeid,
                'name' : result[i].name,
                'picture' : result[i].picture,
                'city' : result[i].city,
                'category' : result[i].category
-             }
-             results[i] = result_obj
            }
-             res.json(results);
+           results[i] = result_obj
+         }
+           res.json(results);
+           console.log('find place success');
+         }
+       });
+      }
+      // search placeCategories reqeuir numstep and categories and(name or city)
+      else if(req.body.numstep == 3){
+          search.searchPlace(database, req, (error, result) => {
+        	if (error) {
+        		console.log(error);
+        		var error_obj = {
+        			'message' : `${error}`
+        		}
+        		res.json(error_obj);
+        	}
+        	else{
+               var results = []
+               for(var i = 0; i < result.length; i++) {
+               var result_obj = {
+                 'placeid' : result[i].placeid,
+                 'name' : result[i].name,
+                 'picture' : result[i].picture,
+                 'city' : result[i].city,
+                 'category' : result[i].category
+               }
+               results[i] = result_obj
+             }
+               res.json(results);
 
-      		console.log('search success');
-      	}
-     });
-    }
-    else if(req.body.numstep == 4){
-      plan.end(req);
-}
-});
+        		console.log('search success');
+        	}
+       });
+      }
+      else if(req.body.numstep == 4){
+        plan.end(req);
+  }
+  });
+	}
 });
 
 app.post(`/admin`, (req, res) =>{
-  console.log(req.body.admin);
-  var json_object = (error, result) => {
-  if (error) {
-     console.log(error);
-     var error_obj = {
-       'message' : `${error}`
+  if (req.cookies == null ||
+    req.cookies.token == null ||
+    tokens[req.cookies.token] == null) {
+      console.log('cookies null');
+  } else {
+    console.log(req.body.admin);
+    var json_object = (error, result) => {
+    if (error) {
+       console.log(error);
+       var error_obj = {
+         'message' : `${error}`
+       }
+       res.json(error_obj);
      }
-     res.json(error_obj);
+     else{
+       var result_obj ={
+     'message' : result
+     }
+     res.json(result_obj);
+     console.log('add data success');
    }
-   else{
-     var result_obj ={
-   'message' : result
    }
-   res.json(result_obj);
-   console.log('add data success');
- }
- }
 
-	 if(req.body.admin == 'place'){
-     admin.addPlaceToMongo(req,json_object);
-   }
- if(req.body.admin == 'train'){
-   admin.addTrainToMongo(req, json_object);
-	}
-
-  if(req.body.admin == 'bus'){
-    admin.addBusToMongo(req, json_object);
-  }
-});
-
-app.post(`/reviews`, (req, res) => {
-		mongo.connect(connection, (error, database) => {
-		database
-		.collection('trip')
-		.update({ name:`${req.body.name}` },
-    { $set : {
-      //reviews.number :`${req.body.review}`
-    }
-    });
-   });
-
-		var contactus_obj = {
-		'message' : 'success'
-	}
-	res.json(contactus_obj);
-
-});
+// app.post(`/reviews`, (req, res) => {
+// 		mongo.connect(connection, (error, database) => {
+// 		database
+// 		.collection('trip')
+// 		.update({ name:`${req.body.name}` },
+//     { $set : {
+//       reviews.number :`${req.body.review}`,
+//     }
+//     });
+//    });
+//
+// 		var contactus_obj = {
+// 		'message' : 'success'
+// 	}
+// 	res.json(contactus_obj);
+//
+// });
 app.post(`/contactus`, (req, res) => {
 
 		console.log(req.body);
@@ -400,7 +410,10 @@ app.post(`/contactus`, (req, res) => {
 //
 
 //image
-
+app.use(ErrorHandler);
+function ErrorHandler(req, res, next) {
+	res.status(404).send('File not found');
+}
 
 app.listen(1200, function () {
   console.log('Server running on port 1200...')
