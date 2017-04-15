@@ -17,6 +17,13 @@ app.use(express.static('public'));
 
 var mandrill = require('node-mandrill')('wIonE-z4VA6qXMXWJxRHrQ');  // sent email
 
+const jwt = require('express-jwt');
+const authCheck = jwt({
+  secret: 'k7w9mXU_l1KzIHon0kw1o5T3fegHny2iSeeZ-oPcr-C52wuPX8ALMCz_3u4Kbw-M',
+  audience: '39OEQrij8jRT7q2s7SxGPJzxzp64ZcAx'
+});
+
+
 var search = require('./modules/search');
 var login = require('./modules/login');
 var admin = require('./modules/admin');
