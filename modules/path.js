@@ -3,6 +3,8 @@ var app = express();
 var path = require('path');
 var formidable = require('formidable');
 var fs = require('fs');
+let mongo = require('mongodb').MongoClient;
+let connection = 'mongodb://localhost:27017/bagpaotravel';
 
 //app.use(express.static(path.join(__dirname, 'public')));
 
@@ -27,6 +29,15 @@ app.post('/upload', function(req, res){
     fs.rename(file.path, path.join(form.uploadDir, file.name));
     console.log(file);
     console.log(`picture located at ${file.path}`);
+    mongo.connect(connection, (err, database) => {
+			database
+			.collection('place')
+			.update({username: `${req.body.username}` },
+			{ $set : {
+			picture:`${file.path}`
+			}
+			});
+   		  });
   });
 
   // log any errors that occur
