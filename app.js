@@ -4,11 +4,16 @@ var express = require('express');
 var app = express();
 let mongo = require('mongodb').MongoClient;
 let connection = 'mongodb://localhost:27017/bagpaotravel';
-var bodyParser = require('body-parser')
-app.use( bodyParser.json() );       // to support JSON-encoded bodies
-app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
+let body    = require('body-parser');
+app.use( body.json() );       // to support JSON-encoded bodies
+app.use(body.urlencoded({     // to support URL-encoded bodies
   extended: true
 }));
+
+let cookie  = require('cookie-parser');
+let tokens  = [];
+app.use(cookie());
+app.use(express.static('public'));
 
 var mandrill = require('node-mandrill')('wIonE-z4VA6qXMXWJxRHrQ');  // sent email
 
@@ -19,8 +24,6 @@ var member = require('./modules/member');
 var plan = require('./modules/planning');
 var show = require('./modules/show');
 var path = require('./modules/path');
-
-
 
 //can recieve api from another domain
 app.use(function(req, res, next) {
@@ -63,9 +66,12 @@ app.post(`/show`, (req, res) =>{
 
 });
 
+app.get ('/logout',   (req, res) => {
+	delete tokens[req.cookies.token];
+	console.log('logout');
+});
 
 app.post(`/signup`, (req, res) => {
-
 	console.log(req.body);
 	mongo.connect(connection, (error, database) => {
 	login.checkUserSignup(database, req, (error, result) => {
@@ -79,7 +85,7 @@ app.post(`/signup`, (req, res) => {
     else {
      	console.log(result);
      	var result_obj = {
-     		'message' : `That username is taken. Try another.`
+     		'message' : result
      }
       res.json(result_obj);
     }
@@ -110,9 +116,7 @@ app.post(`/login`, (req, res) => {
         'picture': result[0].picture,
         'mytrip': result[0].mytrip
      }
-
       res.json(result_obj);
-     	console.log('login success');
     }
   });
 	});
@@ -325,23 +329,23 @@ app.post(`/admin`, (req, res) =>{
   }
 });
 
-app.post(`/reviews`, (req, res) => {
-		mongo.connect(connection, (error, database) => {
-		database
-		.collection('trip')
-		.update({ name:`${req.body.name}` },
-    { $set : {
-      reviews.number :`${req.body.review}`,
-    }
-    });
-   });
-
-		var contactus_obj = {
-		'message' : 'success'
-	}
-	res.json(contactus_obj);
-
-});
+// app.post(`/reviews`, (req, res) => {
+// 		mongo.connect(connection, (error, database) => {
+// 		database
+// 		.collection('trip')
+// 		.update({ name:`${req.body.name}` },
+//     { $set : {
+//       reviews.number :`${req.body.review}`,
+//     }
+//     });
+//    });
+//
+// 		var contactus_obj = {
+// 		'message' : 'success'
+// 	}
+// 	res.json(contactus_obj);
+//
+// });
 app.post(`/contactus`, (req, res) => {
 
 		console.log(req.body);
@@ -394,7 +398,10 @@ app.post(`/contactus`, (req, res) => {
 //
 
 //image
-
+app.use(ErrorHandler);
+function ErrorHandler(req, res, next) {
+	res.status(404).send('File not found');
+}
 
 app.listen(1200, function () {
   console.log('Server running on port 1200...')
