@@ -18,6 +18,10 @@ const authCheck = jwt({
   audience: '39OEQrij8jRT7q2s7SxGPJzxzp64ZcAx'
 });
 
+var isodate = require("isodate");
+var date;
+// Write current date as ISO 8601 string.
+date = new Date();
 
 var search = require('./modules/search');
 var login = require('./modules/login');
@@ -341,23 +345,52 @@ app.post(`/admin`, (req, res) =>{
 });
 
 
-// app.post(`/reviews`, (req, res) => {
-// 		mongo.connect(connection, (error, database) => {
-// 		database
-// 		.collection('trip')
-// 		.update({ name:`${req.body.name}` },
-//     { $set : {
-//       reviews.number :`${req.body.review}`,
-//     }
-//     });
-//    });
-//
-// 		var contactus_obj = {
-// 		'message' : 'success'
-// 	}
-// 	res.json(contactus_obj);
-//
-// });
+app.post(`/reviews`, (req, res) => {
+		mongo.connect(connection, (error, database) => {
+      database.collection('trip').find({creator :req.body.username ,name: `${req.body.tripname}`})
+   		.toArray((error, result) =>{
+        if(result.length == 1){
+          database
+          .collection('trip')
+          .update(
+         { name: `${req.body.tripname}`  },
+         {
+           $push: {
+                reviews: {
+                $each: [ {
+                  user :`${req.body.username}`,
+                  comment :`${req.body.comment}`,
+                  creator: true,
+                  date : date} ]
+             }
+           }
+         }
+        );
+        }
+        else {
+          database
+      		.collection('trip')
+          .update(
+         { name: `${req.body.tripname}`  },
+         {
+           $push: {
+                reviews: {
+                $each: [ {
+                  user :`${req.body.name}`,
+                  comment :`${req.body.comment}`,
+                  date : date} ]
+             }
+           }
+         }
+      );
+        }
+    		var contactus_obj = {
+    		'message' : 'success'
+    	}
+    	res.json(contactus_obj);
+    });
+});
+});
 app.post(`/contactus`, (req, res) => {
 
 		console.log(req.body);
