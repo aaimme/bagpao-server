@@ -26,7 +26,6 @@ app.get ('/settings',  (req, res) => {
 		tokens[req.cookies.token] == null) {
 			console.log('cookies null');
 	} else {
-		console.log('settings page');
 
 	}
 });
