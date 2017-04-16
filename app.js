@@ -341,41 +341,46 @@ app.post(`/admin`, (req, res) =>{
    }
 
      if(req.body.admin == 'add'){
-       if(req.body.type == 'place'){
+       if(req.body.types == 'place'){
          admin.addPlaceToMongo(req,json_object);
        }
-       else if (req.body.type == 'train') {
+       else if (req.body.types == 'train') {
          admin.addTrainToMongo(req, json_object);
        }
-       else if (req.body.type == 'bus') {
+       else if (req.body.types == 'bus') {
          admin.addBusToMongo(req, json_object);
        }
      }
     if(req.body.admin == 'show'){
-      admin.showProblem(json_object);
+      if(req.body.types == 'pb'){
+        admin.showProblem(json_object);
+      }
+      else if (req.body.types == 'transport') {
+        admin.showTransporttation(json_object);
+      }
     }
     if(req.body.admin == 'delete'){
-      if(req.body.type == 'place'){
+      if(req.body.types == 'place'){
         admin.deletePlace(req, json_object);
       }
-      else if (req.body.type == 'trans') {
+      else if (req.body.types == 'trans') {
         admin.deleteTransportation(req, json_object);
       }
-      else if (req.body.type == 'trip') {
+      else if (req.body.types == 'trip') {
         admin.deleteTrip(req, json_object);
       }
-      else if (req.body.type == 'pb') {
+      else if (req.body.types == 'pb') {
         admin.deleteProblem(req, json_object);
       }
-      else if (req.body.type == 'member') {
+      else if (req.body.types == 'member') {
         admin.deleteMember(req, json_object);
       }
       }
     if(req.body.admin == 'update'){
-      if(req.body.type == 'place'){
+      if(req.body.types == 'place'){
         admin.updatePlaceToMongo(req, json_object);
       }
-      else if (req.body.type == 'trans') {
+      else if (req.body.types == 'trans') {
         admin.updateTransportation(req, json_object);
       }
 
@@ -392,8 +397,8 @@ app.post(`/reviews`, (req, res) => {
     		'message' : 'success'
     	}
     	res.json(contactus_obj);
-});
-});
+      });
+    });
 
 app.post(`/contactus`, (req, res) => {
 
@@ -457,7 +462,7 @@ var googleMapsClient = require('@google/maps').createClient({
   key: 'AIzaSyDGFpo_nftbMYEro-Ff0lkXNdQV7sEwKN8'
 });
 
-app.get(`/api`, (req, res) =>{
+app.get(`/apidistance`, (req, res) =>{
 var request = require('request');
 var url = 'https://maps.googleapis.com/maps/api/distancematrix/json?&origins='+req.query.origin+'&destinations='+req.query.destination+'&key=AIzaSyDGFpo_nftbMYEro-Ff0lkXNdQV7sEwKN8'
 request(url, function (error, response, body) {
@@ -470,6 +475,29 @@ request(url, function (error, response, body) {
 
 });
 });
+
+app.get(`/apigeo`, (req, res) =>{
+var request = require('request');
+var url = 'https://maps.googleapis.com/maps/api/geocode/json?address='+req.query.address+'&key=AIzaSyDGFpo_nftbMYEro-Ff0lkXNdQV7sEwKN8'
+request(url, function (error, response, body) {
+  console.log('error:', error); // Print the error if one occurred
+  console.log('statusCode:', response && response.statusCode); // Print the response status code if a response was received
+  // console.log('body:', body); // Print the HTML for the Google homepage.
+  body = JSON.parse(body);
+  console.log(body);
+  res.send(body);
+
+});
+});
+
+//Geocode an address.
+// googleMapsClient.geocode({
+// address: 'KMITL'
+// }, function(err, response) {
+// if (!err) {
+//   console.log(response.json.results);
+// }
+// });
 
 app.listen(1200, function() {
   console.log('Server running on port 1200...')

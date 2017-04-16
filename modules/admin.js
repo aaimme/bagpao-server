@@ -197,6 +197,24 @@ exports.addBusToMongo = function(req, callback) {
     });
   }
 
+  exports.showTransporttation = function(callback) {
+      mongo.connect(connection, (err, database) => {
+        database
+        .collection('transportation')
+        .find({}).toArray(function(err, docs) {
+    	if (err) {
+    		callback('cannot connect to database', undefined);
+    	}else{
+    		if (docs.length !== 0) {
+    			callback(undefined, docs);
+    	}else{
+    			callback('no data',undefined);
+    		}
+    	}
+    });
+    });
+  }
+
   exports.deleteProblem = function(req, callback) {
     var query = ObjectId(req.body['id']);
         mongo.connect(connection, (err, database) => {
