@@ -344,11 +344,8 @@ app.post(`/admin`, (req, res) =>{
        if(req.body.types == 'place'){
          admin.addPlaceToMongo(req,json_object);
        }
-       else if (req.body.types == 'train') {
-         admin.addTrainToMongo(req, json_object);
-       }
-       else if (req.body.types == 'bus') {
-         admin.addBusToMongo(req, json_object);
+       else if (req.body.types == 'trans') {
+         admin.addTransToMongo(req, json_object);
        }
      }
     if(req.body.admin == 'show'){

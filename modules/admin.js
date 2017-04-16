@@ -11,34 +11,8 @@ app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
   extended: true
 }));
 
-exports.addBusToMongo = function(req, callback) {
-  console.log(req.body);
-  mongo.connect(connection, (err, database) => {
-    if (err) {
-      callback('cannot connect to database', undefined);
-      }
-      else {
-      callback(undefined, 'add data success');
-      database
-    .collection('transportation')
-    .insert({
-      type:`bus`,
-      name:`${req.body.name}`,
-      origin:`${req.body.origin}`,
-      stationstart:`${req.body.stationstart}`,
-      depart:`${req.body.depart}`,
-      destination:`${req.body.destination}`,
-      stationend:`${req.body.stationend}`,
-      arrive:`${req.body.arrive}`,
-      class:`${req.body.class}`,
-      price:`${req.body.price}`
-    });
-      }
-    });
-    console.log('add data success');
-}
 
-  exports.addTrainToMongo = function(req, callback) {
+  exports.addTransToMongo = function(req, callback) {
   console.log(req.body);
   mongo.connect(connection, (err, database) => {
     if (err) {
@@ -49,16 +23,15 @@ exports.addBusToMongo = function(req, callback) {
       database
     .collection('transportation')
     .insert({
-      type:`train`,
+      type:`${req.body.type}`,
       route:`${req.body.route}`,
+      name: `${req.body.name}`,
       origin:`${req.body.origin}`,
       stationstart:`${req.body.stationstart}`,
       depart:`${req.body.depart}`,
       destination:`${req.body.destination}`,
       stationend:`${req.body.stationend}`,
       arrive:`${req.body.arrive}`,
-      class:`${req.body.class}`,
-      trainnumber:`${req.body.number}`,
       price:`${req.body.price}`
     });
       }
