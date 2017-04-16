@@ -14,15 +14,18 @@ date = new Date();
 						.collection('trip')
 						.insert([{
                 name:`${req.body.name}`,
-    //					creator:`${req.body.username}`,
+    						creator:`${req.body.username}`,
                 origin:`${req.body.origin}`,
                 destination:`${req.body.destination}`,
 							  daytrip:`${req.body.daytrip}`,
-		//					picture:`${req.body.picture}`,
-		//					place :`${req.body.place}`,
-		//					time :`${req.body.time}`,
+		//						picture:`${req.body.picture}`,
+		//						place :`${req.body.place}`,
+		//					time[i] :`${req.body.time[i]}`,
+
                 privacy:`${req.body.privacy}`,
 							  status:`active`,
+								like: 0,
+								share: 0,
                 datesubmit: date
                 }]);
 				   		 });

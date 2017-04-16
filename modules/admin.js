@@ -76,17 +76,17 @@ exports.addBusToMongo = function(req, callback) {
   			callback(undefined, 'add data success');
   			database
 			.collection('place')
-			.insert([{
-        name: req.body.name,
-        city: req.body.city,
-        category: req.body.category,
+			.insert({
+				name:`${req.body.name}`.split(","),
+        city:`${req.body.city}`.split(","),
         latitude:`${req.body.latitude}`,
         longitude:`${req.body.longitude}`,
+        category: req.body.category,
         picture:`${req.body.picture}`,
         description:`${req.body.description}`,
 				contact:`${req.body.contact}`,
-        view: 0	}
-        ]);
+        view: 0
+        });
    		  }
   		});
       console.log('add data success');
