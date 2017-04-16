@@ -99,26 +99,24 @@ exports.addBusToMongo = function(req, callback) {
   			callback('cannot connect to database', undefined);
   			}
   			else {
-  			callback(undefined, 'update data success');
-  			database
-			.collection('place')
-			.update({ name:`${req.body.name}` },
-			{ $set : [{
-				name : req.body.name,
-        zone: `${req.body.zone}`,
-				contact: `${req.body.contact}`,
-				city: `${req.body.city}`,
-				latitude: `${req.body.latitude}`,
-				longitude: `${req.body.longitude}`,
-				categories: `${req.body.categories}`,
-				picture: `${req.body.picture}`,
-				description: `${req.body.description}`
-        }]
-			});
-   		  }
-		});
-    console.log('update data success');
-	}
+              callback(undefined,'update data success');
+              database.collection('place').update({ name : `${req.body.name}`},
+            { $set : [{
+              name : req.body.name,
+              zone: `${req.body.zone}`,
+              contact: `${req.body.contact}`,
+              city: `${req.body.city}`,
+              latitude: `${req.body.latitude}`,
+              longitude: `${req.body.longitude}`,
+              category: `${req.body.category}`,
+              picture: `${req.body.picture}`,
+              description: `${req.body.description}`
+              }]
+            });
+            }
+          });
+          console.log('update data success');
+	      }
 
   exports.deletePlace = function(req, callback) {
 			mongo.connect(connection, (err, database) => {
