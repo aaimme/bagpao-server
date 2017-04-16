@@ -68,7 +68,7 @@ app.post(`/show`, (req, res) =>{
     else if(req.body.do == "ph"){
     show.placePopularHome(showtype);
     }
-    else if(req.body.do == "ph"){
+    else if(req.body.do == "th"){
     show.tripsPopularHome(showtype);
     }
     else if (req.body.do == "mem"){
@@ -181,9 +181,7 @@ app.post(`/places`, (req, res) => {
             var result_obj = {
                 'name' : result[i].name,
                 'city' : result[i].city,
-                'picture' : result[i].picture,
-                'description' : result[i].description,
-                'contact' : result[i].contact
+                'picture' : result[i].picture
             }
             results[i] = result_obj
           }
