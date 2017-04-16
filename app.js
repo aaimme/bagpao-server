@@ -352,7 +352,7 @@ app.post(`/admin`, (req, res) =>{
       if(req.body.types == 'pb'){
         admin.showProblem(json_object);
       }
-      else if (req.body.types == 'transport') {
+      else if (req.body.types == 'trans') {
         admin.showTransporttation(json_object);
       }
     }
