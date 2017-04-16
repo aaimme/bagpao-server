@@ -183,9 +183,7 @@ app.post(`/places`, (req, res) => {
             var result_obj = {
                 'name' : result[i].name,
                 'city' : result[i].city,
-                'picture' : result[i].picture,
-                'description' : result[i].description,
-                'contact' : result[i].contact
+                'picture' : result[i].picture
             }
             results[i] = result_obj
           }
