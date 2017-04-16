@@ -3,6 +3,7 @@ var assert = require('assert');
 var express = require('express');
 var app = express();
 let mongo = require('mongodb').MongoClient;
+var ObjectId = require('mongodb').ObjectID;
 let connection = 'mongodb://localhost:27017/bagpaotravel';
 var bodyParser = require('body-parser')
 app.use( bodyParser.json() );       // to support JSON-encoded bodies
@@ -10,8 +11,62 @@ app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
   extended: true
 }));
 
+exports.addBusToMongo = function(req, callback) {
+  console.log(req.body);
+  mongo.connect(connection, (err, database) => {
+    if (err) {
+      callback('cannot connect to database', undefined);
+      }
+      else {
+      callback(undefined, 'add data success');
+      database
+    .collection('transportation')
+    .insert({
+      type:`bus`,
+      name:`${req.body.name}`,
+      origin:`${req.body.origin}`,
+      stationstart:`${req.body.stationstart}`,
+      depart:`${req.body.depart}`,
+      destination:`${req.body.destination}`,
+      stationend:`${req.body.stationend}`,
+      arrive:`${req.body.arrive}`,
+      class:`${req.body.class}`,
+      price:`${req.body.price}`
+    });
+      }
+    });
+    console.log('add data success');
+}
 
-	exports.addPlaceToMongo = function(req, callback) {
+  exports.addTrainToMongo = function(req, callback) {
+  console.log(req.body);
+  mongo.connect(connection, (err, database) => {
+    if (err) {
+      callback('cannot connect to database', undefined);
+      }
+      else {
+      callback(undefined, 'add data success');
+      database
+    .collection('transportation')
+    .insert({
+      type:`train`,
+      route:`${req.body.route}`,
+      origin:`${req.body.origin}`,
+      stationstart:`${req.body.stationstart}`,
+      depart:`${req.body.depart}`,
+      destination:`${req.body.destination}`,
+      stationend:`${req.body.stationend}`,
+      arrive:`${req.body.arrive}`,
+      class:`${req.body.class}`,
+      trainnumber:`${req.body.number}`,
+      price:`${req.body.price}`
+    });
+      }
+    });
+    console.log('add data success');
+}
+
+  exports.addPlaceToMongo = function(req, callback) {
 		console.log(req.body);
 		mongo.connect(connection, (err, database) => {
 			if (err) {
@@ -22,7 +77,6 @@ app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
   			database
 			.collection('place')
 			.insert({
-				idplace:`${req.body.idplace}`,
 				name:`${req.body['name']}`,
         zone:`${req.body.zone}`,
 				contact:`${req.body.contact}`,
@@ -35,6 +89,7 @@ app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
 			});
    		  }
   		});
+      console.log('add data success');
 	}
 
 	exports.updatePlaceToMongo = function(req, callback) {
@@ -49,7 +104,6 @@ app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
 			.collection('place')
 			.update({ name:`${req.body.name}` },
 			{ $set : {
-				idplace:`${req.body.idplace}`,
 				name:`${req.body['name']}`,
         zone:`${req.body.zone}`,
 				contact:`${req.body.contact}`,
@@ -63,11 +117,11 @@ app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
 			});
    		  }
 		});
+    console.log('update data success');
 	}
 
-exports.deletePlaceToMongo = function(req, callback) {
-		console.log(req.body);
-		mongo.connect(connection, (err, database) => {
+  exports.deletePlace = function(req, callback) {
+			mongo.connect(connection, (err, database) => {
 			if (err) {
   			callback('cannot connect to database', undefined);
   			}
@@ -75,60 +129,88 @@ exports.deletePlaceToMongo = function(req, callback) {
   			callback(undefined, 'delete data success');
   			database
 			.collection('place')
-			.delete({ name:`${req.body.name}` });
+      .remove({ name: `${req.body.name}` });
 			}
 		});
+    console.log('delete data success');
 	}
 
-  exports.addBusToMongo = function(req, callback) {
-		console.log(req.body);
-		mongo.connect(connection, (err, database) => {
-			if (err) {
-  			callback('cannot connect to database', undefined);
+  exports.deleteTransportation = function(req, callback) {
+      var query = ObjectId(req.body['id']);
+  			mongo.connect(connection, (err, database) => {
+  			if (err) {
+    			callback('cannot connect to database', undefined);
+    			}
+    			else {
+    			callback(undefined, 'delete data success');
+    			database
+  			  .collection('transportation')
+          .remove({ _id : query });
   			}
-  			else {
-  			callback(undefined, 'add data success');
-  			database
-			.collection('transportation')
-			.insert({
-        type:`bus`,
-        name:`${req.body.name}`,
-        origin:`${req.body.origin}`,
-        stationstart:`${req.body.stationstart}`,
-        depart:`${req.body.depart}`,
-        destination:`${req.body.destination}`,
-        stationend:`${req.body.stationend}`,
-        arrive:`${req.body.arrive}`,
-        class:`${req.body.class}`,
-        price:`${req.body.price}`
-			});
-   		  }
   		});
-	}
+      console.log('delete data success');
+  	}
 
-  exports.addTrainToMongo = function(req, callback) {
-    console.log(req.body);
-    mongo.connect(connection, (err, database) => {
-      if (err) {
-        callback('cannot connect to database', undefined);
-        }
-        else {
-        callback(undefined, 'add data success');
+  exports.deleteTrip = function(req, callback) {
+  			mongo.connect(connection, (err, database) => {
+  			if (err) {
+    			callback('cannot connect to database', undefined);
+    			}
+    			else {
+    			callback(undefined, 'delete data success');
+    			database
+  			.collection('trip')
+        .remove({ name: `${req.body.name}` });
+  			}
+  		});
+      console.log('delete data success');
+  	}
+
+    exports.deleteMember = function(req, callback) {
+    			mongo.connect(connection, (err, database) => {
+    			if (err) {
+      			callback('cannot connect to database', undefined);
+      			}
+      			else {
+      			callback(undefined, 'delete data success');
+      			database
+    			.collection('member')
+          .remove({ username: `${req.body.name}` });
+    			}
+    		});
+        console.log('delete data success');
+    	}
+
+  exports.showProblem = function(callback) {
+      mongo.connect(connection, (err, database) => {
         database
-      .collection('transportation')
-      .insert({
-        type:`train`,
-        route:`${req.body.route}`,
-        origin:`${req.body.origin}`,
-        stationstart:`${req.body.stationstart}`,
-        depart:`${req.body.depart}`,
-        destination:`${req.body.destination}`,
-        stationend:`${req.body.stationend}`,
-        arrive:`${req.body.arrive}`,
-        class:`${req.body.class}`,
-        trainnumber:`${req.body.number}`,
-        price:`${req.body.price}`
-      });
-        }
-      });
+        .collection('contactus')
+        .find({}).toArray(function(err, docs) {
+    	if (err) {
+    		callback('cannot connect to database', undefined);
+    	}else{
+    		if (docs.length !== 0) {
+    			callback(undefined, docs);
+    	}else{
+    			callback('no data',undefined);
+    		}
+    	}
+    });
+    });
   }
+
+  exports.deleteProblem = function(req, callback) {
+    var query = ObjectId(req.body['id']);
+        mongo.connect(connection, (err, database) => {
+  			if (err) {
+    			callback('cannot connect to database', undefined);
+    			}
+    			else {
+    			callback(undefined, 'delete data success');
+    			database
+  			  .collection('contactus')
+          .remove({ _id : query});
+  			}
+      });
+      console.log('delete data success');
+  	}

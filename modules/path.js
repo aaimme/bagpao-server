@@ -13,7 +13,7 @@ app.get('/', function(req, res){
 });
 
 app.post('/upload', function(req, res){
-
+console.log(req);
   // create an incoming form object
   var form = new formidable.IncomingForm();
 
@@ -32,7 +32,7 @@ app.post('/upload', function(req, res){
     mongo.connect(connection, (err, database) => {
 			database
 			.collection('place')
-			.update({username: `${req.body.username}` },
+			.update({name: 'วัดพระศรีรัตนศาสดาราม' },
 			{ $set : {
 			picture:`${file.path}`
 			}

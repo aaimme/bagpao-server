@@ -336,19 +336,50 @@ app.post(`/admin`, (req, res) =>{
      'message' : result
      }
      res.json(result_obj);
-     console.log('add data success');
+
    }
    }
 
-     if(req.body.admin == 'place'){
-       admin.addPlaceToMongo(req,json_object);
+     if(req.body.admin == 'add'){
+       if(req.body.type == 'place'){
+         admin.addPlaceToMongo(req,json_object);
+       }
+       else if (req.body.type == 'train') {
+         admin.addTrainToMongo(req, json_object);
+       }
+       else if (req.body.type == 'bus') {
+         admin.addBusToMongo(req, json_object);
+       }
      }
-   if(req.body.admin == 'train'){
-     admin.addTrainToMongo(req, json_object);
+    if(req.body.admin == 'show'){
+      admin.showProblem(json_object);
     }
+    if(req.body.admin == 'delete'){
+      if(req.body.type == 'place'){
+        admin.deletePlace(req, json_object);
+      }
+      else if (req.body.type == 'trans') {
+        admin.deleteTransportation(req, json_object);
+      }
+      else if (req.body.type == 'trip') {
+        admin.deleteTrip(req, json_object);
+      }
+      else if (req.body.type == 'pb') {
+        admin.deleteProblem(req, json_object);
+      }
+      else if (req.body.type == 'member') {
+        admin.deleteMember(req, json_object);
+      }
+      }
+    if(req.body.admin == 'update'){
+      if(req.body.type == 'place'){
+        admin.updatePlaceToMongo(req, json_object);
+      }
+      else if (req.body.type == 'trans') {
+        admin.updateTransportation(req, json_object);
+      }
 
-    if(req.body.admin == 'bus'){
-      admin.addBusToMongo(req, json_object);
+
     }
 
 

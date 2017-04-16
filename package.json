@@ -15,6 +15,7 @@
     "jsonwebtoken": "^7.3.0",
     "mandrill": "^0.1.0",
     "mandrill-api": "^1.0.45",
+    "mongo-wrapper": "0.0.29",
     "mongodb": "^2.2.22",
     "mongoose": "^4.9.4",
     "morgan": "^1.8.1",
