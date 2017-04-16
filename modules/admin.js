@@ -76,17 +76,17 @@ exports.addBusToMongo = function(req, callback) {
   			callback(undefined, 'add data success');
   			database
 			.collection('place')
-			.insert({
-				name:`${req.body['name']}`,
-        city:`${req.body['city']}`,
+			.insert([{
+        name: req.body.name,
+        city: req.body.city,
+        category: req.body.category,
         latitude:`${req.body.latitude}`,
         longitude:`${req.body.longitude}`,
-        category:`${req.body.category}`,
         picture:`${req.body.picture}`,
         description:`${req.body.description}`,
 				contact:`${req.body.contact}`,
-        view: 0
-			});
+        view: 0	}
+        ]);
    		  }
   		});
       console.log('add data success');
@@ -103,17 +103,17 @@ exports.addBusToMongo = function(req, callback) {
   			database
 			.collection('place')
 			.update({ name:`${req.body.name}` },
-			{ $set : {
-				name:`${req.body['name']}`,
-        zone:`${req.body.zone}`,
-				contact:`${req.body.contact}`,
-				city:`${req.body.city}`,
-				latitude:`${req.body.latitude}`,
-				longitude:`${req.body.longitude}`,
-				categories:`${req.body.categories}`,
-				picture:`${req.body.picture}`,
-				description:`${req.body.description}`
-				}
+			{ $set : [{
+				name : req.body.name,
+        zone: `${req.body.zone}`,
+				contact: `${req.body.contact}`,
+				city: `${req.body.city}`,
+				latitude: `${req.body.latitude}`,
+				longitude: `${req.body.longitude}`,
+				categories: `${req.body.categories}`,
+				picture: `${req.body.picture}`,
+				description: `${req.body.description}`
+        }]
 			});
    		  }
 		});

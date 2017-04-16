@@ -12,19 +12,19 @@ date = new Date();
 						mongo.connect(connection, (error, database) => {
 						database
 						.collection('trip')
-						.insert({
+						.insert([{
                 name:`${req.body.name}`,
     //					creator:`${req.body.username}`,
                 origin:`${req.body.origin}`,
                 destination:`${req.body.destination}`,
 							  daytrip:`${req.body.daytrip}`,
 		//					picture:`${req.body.picture}`,
-		//					place[i] :`${req.body.place[i]}`,
-		//					time[i] :`${req.body.time[i]}`,
+		//					place :`${req.body.place}`,
+		//					time :`${req.body.time}`,
                 privacy:`${req.body.privacy}`,
 							  status:`active`,
                 datesubmit: date
-							});
+                }]);
 				   		 });
 
 						console.log('create trip success');
