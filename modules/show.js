@@ -7,7 +7,7 @@ exports.placePopularHome = function(callback) {
     mongo.connect(connection, (err, database) => {
       database
       .collection('place')
-      .find({}).limit(3).sort({ view : -1}).toArray(function(err, docs) {
+      .find({}).sort({ view : -1}).limit(3).toArray(function(err, docs) {
   	if (err) {
   		callback('cannot connect to database', undefined);
   	}else{
@@ -103,10 +103,10 @@ exports.tripsPopularHome = function(callback) {
          }
       },
       {
-        $limit : 3
+        $sort : {totalAmount : -1}
       },
       {
-        $sort : {totalAmount : -1}
+        $limit : 3
       }
     ]).toArray(function(err, docs) {
   	if (err) {

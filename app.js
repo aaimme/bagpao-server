@@ -18,6 +18,8 @@ const authCheck = jwt({
   audience: '39OEQrij8jRT7q2s7SxGPJzxzp64ZcAx'
 });
 
+
+
 var isodate = require("isodate");
 var date;
 // Write current date as ISO 8601 string.
@@ -68,7 +70,7 @@ app.post(`/show`, (req, res) =>{
     else if(req.body.do == "ph"){
     show.placePopularHome(showtype);
     }
-    else if(req.body.do == "ph"){
+    else if(req.body.do == "th"){
     show.tripsPopularHome(showtype);
     }
     else if (req.body.do == "mem"){
@@ -353,7 +355,6 @@ app.post(`/admin`, (req, res) =>{
 
 
 });
-
 
 app.post(`/reviews`, (req, res) => {
 		mongo.connect(connection, (error, database) => {

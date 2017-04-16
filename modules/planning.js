@@ -112,11 +112,15 @@ date = new Date();
          });
    }
 	//connect API
-	// Geocode an address.
-// googleMapsClient.geocode({
-//   address: '1600 Amphitheatre Parkway, Mountain View, CA'
-// }, function(err, response) {
-//   if (!err) {
-//     console.log(response.json.results);
-//   }
-// });
+  var googleMapsClient = require('@google/maps').createClient({
+    key: 'AIzaSyDGFpo_nftbMYEro-Ff0lkXNdQV7sEwKN8'
+  });
+
+	//Geocode an address.
+googleMapsClient.geocode({
+  address: '1600 Amphitheatre Parkway, Mountain View, CA'
+}, function(err, response) {
+  if (!err) {
+    console.log(response.json.results);
+  }
+});
