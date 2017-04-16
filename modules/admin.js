@@ -77,8 +77,8 @@ exports.addBusToMongo = function(req, callback) {
   			database
 			.collection('place')
 			.insert({
-				name:`${req.body['name']}`,
-        city:`${req.body['city']}`,
+				name:`${req.body.name}`.split(","),
+        city:`${req.body.city}`.split(","),
         latitude:`${req.body.latitude}`,
         longitude:`${req.body.longitude}`,
         category:`${req.body.category}`,
