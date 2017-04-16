@@ -79,14 +79,14 @@ exports.addBusToMongo = function(req, callback) {
 			.insert({
 				name:`${req.body.name}`.split(","),
         city:`${req.body.city}`.split(","),
-        category: req.body.category,
         latitude:`${req.body.latitude}`,
         longitude:`${req.body.longitude}`,
+        category: req.body.category,
         picture:`${req.body.picture}`,
         description:`${req.body.description}`,
 				contact:`${req.body.contact}`,
-        view: 0	}
-        ]);
+        view: 0
+        });
    		  }
   		});
       console.log('add data success');
