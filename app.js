@@ -341,41 +341,38 @@ app.post(`/admin`, (req, res) =>{
    }
 
      if(req.body.admin == 'add'){
-       if(req.body.type == 'place'){
+       if(req.body.types == 'place'){
          admin.addPlaceToMongo(req,json_object);
        }
-       else if (req.body.type == 'train') {
-         admin.addTrainToMongo(req, json_object);
-       }
-       else if (req.body.type == 'bus') {
-         admin.addBusToMongo(req, json_object);
+       else if (req.body.types == 'trans') {
+         admin.addTransToMongo(req, json_object);
        }
      }
     if(req.body.admin == 'show'){
       admin.showProblem(json_object);
     }
     if(req.body.admin == 'delete'){
-      if(req.body.type == 'place'){
+      if(req.body.types == 'place'){
         admin.deletePlace(req, json_object);
       }
-      else if (req.body.type == 'trans') {
+      else if (req.body.types == 'trans') {
         admin.deleteTransportation(req, json_object);
       }
-      else if (req.body.type == 'trip') {
+      else if (req.body.types == 'trip') {
         admin.deleteTrip(req, json_object);
       }
-      else if (req.body.type == 'pb') {
+      else if (req.body.types == 'pb') {
         admin.deleteProblem(req, json_object);
       }
-      else if (req.body.type == 'member') {
+      else if (req.body.types == 'member') {
         admin.deleteMember(req, json_object);
       }
       }
     if(req.body.admin == 'update'){
-      if(req.body.type == 'place'){
+      if(req.body.types == 'place'){
         admin.updatePlaceToMongo(req, json_object);
       }
-      else if (req.body.type == 'trans') {
+      else if (req.body.types == 'trans') {
         admin.updateTransportation(req, json_object);
       }
 
