@@ -452,6 +452,25 @@ app.post(`/contactus`, (req, res) => {
 	//res.status(404).send('File not found');
 //}
 
+//connect API
+var googleMapsClient = require('@google/maps').createClient({
+  key: 'AIzaSyDGFpo_nftbMYEro-Ff0lkXNdQV7sEwKN8'
+});
+
+app.get(`/api`, (req, res) =>{
+var request = require('request');
+var url = 'https://maps.googleapis.com/maps/api/distancematrix/json?&origins='+req.query.origin+'&destinations='+req.query.destination+'&key=AIzaSyDGFpo_nftbMYEro-Ff0lkXNdQV7sEwKN8'
+request(url, function (error, response, body) {
+  console.log('error:', error); // Print the error if one occurred
+  console.log('statusCode:', response && response.statusCode); // Print the response status code if a response was received
+  // console.log('body:', body); // Print the HTML for the Google homepage.
+  body = JSON.parse(body);
+  console.log(body);
+  res.send(body);
+
+});
+});
+
 app.listen(1200, function() {
   console.log('Server running on port 1200...')
 });

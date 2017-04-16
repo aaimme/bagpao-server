@@ -2,10 +2,6 @@
 var assert = require('assert');
 let mongo = require('mongodb').MongoClient;
 let connection = 'mongodb://localhost:27017/bagpaotravel';
-var googleMapsClient = require('@google/maps').createClient({
-  key: 'AIzaSyAnz9lnXlaGYpDV_zpyrx9ecKgJDmlLOPI'
-});
-
 var isodate = require("isodate");
 var date;
 // Write current date as ISO 8601 string.
@@ -110,23 +106,3 @@ date = new Date();
        }
          });
    }
-	//connect API
-//   var googleMapsClient = require('@google/maps').createClient({
-//     key: 'AIzaSyDGFpo_nftbMYEro-Ff0lkXNdQV7sEwKN8'
-//   });
-//
-// 	//Geocode an address.
-// googleMapsClient.geocode({
-//   address: '1600 Amphitheatre Parkway, Mountain View, CA'
-// }, function(err, response) {
-//   if (!err) {
-//     console.log(response.json.results);
-//   }
-// });
-//
-// var request = require('request');
-// request('https://maps.googleapis.com/maps/api/distancematrix/json?&origins=req.param.orgin&destinations=req.param.orgin&key=AIzaSyDGFpo_nftbMYEro-Ff0lkXNdQV7sEwKN8', function (error, response, body) {
-//   console.log('error:', error); // Print the error if one occurred
-//   console.log('statusCode:', response && response.statusCode); // Print the response status code if a response was received
-//   console.log('body:', body); // Print the HTML for the Google homepage.
-// });
