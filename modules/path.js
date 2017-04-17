@@ -31,8 +31,8 @@ console.log(req);
     console.log(`picture located at ${file.path}`);
     mongo.connect(connection, (err, database) => {
 			database
-			.collection('place')
-			.update({name: 'วัดพระศรีรัตนศาสดาราม' },
+			.collection('member')
+			.update({username: 'test' },
 			{ $set : {
 			picture:`${file.path}`
 			}
