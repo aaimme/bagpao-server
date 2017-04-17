@@ -50,7 +50,8 @@ exports.checkUserSignup = function(db, req, callback) {
 			bio: '',
 			status: 'public',
 			favorite: [''],
-			mytrip: ['']
+			mytrip: [''],
+			picture: 'app/img/icon.png'
     });
     console.log('signup success');
   }

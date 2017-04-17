@@ -170,7 +170,7 @@ app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
     });
   }
 
-  exports.showTransporttation = function(callback) {
+  exports.showTransportation = function(callback) {
       mongo.connect(connection, (err, database) => {
         database
         .collection('transportation')

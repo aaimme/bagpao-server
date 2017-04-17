@@ -273,7 +273,7 @@ app.post(`/planning`, (req, res) =>{
            var results = []
            for(var i = 0; i < result.length; i++) {
            var result_obj = {
-               'placeid' : result[i].placeid,
+               'placeid' : result[i]._id,
                'name' : result[i].name,
                'picture' : result[i].picture,
                'city' : result[i].city,
@@ -300,7 +300,7 @@ app.post(`/planning`, (req, res) =>{
                var results = []
                for(var i = 0; i < result.length; i++) {
                var result_obj = {
-                 'placeid' : result[i].placeid,
+                 'placeid' : result[i]._id,
                  'name' : result[i].name,
                  'picture' : result[i].picture,
                  'city' : result[i].city,
@@ -353,7 +353,7 @@ app.post(`/admin`, (req, res) =>{
         admin.showProblem(json_object);
       }
       else if (req.body.types == 'trans') {
-        admin.showTransporttation(json_object);
+        admin.showTransportation(json_object);
       }
     }
     if(req.body.admin == 'delete'){
