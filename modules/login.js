@@ -46,11 +46,11 @@ exports.checkUserSignup = function(db, req, callback) {
 			displayname: '',
 			birthday: '',
 			currentcity: '',
-			interest: [''],
+			interest: [],
 			bio: '',
 			status: 'public',
-			favorite: [''],
-			mytrip: ['']
+			favorite: [],
+			mytrip: []
     });
     console.log('signup success');
   }
