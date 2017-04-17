@@ -20,16 +20,40 @@ date = new Date();
 							  daytrip:`${req.body.daytrip}`,
 		//						picture:`${req.body.picture}`,
 		//						place :`${req.body.place}`,
-		//					time[i] :`${req.body.time[i]}`,
-
+		//					time :`${req.body.time}`,
                 privacy:`${req.body.privacy}`,
 							  status:`active`,
 								like: 0,
 								share: 0,
                 datesubmit: date
                 }]);
-				   		 });
 
+								database.collection('trip').find({ name:`${req.body.name}`}).toArray(function(err, docs) {
+									if (err) {
+										console.log('error:', err);
+							  	}else{
+							  		if (docs.length == 1) {
+							  			  console.log('docs :', docs[0]._id);
+												var idtrip = docs[0]._id ;
+											database.collection('member').update({ username: `${req.body.username}`},
+						         {
+						           $push: {
+						                mytrip: {
+						                $each: [ {
+															$ref : "trip",
+			                				$id : idtrip,
+			                				$db : "bagpaotravel"
+														 }]
+						             }
+						           }
+						         }
+						        );
+							  	}else{
+							  			console.log('no update');
+							  		}
+							  	}
+								});
+								});
 						console.log('create trip success');
 		}
 

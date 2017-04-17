@@ -7,7 +7,7 @@ var oldUser;
 var member;
 exports.checksUser = function(req, callback) {
     mongo.connect(connection, req,(err, database) => {
-        database.collection('member').find({ user : req.body.user }).toArray(function(err, docs) {
+        database.collection('member').find({ username : req.body.user, mytrip :''}).toArray(function(err, docs) {
             if (err) {
               callback('cannot connect to database', undefined);
             } else{

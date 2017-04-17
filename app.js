@@ -31,6 +31,7 @@ var admin = require('./modules/admin');
 var member = require('./modules/member');
 var plan = require('./modules/planning');
 var show = require('./modules/show');
+var rec = require('./modules/recommendation');
 var path = require('./modules/path');
 
 //can recieve api from another domain
@@ -97,7 +98,6 @@ app.get ('/logout',   (req, res) => {
 });
 
 app.post(`/signup`, (req, res) => {
-	console.log(req.body);
 	mongo.connect(connection, (error, database) => {
 	login.checkUserSignup(database, req, (error, result) => {
     if (error) {
@@ -167,7 +167,6 @@ app.post(`/editprofile`, (req, res) => {
 
 app.post(`/places`, (req, res) => {
 
-	console.log(req.body);
     mongo.connect(connection, (error, database) => {
      search.searchPlace(database, req, (error, result) => {
      	if (error) {
@@ -195,7 +194,6 @@ app.post(`/places`, (req, res) => {
 });
 
 app.post(`/trips`, (req, res) => {
-	console.log(req.body);
     mongo.connect(connection, (error, database) => {
      search.searchTripAll(database, req, (error, result) => {
      	if (error) {
@@ -399,7 +397,6 @@ app.post(`/reviews`, (req, res) => {
 
 app.post(`/contactus`, (req, res) => {
 
-		console.log(req.body);
 		mongo.connect(connection, (error, database) => {
 		database
 		.collection('contactus')
@@ -460,32 +457,32 @@ var googleMapsClient = require('@google/maps').createClient({
 });
 
 app.get(`/apidistance`, (req, res) =>{
-var request = require('request');
-var url = 'https://maps.googleapis.com/maps/api/distancematrix/json?&origins='+req.query.origin+'&destinations='+req.query.destination+'&key=AIzaSyDGFpo_nftbMYEro-Ff0lkXNdQV7sEwKN8'
-request(url, function (error, response, body) {
-  console.log('error:', error); // Print the error if one occurred
-  console.log('statusCode:', response && response.statusCode); // Print the response status code if a response was received
-  // console.log('body:', body); // Print the HTML for the Google homepage.
-  body = JSON.parse(body);
-  console.log(body);
-  res.send(body);
+  var request = require('request');
+  var url = 'https://maps.googleapis.com/maps/api/distancematrix/json?&origins='+req.query.origin+'&destinations='+req.query.destination+'&key=AIzaSyDGFpo_nftbMYEro-Ff0lkXNdQV7sEwKN8'
+  request(url, function (error, response, body) {
+    console.log('error:', error); // Print the error if one occurred
+    console.log('statusCode:', response && response.statusCode); // Print the response status code if a response was received
+    // console.log('body:', body); // Print the HTML for the Google homepage.
+    body = JSON.parse(body);
+    console.log(body);
+    res.send(body);
 
-});
-});
+    });
+    });
 
 app.get(`/apigeo`, (req, res) =>{
-var request = require('request');
-var url = 'https://maps.googleapis.com/maps/api/geocode/json?address='+req.query.address+'&key=AIzaSyDGFpo_nftbMYEro-Ff0lkXNdQV7sEwKN8'
-request(url, function (error, response, body) {
-  console.log('error:', error); // Print the error if one occurred
-  console.log('statusCode:', response && response.statusCode); // Print the response status code if a response was received
-  // console.log('body:', body); // Print the HTML for the Google homepage.
-  body = JSON.parse(body);
-  console.log(body);
-  res.send(body);
+  var request = require('request');
+  var url = 'https://maps.googleapis.com/maps/api/geocode/json?address='+req.query.address+'&key=AIzaSyDGFpo_nftbMYEro-Ff0lkXNdQV7sEwKN8'
+  request(url, function (error, response, body) {
+    console.log('error:', error); // Print the error if one occurred
+    console.log('statusCode:', response && response.statusCode); // Print the response status code if a response was received
+    // console.log('body:', body); // Print the HTML for the Google homepage.
+    body = JSON.parse(body);
+    console.log(body);
+    res.send(body);
 
-});
-});
+    });
+  });
 
 //Geocode an address.
 // googleMapsClient.geocode({
