@@ -12,7 +12,7 @@ exports.searchPlace = function(db, req, callback) {
     {name:{ $regex: `${req.body.name}`,$options:"$i"}},
     {city:{ $regex: `${req.body.name}`,$options:"$i"}}
     ]}
-    ).toArray(function(err, docs) {
+    ).sort({name : 1}).toArray(function(err, docs) {
     if (err) {
       callback('cannot connect to database', undefined );
     } else{
@@ -35,7 +35,7 @@ exports.searchTripAll = function(db, req, callback) {
     { creator: { $regex: `${req.body.name}`,$options:"$i"}},
     { destination: { $regex: `${req.body.name}`,$options:"$i"}}
     ]}
-    ).toArray(function(err, docs) {
+    ).sort({name : 1}).toArray(function(err, docs) {
     if (err) {
       callback('cannot connect to database', undefined);
     } else{

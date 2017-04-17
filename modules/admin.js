@@ -40,7 +40,6 @@ app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
 }
 
   exports.addPlaceToMongo = function(req, callback) {
-		console.log(req.body);
 		mongo.connect(connection, (err, database) => {
 			if (err) {
   			callback('cannot connect to database', undefined);
@@ -66,7 +65,6 @@ app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
 	}
 
 	exports.updatePlaceToMongo = function(req, callback) {
-		console.log(req.body);
 		mongo.connect(connection, (err, database) => {
 			if (err) {
   			callback('cannot connect to database', undefined);

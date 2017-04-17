@@ -53,7 +53,7 @@ exports.recommendNewUser = function(req, callback) {
           		if (docs.length !== 0) {
           			callback(undefined, docs);
           	}else{
-          			callback('please input data',undefined);
+          			callback('no data',undefined);
           		}
           	}
           });

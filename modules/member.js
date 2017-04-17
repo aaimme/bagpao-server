@@ -49,3 +49,34 @@ exports.editProfile = function(req, callback) {
    		  }
 		});
 	}
+
+  exports.addFavorrite = function(req) {
+          mongo.connect(connection, (error, database) => {
+
+              database.collection('trip').find({ name:`${req.body.name}`}).toArray(function(err, docs) {
+                if (err) {
+                  console.log('error:', err);
+                }else{
+                  if (docs.length == 1) {
+                    var idtrip = docs[0]._id ;
+                    database.collection('member').update({ username: `${req.body.username}`},
+                   {
+                     $push: {
+                          favorite : {
+                          $each: [ {
+                            $ref : "trip",
+                            $id : idtrip,
+                            $db : "bagpaotravel"
+                           }]
+                       }
+                     }
+                   }
+                  );
+                }else{
+                    console.log('error');
+                  }
+                }
+              });
+              });
+          console.log('add favorite success');
+  }

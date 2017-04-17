@@ -31,7 +31,7 @@ var admin = require('./modules/admin');
 var member = require('./modules/member');
 var plan = require('./modules/planning');
 var show = require('./modules/show');
-var rec = require('./modules/recommendation');
+var algorithm = require('./modules/algorithm');
 var path = require('./modules/path');
 
 //can recieve api from another domain

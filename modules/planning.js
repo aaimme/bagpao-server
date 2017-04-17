@@ -33,8 +33,7 @@ date = new Date();
 										console.log('error:', err);
 							  	}else{
 							  		if (docs.length == 1) {
-							  			  console.log('docs :', docs[0]._id);
-												var idtrip = docs[0]._id ;
+							  			  var idtrip = docs[0]._id ;
 											database.collection('member').update({ username: `${req.body.username}`},
 						         {
 						           $push: {
