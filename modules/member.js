@@ -8,11 +8,11 @@ exports.findUser = function(db, req, callback) {
   // Get the documents collection
  	 var collection = db.collection('member');
   // Find some documents
-  collection.find({username:{ $regex: `${req.body.name}`,$options:"$i"}}).toArray(function(err, docs) {
+  collection.find({username:{ $regex: `${req.body.username}`,$options:"$i"}}).toArray(function(err, docs) {
   	if (err) {
   		callback('cannot connect to database', undefined);
   	}else{
-  		if (docs.length === 1) {
+  		if (docs.length !== 0) {
   			callback(undefined, docs);
   	}else{
   			callback('cannot found data',undefined);
@@ -20,8 +20,6 @@ exports.findUser = function(db, req, callback) {
   	}
   });
 }
-
-
 
 
 exports.editProfile = function(req, callback) {
