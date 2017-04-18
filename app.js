@@ -391,7 +391,6 @@ app.post(`/share`, (req, res) => {
   mongo.connect(connection, (err, database) => {
       database.collection('trip').update({ name : req.body.name},{ $inc: { share: 1 } });
     });
-    console.log("like");
 });
 
 app.post(`/reviews`, (req, res) => {
@@ -440,9 +439,9 @@ app.get(`/apidistance`, (req, res) =>{
     body = JSON.parse(body);
     console.log(body);
     res.send(body);
+    });
+    });
 
-    });
-    });
 
 app.get(`/apigeo`, (req, res) =>{
   var request = require('request');

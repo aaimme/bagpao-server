@@ -8,7 +8,17 @@ var date;
 date = new Date();
 
 		exports.end = function(req) {
-						console.log(req.body));
+			var results = req.body.place;
+			 result = [];
+			for(var i = 0; i < result.length; i++) {
+			var result_obj = {
+					'day' : results[i].day,
+					'id' : results[i].placeid,
+			}
+			result[i] = result_obj
+		}
+		console.log(result);
+						// console.log(req.body.place);
 						mongo.connect(connection, (error, database) => {
 						database
 						.collection('trip')
@@ -18,9 +28,8 @@ date = new Date();
                 origin:`${req.body.origin}`,
                 destination:`${req.body.destination}`,
 							  daytrip:`${req.body.daytrip}`,
-		//						picture:`${req.body.picture}`,
-								place : [{day : req.body.place.day} , { placeid :req.body.place.placeid}],
-		//					time :`${req.body.time}`,
+		//					picture:`${req.body.picture}`,
+								place : [{day : result[i].days , placeid : result[i].placeid}],
                 privacy:`${req.body.privacy}`,
 							  status:`active`,
 								like: 0,
