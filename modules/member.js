@@ -8,7 +8,7 @@ exports.findUser = function(db, req, callback) {
   // Get the documents collection
  	 var collection = db.collection('member');
   // Find some documents
-  collection.find({username:`${req.body.username}`}).toArray(function(err, docs) {
+  collection.find({username:{ $regex: `${req.body.name}`,$options:"$i"}}).toArray(function(err, docs) {
   	if (err) {
   		callback('cannot connect to database', undefined);
   	}else{
@@ -72,11 +72,15 @@ exports.editProfile = function(req, callback) {
                      }
                    }
                   );
+
+
                 }else{
                     console.log('error');
                   }
                 }
               });
+
+
               });
           console.log('add favorite success');
   }
