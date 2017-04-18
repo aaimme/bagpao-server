@@ -21,9 +21,6 @@ exports.findUser = function(db, req, callback) {
   });
 }
 
-
-
-
 exports.editProfile = function(req, callback) {
     var birthday = new Date();
     console.log(req.body);

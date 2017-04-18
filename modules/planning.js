@@ -8,7 +8,7 @@ var date;
 date = new Date();
 
 		exports.end = function(req) {
-						console.log(req.body);
+						console.log(req.body.place);
 						mongo.connect(connection, (error, database) => {
 						database
 						.collection('trip')
@@ -19,7 +19,7 @@ date = new Date();
                 destination:`${req.body.destination}`,
 							  daytrip:`${req.body.daytrip}`,
 		//						picture:`${req.body.picture}`,
-		//						place :`${req.body.place}`,
+								place :`${req.body.place}`,
 		//					time :`${req.body.time}`,
                 privacy:`${req.body.privacy}`,
 							  status:`active`,
