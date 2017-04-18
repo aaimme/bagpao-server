@@ -3,13 +3,14 @@ var assert = require('assert');
 let mongo = require('mongodb').MongoClient;
 let connection = 'mongodb://localhost:27017/bagpaotravel';
 var isodate = require("isodate");
+var ObjectId = require('mongodb').ObjectID;
 var date;
 // Write current date as ISO 8601 string.
 date = new Date();
 
 		exports.end = function(req) {
-						console.log(req.body);
-						mongo.connect(connection, (error, database) => {
+			var results = req.body.place;
+			mongo.connect(connection, (error, database) => {
 						database
 						.collection('trip')
 						.insert([{
@@ -18,15 +19,25 @@ date = new Date();
                 origin:`${req.body.origin}`,
                 destination:`${req.body.destination}`,
 							  daytrip:`${req.body.daytrip}`,
-		//						picture:`${req.body.picture}`,
-								place : [{day : req.body.place[0].day , placeid :req.body.place[0].placeid}],
-		//					time :`${req.body.time}`,
+								picture:'',
+								place : [],
                 privacy:`${req.body.privacy}`,
 							  status:`active`,
 								like: 0,
 								share: 0,
                 datesubmit: date
                 }]);
+
+								for(var i = 0; i < results.length; i++) {
+									var result_obj = {
+											'days': results[i].days,
+											'placeid': results[i].placeid,
+									}
+									results[i] = result_obj
+									console.log(i,results[i]);
+									database.collection('trip').update({ name:`${req.body.name}`},
+												{	$push: {place: {	$each: [results[i]]	}}});
+									}
 
 								database.collection('trip').find({ name:`${req.body.name}`}).toArray(function(err, docs) {
 									if (err) {
@@ -53,8 +64,10 @@ date = new Date();
 							  	}
 								});
 								});
+
 						console.log('create trip success');
-		}
+
+	}
 
 		exports.transportation = function(db, req, callback) {
 	 			 var collection = db.collection('transportation');
