@@ -19,7 +19,7 @@ date = new Date();
                 destination:`${req.body.destination}`,
 							  daytrip:`${req.body.daytrip}`,
 		//						picture:`${req.body.picture}`,
-								place : [{day : req.body.place.day} , { placeid :req.body.place.placeid}],
+								place : [{day : req.body.place[0].day , placeid :req.body.place[0].placeid}],
 		//					time :`${req.body.time}`,
                 privacy:`${req.body.privacy}`,
 							  status:`active`,

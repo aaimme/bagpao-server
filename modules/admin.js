@@ -72,7 +72,7 @@ app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
   			else {
               callback(undefined,'update data success');
               database.collection('place').update({ name : `${req.body.name}`},
-            { $set : [{
+            { $set : {
               name : req.body.name,
               zone: `${req.body.zone}`,
               contact: `${req.body.contact}`,
@@ -82,7 +82,7 @@ app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
               category: `${req.body.category}`,
               picture: `${req.body.picture}`,
               description: `${req.body.description}`
-              }]
+              }
             });
             }
           });
