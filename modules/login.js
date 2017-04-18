@@ -40,9 +40,9 @@ exports.checkUserSignup = function(db, req, callback) {
     if (result.length == 0) {
       callback(undefined,'success');
       collection.insert({
-      username:     req.body.username,
+      username: req.body.username,
       password: encrypt(req.body.password),
-      email:    req.body.email,
+      email: req.body.email,
 			displayname: '',
 			birthday: '',
 			currentcity: '',
