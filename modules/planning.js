@@ -8,6 +8,7 @@ var date;
 date = new Date();
 
 		exports.end = function(req) {
+
 			var results = req.body.place;
 			 result = [];
 			for(var i = 0; i < result.length; i++) {
@@ -17,8 +18,7 @@ date = new Date();
 			}
 			result[i] = result_obj
 		}
-		console.log(result);
-						// console.log(req.body.place);
+
 						mongo.connect(connection, (error, database) => {
 						database
 						.collection('trip')
