@@ -70,20 +70,20 @@ app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
   			callback('cannot connect to database', undefined);
   			}
   			else {
+          console.log(req.body.name);
               callback(undefined,'update data success');
-              database.collection('place').update({ name : `${req.body.name}`},
-
+              database.collection('place').update({ name : req.body.name},
                 { $set: {
-                  contact: `${req.body.contact}`,
-                  city: `${req.body.city}`,
-                  latitude: `${req.body.latitude}`,
-                  longitude: `${req.body.longitude}`,
-                  category: `${req.body.category}`,
-                  picture: `${req.body.picture}`,
-                  description: `${req.body.description}`
-                      }
-                }
-            );
+                    contact: `${req.body.contact}`,
+                    city: `${req.body.city}`,
+                    latitude: `${req.body.latitude}`,
+                    longitude: `${req.body.longitude}`,
+                    category: `${req.body.category}`,
+                    picture: `${req.body.picture}`,
+                    description: `${req.body.description}`
+                    }
+                  }
+                );
             }
           });
           console.log('update data success');
