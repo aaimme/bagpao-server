@@ -8,7 +8,7 @@ var date;
 date = new Date();
 
 		exports.end = function(req) {
-						console.log(req.body));
+						console.log(req.body);
 						mongo.connect(connection, (error, database) => {
 						database
 						.collection('trip')
