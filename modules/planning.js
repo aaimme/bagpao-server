@@ -31,43 +31,16 @@ date = new Date();
 								for(var i = 0; i < results.length; i++) {
 									var result_obj = {
 											'days': results[i].days,
-											'placeid': results[i].placeid,
+											'placeid': ObjectId(results[i].placeid),
 									}
 									results[i] = result_obj
 									console.log(i,results[i]);
 									database.collection('trip').update({ name:`${req.body.name}`},
 												{	$push: {place: {	$each: [results[i]]	}}});
 									}
-
-								database.collection('trip').find({ name:`${req.body.name}`}).toArray(function(err, docs) {
-									if (err) {
-										console.log('error:', err);
-							  	}else{
-							  		if (docs.length == 1) {
-							  			  var idtrip = docs[0]._id ;
-											database.collection('member').update({ username: `${req.body.username}`},
-						         {
-						           $push: {
-						                mytrip: {
-						                $each: [ {
-															$ref : "trip",
-			                				$id : idtrip,
-			                				$db : "bagpaotravel"
-														 }]
-						             }
-						           }
-						         }
-						        );
-							  	}else{
-							  			console.log('no update');
-							  		}
-							  	}
-								});
-								});
-
+									});
 						console.log('create trip success');
-
-	}
+}
 
 		exports.transportation = function(db, req, callback) {
 	 			 var collection = db.collection('transportation');

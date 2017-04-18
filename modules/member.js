@@ -49,7 +49,6 @@ exports.editProfile = function(req, callback) {
 
   exports.addFavorrite = function(req) {
           mongo.connect(connection, (error, database) => {
-
               database.collection('trip').find({ name:`${req.body.name}`}).toArray(function(err, docs) {
                 if (err) {
                   console.log('error:', err);
@@ -69,8 +68,6 @@ exports.editProfile = function(req, callback) {
                      }
                    }
                   );
-
-
                 }else{
                     console.log('error');
                   }
@@ -80,4 +77,52 @@ exports.editProfile = function(req, callback) {
 
               });
           console.log('add favorite success');
+  }
+
+  exports.myTrips = function(db, req, callback) {
+    // Find some documents
+    db.collection('trip').find({creator:`${req.body.username}`,status:'active'}).toArray(function(err, docs) {
+    	if (err) {
+    		callback('cannot connect to database', undefined);
+    	}else{
+    		if (docs.length !== 0) {
+    			callback(undefined, docs);
+    	}else{
+    			callback('cannot found data',undefined);
+    		}
+    	}
+    });
+  }
+
+  exports.myDraft = function(db, req, callback) {
+    // Find some documents
+    db.collection('trip').find({creator:`${req.body.username}`,status:'notactive'}).toArray(function(err, docs) {
+    	if (err) {
+    		callback('cannot connect to database', undefined);
+    	}else{
+    		if (docs.length !== 0) {
+    			callback(undefined, docs);
+    	}else{
+    			callback('cannot found data',undefined);
+    		}
+    	}
+    });
+  }
+
+  exports.myFavorite = function(db, req, callback) {
+  // Find some documents
+    db.collection('member').find({username:`${req.body.username}`}).toArray(function(err, docs1) {
+    	if (err) {
+    		callback('cannot connect to database', undefined);
+    	}else{
+    		if (docs1.length !== 0) {
+            var tripid = docs1._id
+            db.collection('trip').find({_id : tripid}).toArray(function(err, docs2) {
+              callback(undefined, docs2);
+            });
+    	}else{
+    			callback('cannot found data',undefined);
+    		}
+    	}
+    });
   }

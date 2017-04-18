@@ -72,7 +72,6 @@ app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
   			else {
               callback(undefined,'update data success');
               database.collection('place').update({ name : `${req.body.name}`},
-
                 { $set: {
                   contact: `${req.body.contact}`,
                   city: `${req.body.city}`,
@@ -84,6 +83,17 @@ app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
                       }
                 }
             );
+            var results = req.body.name;
+            for(var i = 0; i < results.length; i++) {
+              var result_obj = {
+                  'days': results[i].days,
+                  'placeid': results[i].placeid,
+              }
+              results[i] = result_obj
+              console.log(i,results[i]);
+              database.collection('trip').update({ name:`${req.body.name}`},
+                    {	$push: {place: {	$each: [results[i]]	}}});
+              }
             }
           });
           console.log('update data success');
