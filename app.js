@@ -315,7 +315,7 @@ app.post(`/planning`, (req, res) =>{
 });
 
 app.post(`/admin`, (req, res) =>{
-    console.log(req.body.admin);
+    console.log('admin :',req.body.admin);
     var json_object = (error, result) => {
     if (error) {
        console.log(error);
@@ -457,12 +457,11 @@ app.get(`/apigeo`, (req, res) =>{
     });
   });
 
-
 //image
 app.post('/upload', function(req, res){
     var name = req.body.username;
     var form = new formidable.IncomingForm();
-    res.send(path.uploadForm(form , name));
+    path.uploadForm(form , name);
 });
 
 app.listen(1200, function() {

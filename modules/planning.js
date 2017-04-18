@@ -19,7 +19,7 @@ date = new Date();
                 origin:`${req.body.origin}`,
                 destination:`${req.body.destination}`,
 							  daytrip:`${req.body.daytrip}`,
-		//					picture:`${req.body.picture}`,
+								picture:'',
 								place : [],
                 privacy:`${req.body.privacy}`,
 							  status:`active`,
@@ -38,8 +38,6 @@ date = new Date();
 									database.collection('trip').update({ name:`${req.body.name}`},
 												{	$push: {place: {	$each: [results[i]]	}}});
 									}
-
-
 
 								database.collection('trip').find({ name:`${req.body.name}`}).toArray(function(err, docs) {
 									if (err) {
