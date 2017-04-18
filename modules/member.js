@@ -8,11 +8,11 @@ exports.findUser = function(db, req, callback) {
   // Get the documents collection
  	 var collection = db.collection('member');
   // Find some documents
-  collection.find({username:`${req.body.username}`}).toArray(function(err, docs) {
+  collection.find({username:{ $regex: `${req.body.username}`,$options:"$i"}}).toArray(function(err, docs) {
   	if (err) {
   		callback('cannot connect to database', undefined);
   	}else{
-  		if (docs.length === 1) {
+  		if (docs.length !== 0) {
   			callback(undefined, docs);
   	}else{
   			callback('cannot found data',undefined);
@@ -69,11 +69,15 @@ exports.editProfile = function(req, callback) {
                      }
                    }
                   );
+
+
                 }else{
                     console.log('error');
                   }
                 }
               });
+
+
               });
           console.log('add favorite success');
   }
