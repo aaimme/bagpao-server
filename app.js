@@ -49,7 +49,7 @@ app.post(`/show`, (req, res) =>{
       'message' : `${error}`
     }
     res.json(error_obj);
-  }
+    }
   else {
     res.json(result);
   }
@@ -76,12 +76,20 @@ app.post(`/show`, (req, res) =>{
     else if (req.body.do == "mem"){
       mongo.connect(connection, (error, database) => {
         member.findUser(database ,req , showtype);
-
+        // if(mytrip){
+        //   member.myTrip(database ,req , showtype);
+        // }
+        // if(mydraft){
+        //   member.myDraft(database ,req , showtype);
+        // }
+        // if(myFavorite){
+        //   member.myFavorite(database ,req , showtype);
+        // }
       });
    }
    else if (req.body.do == "detailtrip"){
      mongo.connect(connection, (error, database) => {
-       search.searchTripAll(database, req, showtype);
+       show.searchTripAll(database, req, showtype);
      });
   }
   else if (req.body.do == "detailplace"){
@@ -134,9 +142,22 @@ app.post(`/login`, (req, res) => {
      		'interest': result[0].interest,
         'bio': result[0].bio,
         'picture': result[0].picture,
-        'mytrip': result[0].mytrip
      }
       res.json(result_obj);
+      // if(mytrip){
+      //   member.myTrip(database ,req ,  (error, result) => {
+      //     if (error) {
+      //       console.log(error);
+      //       var error_obj = {
+      //         'message' : `${error}`
+      //       }
+      //       res.json(error_obj);
+      //       }
+      //     else {
+      //       res.json(result);
+      //       }
+      //     });
+      // }
     }
   });
 	});
