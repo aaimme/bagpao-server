@@ -2,15 +2,18 @@
 var assert = require('assert');
 var express = require('express');
 var app = express();
+var path = require('path');
 let mongo = require('mongodb').MongoClient;
 let connection = 'mongodb://localhost:27017/bagpaotravel';
+var formidable = require('formidable');
+var fs = require('fs');
 let body    = require('body-parser');
 app.use( body.json() );       // to support JSON-encoded bodies
 app.use(body.urlencoded({     // to support URL-encoded bodies
   extended: true
 }));
 
-var mandrill = require('node-mandrill')('wIonE-z4VA6qXMXWJxRHrQ');  // sent email
+app.use(express.static(path.join(__dirname, 'modules/uploads')));
 
 const jwt = require('express-jwt');
 const authCheck = jwt({
@@ -18,12 +21,8 @@ const authCheck = jwt({
   audience: '39OEQrij8jRT7q2s7SxGPJzxzp64ZcAx'
 });
 
-
-
 var isodate = require("isodate");
-var date;
-// Write current date as ISO 8601 string.
-date = new Date();
+var date = new Date();
 
 var search = require('./modules/search');
 var login = require('./modules/login');
@@ -77,6 +76,7 @@ app.post(`/show`, (req, res) =>{
     else if (req.body.do == "mem"){
       mongo.connect(connection, (error, database) => {
         member.findUser(database ,req , showtype);
+
       });
    }
    else if (req.body.do == "detailtrip"){
@@ -90,11 +90,6 @@ app.post(`/show`, (req, res) =>{
     });
  }
 
-});
-
-app.get ('/logout',   (req, res) => {
-	delete tokens[req.cookies.token];
-	console.log('logout');
 });
 
 app.post(`/signup`, (req, res) => {
@@ -385,6 +380,20 @@ app.post(`/admin`, (req, res) =>{
 
 });
 
+app.post(`/like`, (req, res) => {
+  mongo.connect(connection, (err, database) => {
+      database.collection('trip').update({ name : req.body.name},{ $inc: { like: 1 } });
+    });
+    console.log("like");
+});
+
+app.post(`/share`, (req, res) => {
+  mongo.connect(connection, (err, database) => {
+      database.collection('trip').update({ name : req.body.name},{ $inc: { share: 1 } });
+    });
+    console.log("like");
+});
+
 app.post(`/reviews`, (req, res) => {
 		mongo.connect(connection, (error, database) => {
       plan.review(database, req);
@@ -415,41 +424,6 @@ app.post(`/contactus`, (req, res) => {
 
 });
 
-// define your own email api which points to your server.
-//
-// app.post( '/api/sendemail/', function(req, res){
-//
-//     var _name = req.body.name;
-//     var _email = req.body.email;
-//     var _subject = req.body.subject;
-//     var _message = req.body.message;
-//     console.log(req.body);
-//     //implement your spam protection or checks.
-//
-//     sendEmail ( _name, _email, _subject, _message );
-//
-// });
-//
-// function sendEmail ( _name, _email, _subject, _message) {
-//     mandrill('/messages/send', {
-//         message: {
-//             to: [{email: _email , name: _name}],
-//             from_email: 'noreply@yourdomain.com',
-//             subject: _subject,
-//             text: _message
-//         }
-//     }, function(error, response){
-//         if (error) console.log( error );
-//         else console.log(response);
-//     });
-// }
-//
-
-//image
-//app.use(ErrorHandler);
-//function ErrorHandler(req, res, next) {
-	//res.status(404).send('File not found');
-//}
 
 //connect API
 var googleMapsClient = require('@google/maps').createClient({
@@ -484,14 +458,13 @@ app.get(`/apigeo`, (req, res) =>{
     });
   });
 
-//Geocode an address.
-// googleMapsClient.geocode({
-// address: 'KMITL'
-// }, function(err, response) {
-// if (!err) {
-//   console.log(response.json.results);
-// }
-// });
+
+//image
+app.post('/upload', function(req, res){
+    var name = req.body.username;
+    var form = new formidable.IncomingForm();
+    res.send(path.uploadForm(form , name));
+});
 
 app.listen(1200, function() {
   console.log('Server running on port 1200...')
