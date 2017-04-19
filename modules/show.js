@@ -147,16 +147,18 @@ exports.searchTripDetail = function(db, req, callback) {
       callback('cannot connect to database', undefined);
     } else{
       if (docs.length !== 0) {
+        console.log(docs[0].place);
         callback(undefined, docs);
-          console.log(docs[0].place);
         for(var i = 0; i < docs[0].place.length; i++) {
+        var days = docs[0].place[i].days
         var place_ID = ObjectId(docs[0].place[i].placeid);
-        console.log("id",i,place_ID);
+        console.log("id",days,place_ID);
           db.collection('place').find({ _id : ObjectId(place_ID)}).toArray(function(err, docs2) {
-          //     callback(undefined, docs2);
+              // callback(undefined, docs2);
               console.log(docs2);
+              console.log("-------------------------------------------");
           });
-        }
+        } 
       } else{
            callback('cannot found this trip',undefined);
           }
