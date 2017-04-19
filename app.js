@@ -82,14 +82,14 @@ app.post(`/show`, (req, res) =>{
         // if(mydraft){
         //   member.myDraft(database ,req , showtype);
         // }
-        // if(myFavorite){
+        // if(myfavorite){
         //   member.myFavorite(database ,req , showtype);
         // }
       });
    }
    else if (req.body.do == "detailtrip"){
      mongo.connect(connection, (error, database) => {
-       show.searchTripAll(database, req, showtype);
+       show.searchTripDetail(database, req, showtype);
      });
   }
   else if (req.body.do == "detailplace"){
@@ -411,6 +411,12 @@ app.post(`/like`, (req, res) => {
 app.post(`/share`, (req, res) => {
   mongo.connect(connection, (err, database) => {
       database.collection('trip').update({ name : req.body.name},{ $inc: { share: 1 } });
+    });
+});
+
+app.post(`/view`, (req, res) => {
+  mongo.connect(connection, (err, database) => {
+      database.collection('place').update({ name : req.body.name},{ $inc: { view: 1 } });
     });
 });
 

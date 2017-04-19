@@ -2,6 +2,7 @@
 var assert = require('assert');
 let mongo = require('mongodb').MongoClient;
 let connection = 'mongodb://localhost:27017/bagpaotravel';
+var ObjectId = require('mongodb').ObjectID;
 
 exports.placePopularHome = function(callback) {
     mongo.connect(connection, (err, database) => {
@@ -141,21 +142,22 @@ exports.tripsRecent = function(callback) {
 }
 
 exports.searchTripDetail = function(db, req, callback) {
-  // Get the documents collection
-  var collection = db.collection('trip');
-  // Find by name
-  collection.find({$or : [
-    { name:  `${req.body.name}`},
-    { creator: `${req.body.name}`},
-    
-    ]}
-    ).sort({name : 1}).toArray(function(err, docs) {
+  db.collection('trip').find({ name:  `${req.body.name}`}).toArray(function(err, docs) {
     if (err) {
       callback('cannot connect to database', undefined);
     } else{
       if (docs.length !== 0) {
         callback(undefined, docs);
-    } else{
+          console.log(docs[0].place);
+        for(var i = 0; i < docs[0].place.length; i++) {
+        var place_ID = ObjectId(docs[0].place[i].placeid);
+        console.log("id",i,place_ID);
+          db.collection('place').find({ _id : ObjectId(place_ID)}).toArray(function(err, docs2) {
+          //     callback(undefined, docs2);
+              console.log(docs2);
+          });
+        }
+      } else{
            callback('cannot found this trip',undefined);
           }
     }
