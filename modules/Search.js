@@ -6,6 +6,7 @@ let connection = 'mongodb://localhost:27017/bagpaotravel';
 
 exports.searchPlace = function(db, req, callback) {
   // Get the documents collection
+  console.log(req.body);
   var collection = db.collection('place');
   // Find by name
   collection.find({$or : [
