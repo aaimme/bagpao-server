@@ -25,6 +25,7 @@ date = new Date();
 							  status:`active`,
 								like: 0,
 								share: 0,
+								favorite: [],
                 datesubmit: date
                 }]);
 
@@ -34,7 +35,6 @@ date = new Date();
 											'placeid': ObjectId(results[i].placeid),
 									}
 									results[i] = result_obj
-									console.log(i,results[i]);
 									database.collection('trip').update({ name:`${req.body.name}`},
 												{	$push: {place: {	$each: [results[i]]	}}});
 									}
