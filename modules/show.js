@@ -3,6 +3,7 @@ var assert = require('assert');
 let mongo = require('mongodb').MongoClient;
 let connection = 'mongodb://localhost:27017/bagpaotravel';
 var ObjectId = require('mongodb').ObjectID;
+const async = require('async');
 
 exports.placePopularHome = function(callback) {
     mongo.connect(connection, (err, database) => {
@@ -141,27 +142,82 @@ exports.tripsRecent = function(callback) {
 });
 }
 
-exports.searchTripDetail = function(db, req, callback) {
-  db.collection('trip').find({ name:  `${req.body.name}`}).toArray(function(err, docs) {
+
+exports.searchTripDetail = function(db, req, _callback) {
+  db.collection('trip').find({
+    name:  `${req.body.name}`
+  }).toArray(function(err, docs) {
     if (err) {
       callback('cannot connect to database', undefined);
-    } else{
+    }else{
+
       if (docs.length !== 0) {
-        console.log(docs[0].place);
-        callback(undefined, docs);
-        for(var i = 0; i < docs[0].place.length; i++) {
-        var days = docs[0].place[i].days
-        var place_ID = ObjectId(docs[0].place[i].placeid);
-        console.log("id",days,place_ID);
-          db.collection('place').find({ _id : ObjectId(place_ID)}).toArray(function(err, docs2) {
-              // callback(undefined, docs2);
-              console.log(docs2);
-              console.log("-------------------------------------------");
-          });
-        } 
+        var array_result = [{
+          name: docs[0].name,
+          creator: docs[0].creator,
+          origin: docs[0].origin,
+          destination: docs[0].destination,
+          daytrip: docs[0].daytrip,
+          picture: docs[0].picture,
+          privacy: docs[0].privacy,
+          status: docs[0].status,
+          like: docs[0].like,
+          share: docs[0].share,
+          favorite: docs[0].favorite,
+          datesubmit: docs[0].datesubmit
+        }];
+
+        getAllPlaceDetail(docs[0].place, db, (err, result) => {
+          if (err) {
+            array_result[0].place = [];
+            console.log(`getAllPlaceDetail error message : ${err}`);
+            _callback(undefined, array_result);
+          }else{
+            array_result[0].place = result;
+            _callback(undefined, array_result);
+          }
+
+        });
+
       } else{
            callback('cannot found this trip',undefined);
-          }
+      }
     }
     });
+   }
+
+   var getPlaceDetail = (placeId, db, callback) => {
+     var find_obj = {
+       _id : ObjectId(placeId)
+     };
+     db.collection('place').find(find_obj).toArray((err, docs) => {
+       if (err) {
+         callback(err, undefined);
+       }else{
+         callback(undefined, docs);
+       }
+     });
+   }
+
+   var getAllPlaceDetail = (place_array, db, callback) => {
+     if (place_array.length > 0) {
+       var array_place_detail = [];
+       async.forEachOf(place_array, (value, key) => {
+         var temp_obj = {};
+         getPlaceDetail(value.placeid, db, (err,result) => {
+           temp_obj = {
+             name: result[0].name,
+             city: result[0].city,
+             picture: result[0].picture
+           }
+           array_place_detail.push(temp_obj);
+           if (key+1 == place_array.length) {
+             callback(undefined, array_place_detail);
+           }
+         });
+       });
+     }else{
+       callback('Error, place not found.', undefined);
+     }
+
    }
