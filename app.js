@@ -143,20 +143,6 @@ app.post(`/login`, (req, res) => {
         'picture': result[0].picture,
      }
       res.json(result_obj);
-      // if(mytrip){
-      //   member.myTrip(database ,req ,  (error, result) => {
-      //     if (error) {
-      //       console.log(error);
-      //       var error_obj = {
-      //         'message' : `${error}`
-      //       }
-      //       res.json(error_obj);
-      //       }
-      //     else {
-      //       res.json(result);
-      //       }
-      //     });
-      // }
     }
   });
 	});
