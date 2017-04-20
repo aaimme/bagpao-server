@@ -421,10 +421,7 @@ app.post(`/favorite`, (req, res) => {
           }
           else {
             console.log(result);
-           	var result_obj = {
-           		'message' : result
-           }
-              res.json(result_obj);
+              res.json(result);
         	}
         });
       });
@@ -442,10 +439,7 @@ app.post(`/myfavorite`, (req, res) => {
         }
         else {
           console.log(result);
-         	var result_obj = {
-         		'message' : result
-         }
-               	res.json(result_obj);
+          res.json(result);
       	}
       });
     });
