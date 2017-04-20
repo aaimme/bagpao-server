@@ -206,6 +206,7 @@ exports.searchTripDetail = function(db, req, _callback) {
          var temp_obj = {};
          getPlaceDetail(value.placeid, db, (err,result) => {
            temp_obj = {
+             days: value.days,
              name: result[0].name,
              city: result[0].city,
              picture: result[0].picture
