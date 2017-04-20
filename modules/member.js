@@ -47,7 +47,7 @@ exports.editProfile = function(req, callback) {
 		});
 	}
 
-  exports.addFavorrite = function(req) {
+  exports.addFavorite = function(req) {
           mongo.connect(connection, (error, database) => {
             database.collection('trip').update({ name:`${req.body.name}`},
                 {	$push: {favorite: `${req.body.username}`}});

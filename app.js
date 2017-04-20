@@ -15,12 +15,6 @@ app.use(body.urlencoded({     // to support URL-encoded bodies
 
 app.use(express.static(path.join(__dirname, 'modules/uploads')));
 
-const jwt = require('express-jwt');
-const authCheck = jwt({
-  secret: 'k7w9mXU_l1KzIHon0kw1o5T3fegHny2iSeeZ-oPcr-C52wuPX8ALMCz_3u4Kbw-M',
-  audience: '39OEQrij8jRT7q2s7SxGPJzxzp64ZcAx'
-});
-
 var isodate = require("isodate");
 var date = new Date();
 
@@ -419,6 +413,10 @@ app.post(`/view`, (req, res) => {
       database.collection('place').update({ name : req.body.name},{ $inc: { view: 1 } });
     });
 });
+
+app.post(`/favorite`, (req, res) => {
+      member.addFavorite(req);
+  });
 
 app.post(`/reviews`, (req, res) => {
 		mongo.connect(connection, (error, database) => {
