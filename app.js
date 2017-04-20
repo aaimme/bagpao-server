@@ -83,9 +83,14 @@ app.post(`/show`, (req, res) =>{
    }
    else if (req.body.do == "detailtrip"){
      mongo.connect(connection, (error, database) => {
-       show.searchTripDetail(database, req, showtype);
+       search.searchTripAll(database, req, showtype);
      });
   }
+  else if (req.body.do == "showdetailtrip"){
+    mongo.connect(connection, (error, database) => {
+      show.searchTripDetail(database, req, showtype);
+    });
+ }
   else if (req.body.do == "detailplace"){
     mongo.connect(connection, (error, database) => {
       search.searchPlace(database, req, showtype);
