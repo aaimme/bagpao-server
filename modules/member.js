@@ -22,7 +22,7 @@ exports.findUser = function(db, req, callback) {
 }
 
 exports.editProfile = function(req, callback) {
-    var birthday = new Date();
+    var results = req.body.interest;
     console.log(req.body);
 		mongo.connect(connection, (err, database) => {
 			if (err) {
@@ -30,22 +30,30 @@ exports.editProfile = function(req, callback) {
   			}
   			else {
   			callback(undefined, 'edit success');
-  			database
-			.collection('member')
+  			database.collection('member')
 			.update({username:`${req.body.username}` },
 			{ $set : {
 			password:`${req.body.password}`,
 			email:`${req.body.email}`,
-			displayname:`${req.body.displayname}`,
-			birthday: birthday,
+			birthday: `${req.body.birthday}`,
 			currentcity:`${req.body.currentcity}`,
-			interest:`${req.body.interest}`,
-			bio:`${req.body.bio}`
+			interest: [],
+			bio:`${req.body.bio}`,
+      status: `${req.body.status}`
 			}
 			});
-   		  }
-		});
-	}
+
+      for(var i = 0; i < results.length; i++) {
+        var result_obj = results[i]
+        results[i] = result_obj
+        database.collection('member').update({ username:`${req.body.username}`},
+              {	$push: {interest: {	$each: [results[i]]	}}});
+        }
+      }
+      console.log("success");
+    });
+   	}
+
 
   exports.addFavorite = function(req) {
           mongo.connect(connection, (error, database) => {
@@ -57,7 +65,7 @@ exports.editProfile = function(req, callback) {
 
   exports.myTrips = function(db, req, callback) {
     // Find some documents
-    db.collection('trip').find({creator:`${req.body.username}`,status:'active'}).toArray(function(err, docs) {
+    db.collection('trip').find({creator:`${req.body.username}`}).toArray(function(err, docs) {
     	if (err) {
     		callback('cannot connect to database', undefined);
     	}else{

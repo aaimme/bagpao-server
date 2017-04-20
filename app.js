@@ -423,6 +423,49 @@ app.post(`/favorite`, (req, res) => {
       member.addFavorite(req);
   });
 
+  app.post(`/mytrips`, (req, res) => {
+  		mongo.connect(connection, (error, database) => {
+        member.myTrips(database, req, (error, result) => {
+          if (error) {
+            console.log(error);
+            var error_obj = {
+              'message' : `${error}`
+            }
+            res.json(error_obj);
+          }
+          else {
+            console.log(result);
+           	var result_obj = {
+           		'message' : result
+           }
+              res.json(result_obj);
+        	}
+        });
+      });
+    });
+
+app.post(`/myfavorite`, (req, res) => {
+		mongo.connect(connection, (error, database) => {
+      member.myFavorite(database, req, (error, result) => {
+        if (error) {
+          console.log(error);
+          var error_obj = {
+            'message' : `${error}`
+          }
+          res.json(error_obj);
+        }
+        else {
+          console.log(result);
+         	var result_obj = {
+         		'message' : result
+         }
+               	res.json(result_obj);
+      	}
+      });
+    });
+  });
+
+
 app.post(`/reviews`, (req, res) => {
 		mongo.connect(connection, (error, database) => {
       plan.review(database, req);

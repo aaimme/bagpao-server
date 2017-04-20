@@ -43,14 +43,13 @@ exports.checkUserSignup = function(db, req, callback) {
       username: req.body.username,
       password: encrypt(req.body.password),
       email: req.body.email,
-			displayname: '',
 			birthday: '',
 			currentcity: '',
 			interest: [],
 			bio: '',
 			status: 'public',
-			favorite: [''],
-			mytrip: [''],
+			favorite: [],
+			mytrip: [],
 			picture: 'app/img/icon.png'
 
     });
