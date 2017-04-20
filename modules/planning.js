@@ -26,7 +26,8 @@ date = new Date();
 								like: 0,
 								share: 0,
 								favorite: [],
-                datesubmit: date
+                datesubmit: date,
+								reviews: []
                 }]);
 
 								for(var i = 0; i < results.length; i++) {
@@ -81,7 +82,8 @@ date = new Date();
    exports.review = function (database, req){
      database.collection('trip').find({creator :req.body.username ,name: `${req.body.tripname}`})
      .toArray((error, result) =>{
-       if(result.length == 1){
+			 console.log(result.length);
+       if(result.length !== 0){
          database
          .collection('trip')
          .update(

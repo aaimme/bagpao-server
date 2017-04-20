@@ -164,7 +164,8 @@ exports.searchTripDetail = function(db, req, _callback) {
           like: docs[0].like,
           share: docs[0].share,
           favorite: docs[0].favorite,
-          datesubmit: docs[0].datesubmit
+          datesubmit: docs[0].datesubmit,
+          reviews: docs[0].reviews
         }];
 
         getAllPlaceDetail(docs[0].place, db, (err, result) => {
