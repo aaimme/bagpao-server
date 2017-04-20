@@ -19,7 +19,7 @@ date = new Date();
                 origin:`${req.body.origin}`,
                 destination:`${req.body.destination}`,
 							  daytrip:`${req.body.daytrip}`,
-								picture:'',
+								picture:'http://amazingthaisea.com/wp-content/uploads/2015/03/Sulphor-Mountain_2.jpg',
 								place : [],
                 privacy:`${req.body.privacy}`,
 							  status:`active`,

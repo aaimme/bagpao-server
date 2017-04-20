@@ -146,7 +146,7 @@ exports.tripsRecent = function(callback) {
 
 exports.searchTripDetail = function(db, req, _callback) {
   db.collection('trip').find({
-    name:  `${req.body.name}`
+    name: req.body.name
   }).toArray(function(err, docs) {
     if (err) {
       callback('cannot connect to database', undefined);
