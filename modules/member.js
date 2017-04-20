@@ -65,7 +65,7 @@ exports.editProfile = function(req, callback) {
 
   exports.myTrips = function(db, req, callback) {
     // Find some documents
-    db.collection('trip').find({creator:`${req.body.username}`,status:'active'}).toArray(function(err, docs) {
+    db.collection('trip').find({creator:`${req.body.username}`}).toArray(function(err, docs) {
     	if (err) {
     		callback('cannot connect to database', undefined);
     	}else{
