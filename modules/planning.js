@@ -27,8 +27,7 @@ date = new Date();
 								like: 0,
 								share: 0,
 								favorite: [],
-                datesubmit: date,
-								reviews: []
+                datesubmit: date
                 }]);
 
 								for(var i = 0; i < results.length; i++) {
@@ -40,13 +39,14 @@ date = new Date();
 									database.collection('trip').update({ name:`${req.body.name}`},
 												{	$push: {place: {	$each: [results[i]]	}}});
 									}
-									});
 
-									database.collection('reviews').insert(
-										nametrip:`${req.body.name}`,
-										user: '',
-										comment '',
-									);
+
+									database.collection('reviews').insert({
+										trip:`${req.body.name}`,
+										creator: `${req.body.username}`,
+										reviews: []
+									});
+								});
 						console.log('create trip success');
 }
 
@@ -136,14 +136,14 @@ date = new Date();
 
 
    exports.addReview = function (database, req){
-     database.collection('trip').find({creator :req.body.username ,name: `${req.body.tripname}`})
+     database.collection('reviews').find({creator :req.body.username ,trip: `${req.body.tripname}`})
      .toArray((error, result) =>{
 			 console.log(result.length);
        if(result.length !== 0){
          database
-         .collection('trip')
+         .collection('reviews')
          .update(
-        { name: `${req.body.tripname}`  },
+        { trip: `${req.body.tripname}`  },
         {
           $push: {
                reviews: {
@@ -159,9 +159,9 @@ date = new Date();
        }
        else {
          database
-         .collection('trip')
+         .collection('reviews')
          .update(
-        { name: `${req.body.tripname}`  },
+        { trip: `${req.body.tripname}`  },
         {
           $push: {
                reviews: {
