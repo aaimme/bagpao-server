@@ -320,6 +320,23 @@ app.post(`/planning`, (req, res) =>{
 
 });
 
+app.post(`/getplaces`, (req, res) => {
+		mongo.connect(connection, (error, database) => {
+      plan.getplaces(database, req, (error, result) => {
+        if (error) {
+          console.log(error);
+          var error_obj = {
+            'message' : `${error}`
+          }
+          res.json(error_obj);
+        }
+        else {
+          res.json(result);
+      	}
+      });
+    });
+  });
+
 app.post(`/admin`, (req, res) =>{
     console.log('admin :',req.body.admin);
     var json_object = (error, result) => {
@@ -409,9 +426,9 @@ app.post(`/favorite`, (req, res) => {
       member.addFavorite(req);
   });
 
-  app.post(`/mytrips`, (req, res) => {
-  		mongo.connect(connection, (error, database) => {
-        member.myTrips(database, req, (error, result) => {
+app.post(`/mytrips`, (req, res) => {
+  	mongo.connect(connection, (error, database) => {
+      member.myTrips(database, req, (error, result) => {
           if (error) {
             console.log(error);
             var error_obj = {

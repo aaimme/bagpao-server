@@ -4,6 +4,7 @@ let mongo = require('mongodb').MongoClient;
 let connection = 'mongodb://localhost:27017/bagpaotravel';
 var isodate = require("isodate");
 var ObjectId = require('mongodb').ObjectID;
+const async = require('async');
 var date;
 // Write current date as ISO 8601 string.
 date = new Date();
@@ -78,6 +79,55 @@ date = new Date();
 		 			}
 		 			});
 	 }
+
+	 exports.getplaces = function(db, req, _callback) {
+		 var places = req.body.place;
+		 getAllPlaceDetail(places, db, (err, result) => {
+	           if (err) {
+	             console.log(`getAllPlaceDetail error message : ${err}`);
+	             _callback(undefined, result);
+	           }else{
+	             _callback(undefined, result);
+	           }
+	         });
+	    }
+
+	    var getPlaceDetail = (placeId, db, callback) => {
+	      var find_obj = {
+	        _id : ObjectId(placeId)
+	      };
+	      db.collection('place').find(find_obj).toArray((err, docs) => {
+	        if (err) {
+	          callback(err, undefined);
+	        }else{
+	          callback(undefined, docs);
+	        }
+	      });
+	    }
+
+	    var getAllPlaceDetail = (place_array, db, callback) => {
+	      if (place_array.length > 0) {
+	        var array_place_detail = [];
+	        async.forEachOf(place_array, (value, key) => {
+	          var temp_obj = {};
+	          getPlaceDetail(value.placeid, db, (err,result) => {
+	            temp_obj = {
+	              days: value.days,
+	              name: result[0].name,
+	              city: result[0].city,
+	              picture: result[0].picture
+	            }
+	            array_place_detail.push(temp_obj);
+	            if (key+1 == place_array.length) {
+	              callback(undefined, array_place_detail);
+	            }
+	          });
+	        });
+	      }else{
+	        callback('Error, place not found.', undefined);
+	      }
+	    }
+
 
    exports.review = function (database, req){
      database.collection('trip').find({creator :req.body.username ,name: `${req.body.tripname}`})
