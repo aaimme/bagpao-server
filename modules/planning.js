@@ -175,7 +175,7 @@ date = new Date();
 	     mongo.connect(connection, (err, database) => {
 	       database
 	       .collection('trip')
-	       .find({name: req.body.name}).toArray(function(err, docs) {
+	       .find({name: req.body.tripname}).toArray(function(err, docs) {
 	   	if (err) {
 	   		callback('cannot connect to database', undefined);
 	   	}else{
