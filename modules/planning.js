@@ -180,8 +180,8 @@ date = new Date();
 	 exports.review = function(req, callback) {
 	     mongo.connect(connection, (err, database) => {
 	       database
-	       .collection('trip')
-	       .find({name: req.body.tripname}).toArray(function(err, docs) {
+	       .collection('reviews')
+	       .find({trip: req.body.tripname}).toArray(function(err, docs) {
 	   	if (err) {
 	   		callback('cannot connect to database', undefined);
 	   	}else{
