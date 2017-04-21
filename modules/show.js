@@ -45,7 +45,10 @@ exports.tripsPopular = function(callback) {
       database
       .collection('trip')
       .aggregate([
-      {
+        {
+          $match : {privacy:"public"}
+        },
+        {
        $project:
          {
            name:"$name",
@@ -53,10 +56,10 @@ exports.tripsPopular = function(callback) {
            picture:"$picture",
            totalAmount: { $sum: [ "$like", "$share" ]}
          }
-      },
-      {
+        },
+        {
         $sort : {totalAmount : -1}
-      }
+        }
     ]).toArray(function(err, docs) {
   	if (err) {
   		callback('cannot connect to database', undefined);
@@ -96,6 +99,9 @@ exports.tripsPopularHome = function(callback) {
       .collection('trip')
       .aggregate([
       {
+        $match : {privacy:"public"}
+      },
+      {
        $project:
          {
            name:"$name",
@@ -129,7 +135,7 @@ exports.tripsRecent = function(callback) {
     mongo.connect(connection, (err, database) => {
       database
       .collection('trip')
-      .find().sort({datesubmit : -1}).toArray(function(err, docs) {
+      .find({privacy: "public"}).sort({datesubmit : -1}).toArray(function(err, docs) {
   	if (err) {
   		callback('cannot connect to database', undefined);
   	}else{

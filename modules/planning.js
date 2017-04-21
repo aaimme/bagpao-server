@@ -41,6 +41,12 @@ date = new Date();
 												{	$push: {place: {	$each: [results[i]]	}}});
 									}
 									});
+
+									database.collection('reviews').insert(
+										nametrip:`${req.body.name}`,
+										user: '',
+										comment '',
+									);
 						console.log('create trip success');
 }
 
