@@ -83,7 +83,7 @@ app.post(`/show`, (req, res) =>{
    }
    else if (req.body.do == "detailtrip"){
      mongo.connect(connection, (error, database) => {
-       search.searchTripAll(database, req, showtype);
+       search.searchTripAlladmin(database, req, showtype);
      });
   }
   else if (req.body.do == "showdetailtrip"){
@@ -490,7 +490,6 @@ app.post(`/addreviews`, (req, res) => {
               res.json(error_obj);
             }
             else {
-              console.log(result);
               res.json(result);
           	}
           });
