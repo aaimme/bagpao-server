@@ -70,15 +70,6 @@ app.post(`/show`, (req, res) =>{
     else if (req.body.do == "mem"){
       mongo.connect(connection, (error, database) => {
         member.findUser(database ,req , showtype);
-        // if(mytrip){
-        //   member.myTrip(database ,req , showtype);
-        // }
-        // if(mydraft){
-        //   member.myDraft(database ,req , showtype);
-        // }
-        // if(myfavorite){
-        //   member.myFavorite(database ,req , showtype);
-        // }
       });
    }
    else if (req.body.do == "detailtrip"){
@@ -205,7 +196,6 @@ app.post(`/trips`, (req, res) => {
      		res.json(error_obj);
      	}
      	else{
-     		//console.log(result);
         var results = []
         for(var i = 0; i < result.length; i++) {
      		var result_obj = {
