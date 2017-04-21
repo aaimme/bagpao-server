@@ -63,6 +63,17 @@ exports.editProfile = function(req, callback) {
           console.log("add favorite by :",req.body.username,"trip :",req.body.name);
   }
 
+  exports.removeFavorite = function(req) {
+          mongo.connect(connection, (error, database) => {
+            database.collection('trip').update(
+                { name:`${req.body.name}`,favorite: `${req.body.username}`},
+                { $pull: { favorite :`${req.body.username}` }
+          });
+          console.log("remove favorite by :",req.body.username,"trip :",req.body.name);
+  });
+}
+
+
   exports.myTrips = function(db, req, callback) {
     // Find some documents
     db.collection('trip').find({creator:`${req.body.username}`}).toArray(function(err, docs) {

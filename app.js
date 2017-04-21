@@ -423,7 +423,14 @@ app.post(`/view`, (req, res) => {
 });
 
 app.post(`/favorite`, (req, res) => {
-      member.addFavorite(req);
+      if(req.body.add == "add"){
+        member.addFavorite(req);
+        res.send("add success");
+      }
+      else{
+        member.removeFavorite(req);
+        res.send("remove success");
+      }
   });
 
 app.post(`/mytrips`, (req, res) => {
