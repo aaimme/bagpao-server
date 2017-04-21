@@ -452,7 +452,7 @@ app.post(`/mytrips`, (req, res) => {
             res.json(error_obj);
           }
           else {
-            console.log(result);
+        
               res.json(result);
         	}
         });
@@ -470,7 +470,7 @@ app.post(`/myfavorite`, (req, res) => {
           res.json(error_obj);
         }
         else {
-          console.log(result);
+
           res.json(result);
       	}
       });

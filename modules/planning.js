@@ -138,7 +138,7 @@ date = new Date();
    exports.addReview = function (database, req){
      database.collection('reviews').find({creator :req.body.username ,trip: `${req.body.tripname}`})
      .toArray((error, result) =>{
-			 console.log(result.length);
+			 console.log(result.length,req.body);
        if(result.length !== 0){
          database
          .collection('reviews')
