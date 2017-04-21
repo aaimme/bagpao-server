@@ -463,14 +463,31 @@ app.post(`/myfavorite`, (req, res) => {
   });
 
 
-app.post(`/reviews`, (req, res) => {
+app.post(`/addreviews`, (req, res) => {
 		mongo.connect(connection, (error, database) => {
-      plan.review(database, req);
+      plan.addReview(database, req);
     		var contactus_obj = {
     		'message' : 'success'
     	}
     	res.json(contactus_obj);
       });
+    });
+
+    app.post(`/reviews`, (req, res) => {
+          plan.review( req, (error, result) => {
+            if (error) {
+              console.log(error);
+              var error_obj = {
+                'message' : `${error}`
+              }
+              res.json(error_obj);
+            }
+            else {
+              console.log(result);
+              res.json(result);
+          	}
+          });
+
     });
 
 app.post(`/contactus`, (req, res) => {

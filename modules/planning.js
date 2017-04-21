@@ -129,7 +129,7 @@ date = new Date();
 	    }
 
 
-   exports.review = function (database, req){
+   exports.addReview = function (database, req){
      database.collection('trip').find({creator :req.body.username ,name: `${req.body.tripname}`})
      .toArray((error, result) =>{
 			 console.log(result.length);
@@ -170,3 +170,21 @@ date = new Date();
        }
          });
    }
+
+	 exports.review = function(req, callback) {
+	     mongo.connect(connection, (err, database) => {
+	       database
+	       .collection('trip')
+	       .find({name: req.body.name}).toArray(function(err, docs) {
+	   	if (err) {
+	   		callback('cannot connect to database', undefined);
+	   	}else{
+	   		if (docs.length !== 0) {
+	   			callback(undefined, docs[0].reviews);
+	   	}else{
+	   			callback('cannot found trip',undefined);
+	   		}
+	   	}
+	   });
+	 });
+	 }
