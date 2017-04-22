@@ -52,12 +52,15 @@ date = new Date();
 
 		exports.transportation = function(db, req, callback) {
 	 			 var collection = db.collection('transportation');
-	 		   collection.find(
+	 		   collection.find([
            {$or : [
              {origin:`${req.body.origin}`,destination:`${req.body.destination}`},
              {origin:`${req.body.destination}`,destination:`${req.body.origin}`}
-             ]}
-          ).toArray(function(err, docs) {
+					 ]},
+					 {
+	         $sort : {depart : -1}
+	         }
+				 ]).toArray(function(err, docs) {
 	 		    if (err) {
 	 		      callback('cannot connect to database', undefined);
 	 		    } else{
