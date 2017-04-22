@@ -39,7 +39,7 @@ exports.editProfile = function(req, callback) {
 			currentcity:`${req.body.currentcity}`,
 			interest: [],
 			bio:`${req.body.bio}`,
-      status: `${req.body.status}`
+      status: `public`
 			}
 			});
 
