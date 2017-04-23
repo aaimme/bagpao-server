@@ -74,25 +74,7 @@ app.post(`/show`, (req, res) =>{
    }
    else if (req.body.do == "detailtrip"){
      mongo.connect(connection, (error, database) => {
-       search.searchTripAlladmin(database, req, (error, result) => {
-       	if (error) {
-       		console.log(error);
-       		var error_obj = {
-       			'message' : `${error}`
-       		}
-       		res.json(error_obj);
-       	}
-       	else{
-              var results = []
-              for(var i = 0; i < result.length; i++) {
-              var result_obj = {
-                  'name' : result[i].name
-              }
-              results[i] = result_obj
-            }
-              res.json(results);
-       	}
-      });
+       search.searchTripAlladmin(database, req, showtype);
      });
   }
   else if (req.body.do == "showdetailtrip"){
@@ -431,7 +413,7 @@ app.post(`/view`, (req, res) => {
 });
 
 app.post(`/favorite`, (req, res) => {
-      if(true){
+      if(req.body.add == "add"){
         member.addFavorite(req);
         res.send("add success");
       }
@@ -452,7 +434,7 @@ app.post(`/mytrips`, (req, res) => {
             res.json(error_obj);
           }
           else {
-        
+            console.log(result);
               res.json(result);
         	}
         });
@@ -470,7 +452,7 @@ app.post(`/myfavorite`, (req, res) => {
           res.json(error_obj);
         }
         else {
-
+          console.log(result);
           res.json(result);
       	}
       });
