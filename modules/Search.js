@@ -36,7 +36,7 @@ exports.searchTripAll = function(db, req, callback) {
     { name: { $regex: `${req.body.name}`,$options:"$i"},privacy: 'public'},
     { creator: { $regex: `${req.body.name}`,$options:"$i"},privacy: 'public'},
     { destination: { $regex: `${req.body.name}`,$options:"$i"},privacy: 'public'},
-    { category: req.body.name}
+    { tags: req.body.name}
     ]}
     ).sort({name : 1}).toArray(function(err, docs) {
     if (err) {
