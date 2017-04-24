@@ -41,7 +41,7 @@ app.post('/upload', function(req, res){
       // else if (req.body.table == 'trip') {
         database.collection('trip').update({name:"CNX part II" },
   			{ $set : {
-  			picture:`${file.name}`
+  			picture:"http://localhost:1200/"+`${file.name}`
   			}
   			});
         // }

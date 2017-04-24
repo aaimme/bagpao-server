@@ -144,15 +144,9 @@ date = new Date();
 	      }
 	    }
 
-
-<<<<<<< HEAD
    exports.addReview = function ( req){
 		 mongo.connect(connection, (err, database) => {
      database.collection('reviews').find({creator :req.body.username ,trip: `${req.body.tripname}`})
-=======
-   exports.addReview = function (database, req){
-     database.collection('reviews').find({creator :req.body.username ,trip: `${req.body.trip}`})
->>>>>>> 1edfe8e0f865f1615449f362d7e6fe1b88ffe05d
      .toArray((error, result) =>{
 			 console.log(result.length,req.body);
        if(result.length !== 0){
