@@ -101,6 +101,34 @@ app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
           console.log('update data success');
 	      }
 
+   exports.updateTransportation = function(req, callback) {
+     var query = ObjectId(req.body['id']);
+     mongo.connect(connection, (err, database) => {
+        if (err) {
+        	callback('cannot connect to database', undefined);
+        }
+        else {
+          callback(undefined,'update data success');
+          database.collection('transportation').update({ _id : query},
+          { $set: {
+            type:`${req.body.type}`,
+            route:`${req.body.route}`,
+            name: `${req.body.name}`,
+            origin:`${req.body.origin}`,
+            stationstart:`${req.body.stationstart}`,
+            depart:`${req.body.depart}`,
+            destination:`${req.body.destination}`,
+            stationend:`${req.body.stationend}`,
+            arrive:`${req.body.arrive}`,
+            price:`${req.body.price}`
+            }
+          }
+        );
+        }
+      });
+      console.log('update data success');
+    }
+
   exports.deletePlace = function(req, callback) {
 			mongo.connect(connection, (err, database) => {
 			if (err) {
@@ -180,7 +208,7 @@ app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
     });
   }
 
-  exports.showTransportation = function(callback) {
+  exports.showTransportationAll = function(callback) {
       mongo.connect(connection, (err, database) => {
         database
         .collection('transportation')
@@ -194,6 +222,25 @@ app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
     			callback('no data',undefined);
     		}
     	}
+    });
+    });
+  }
+
+  exports.showTransportation = function(req, callback) {
+      var query = ObjectId(req.body['id']);
+      mongo.connect(connection, (err, database) => {
+        database
+        .collection('transportation')
+        .find({ _id : query}).toArray(function(err, docs) {
+      if (err) {
+        callback('cannot connect to database', undefined);
+      }else{
+        if (docs.length !== 0) {
+          callback(undefined, docs);
+      }else{
+          callback('no data',undefined);
+        }
+      }
     });
     });
   }

@@ -359,7 +359,10 @@ app.post(`/admin`, (req, res) =>{
         admin.showProblem(json_object);
       }
       else if (req.body.types == 'trans') {
-        admin.showTransportation(json_object);
+        admin.showTransportationAll(json_object);
+      }
+      else if (req.body.types == 'transport') {
+        admin.showTransportation(req, json_object);
       }
     }
     if(req.body.admin == 'delete'){
