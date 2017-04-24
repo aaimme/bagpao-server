@@ -1,14 +1,12 @@
 "use strict";
 var assert = require('assert');
 let mongo = require('mongodb').MongoClient;
-let connection = 'mongodb://localhost:27017/bagpaotravel';
+let connection = 'mongodb://127.0.0.1:27017/bagpaotravel';
 
 
-exports.findUser = function(db, req, callback) {
-  // Get the documents collection
- 	 var collection = db.collection('member');
-  // Find some documents
-  collection.find({username:{ $regex: `${req.body.username}`,$options:"$i"}}).toArray(function(err, docs) {
+exports.findUser = function(req, callback) {
+mongo.connect(connection, (err, database) => {
+  database.collection('member').find({username:{ $regex: `${req.body.username}`,$options:"$i"}}).toArray(function(err, docs) {
   	if (err) {
   		callback('cannot connect to database', undefined);
   	}else{
@@ -19,6 +17,7 @@ exports.findUser = function(db, req, callback) {
   		}
   	}
   });
+});
 }
 
 exports.editProfile = function(req, callback) {
@@ -75,9 +74,9 @@ exports.editProfile = function(req, callback) {
 }
 
 
-  exports.myTrips = function(db, req, callback) {
-    // Find some documents
-    db.collection('trip').find({creator:`${req.body.username}`}).toArray(function(err, docs) {
+  exports.myTrips = function( req, callback) {
+    mongo.connect(connection, (err, database) => {
+      database.collection('trip').find({creator:`${req.body.username}`}).toArray(function(err, docs) {
     	if (err) {
     		callback('cannot connect to database', undefined);
     	}else{
@@ -88,11 +87,12 @@ exports.editProfile = function(req, callback) {
     		}
     	}
     });
-  }
+  });
+}
 
-  exports.myDraft = function(db, req, callback) {
-    // Find some documents
-    db.collection('trip').find({creator:`${req.body.username}`,status:'notactive'}).toArray(function(err, docs) {
+  exports.myDraft = function( req, callback) {
+    mongo.connect(connection, (err, database) => {
+      database.collection('trip').find({creator:`${req.body.username}`,status:'notactive'}).toArray(function(err, docs) {
     	if (err) {
     		callback('cannot connect to database', undefined);
     	}else{
@@ -103,11 +103,12 @@ exports.editProfile = function(req, callback) {
     		}
     	}
     });
-  }
+  });
+}
 
-  exports.myFavorite = function(db, req, callback) {
-  // Find some documents
-    db.collection('trip').find({favorite:`${req.body.username}`}).sort({name: 1}).toArray(function(err, docs) {
+  exports.myFavorite = function( req, callback) {
+    mongo.connect(connection, (err, database) => {
+      database.collection('trip').find({favorite:`${req.body.username}`}).sort({name: 1}).toArray(function(err, docs) {
     	if (err) {
     		callback('cannot connect to database', undefined);
     	}else{
@@ -118,4 +119,5 @@ exports.editProfile = function(req, callback) {
     		}
     	}
     });
+  });
   }

@@ -1,15 +1,12 @@
 "use strict";
 var assert = require('assert');
 let mongo = require('mongodb').MongoClient;
-let connection = 'mongodb://localhost:27017/bagpaotravel';
+let connection = 'mongodb://127.0.0.1:27017/bagpaotravel';
 
 
-exports.searchPlace = function(db, req, callback) {
-  // Get the documents collection
-  console.log(req.body);
-  var collection = db.collection('place');
-  // Find by name
-  collection.find({$or : [
+exports.searchPlace = function( req, callback) {
+    mongo.connect(connection, (error, database) => {
+      database.collection('place').find({$or : [
     {name:{ $regex: `${req.body.name}`,$options:"$i"}},
     {city:{ $regex: `${req.body.name}`,$options:"$i"}},
     {category: req.body.name}
@@ -25,14 +22,13 @@ exports.searchPlace = function(db, req, callback) {
           }
     }
     });
+    });
    }
 
 
-exports.searchTripAll = function(db, req, callback) {
-  // Get the documents collection
-  var collection = db.collection('trip');
-  // Find by name
-  collection.find({$or : [
+exports.searchTripAll = function( req, callback) {
+  mongo.connect(connection, (error, database) => {
+    database.collection('trip').find({$or : [
     { name: { $regex: `${req.body.name}`,$options:"$i"},privacy: 'public'},
     { creator: { $regex: `${req.body.name}`,$options:"$i"},privacy: 'public'},
     { destination: { $regex: `${req.body.name}`,$options:"$i"},privacy: 'public'},
@@ -49,13 +45,12 @@ exports.searchTripAll = function(db, req, callback) {
           }
     }
     });
+    });
    }
 
-   exports.searchTripAlladmin = function(db, req, callback) {
-     // Get the documents collection
-     var collection = db.collection('trip');
-     // Find by name
-     collection.find({$or : [
+   exports.searchTripAlladmin = function( req, callback) {
+     mongo.connect(connection, (error, database) => {
+        database.collection('trip').find({$or : [
        { name: { $regex: `${req.body.name}`,$options:"$i"}},
        { creator: { $regex: `${req.body.name}`,$options:"$i"}},
        { destination: { $regex: `${req.body.name}`,$options:"$i"}}
@@ -70,5 +65,6 @@ exports.searchTripAll = function(db, req, callback) {
               callback('cannot found this trip',undefined);
              }
        }
+       });
        });
       }

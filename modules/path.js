@@ -4,11 +4,19 @@ var path = require('path');
 var formidable = require('formidable');
 var fs = require('fs');
 let mongo = require('mongodb').MongoClient;
-let connection = 'mongodb://localhost:27017/bagpaotravel';
+let connection = 'mongodb://127.0.0.1:27017/bagpaotravel';
 
- exports.uploadForm = (form, name) => {
-   console.log('form:', form);
-   console.log('name:',form);
+app.use(express.static(path.join(__dirname, 'public')));
+
+app.get('/', function(req, res){
+  res.sendFile(path.join(__dirname, 'views/index.html'));
+});
+
+app.post('/upload', function(req, res){
+
+  // create an incoming form object
+  var form = new formidable.IncomingForm();
+
   // specify that we want to allow the user to upload multiple files in a single request
   form.multiples = true;
 
@@ -17,19 +25,44 @@ let connection = 'mongodb://localhost:27017/bagpaotravel';
 
   // every time a file has been uploaded successfully,
   // rename it to it's orignal name
-
   form.on('file', function(field, file) {
     fs.rename(file.path, path.join(form.uploadDir, file.name));
-    console.log(file);
+    console.log(file.name);
     mongo.connect(connection, (err, database) => {
-			database
-			.collection('member')
-			.update({username: 'yuto' },
-			{ $set : {
-			picture:"`${file.name}`"
-			}
-			});
-   		  });
+      // if(req.body.table == 'member'){
+      //   database
+  		// 	.collection('member')
+  		// 	.update({username: req.body.name },
+  		// 	{ $set : {
+  		// 	picture: `${file.name}`"
+  		// 	}
+  		// 	});
+      // }
+      // else if (req.body.table == 'trip') {
+        database.collection('trip').update({name:"CNX part II" },
+  			{ $set : {
+  			picture:`${file.name}`
+  			}
+  			});
+        // }
+    });
   });
 
-}
+  // log any errors that occur
+  form.on('error', function(err) {
+    console.log('An error has occured: \n' + err);
+  });
+
+  // once all the files have been uploaded, send a response to the client
+  form.on('end', function() {
+    res.end('success');
+  });
+
+  // parse the incoming request containing the form data
+  form.parse(req);
+
+});
+
+var server = app.listen(3000, function(){
+  console.log('Server listening on port 3000');
+});

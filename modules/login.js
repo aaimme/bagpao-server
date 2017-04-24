@@ -1,18 +1,16 @@
 "use strict";
 var assert = require('assert');
 let mongo = require('mongodb').MongoClient;
-let connection = 'mongodb://localhost:27017/bagpaotravel';
+let connection = 'mongodb://127.0.0.1:27017/bagpaotravel';
 let crypto  = require('crypto');
 
 function encrypt(password) {
 	return crypto.createHash('sha256').update(password).digest('hex');
 }
 
-exports.checkUserLogin = function(db, req, callback) {
-  // Get the documents collection
- 	 var collection = db.collection('member');
-  // Find some documents
-	 collection.find({username:req.body.username, password: encrypt(req.body.password)})
+exports.checkUserLogin = function( req, callback) {
+	mongo.connect(connection, (error, database) => {
+		 database.collection('member').find({username:req.body.username, password: encrypt(req.body.password)})
 		.toArray((error, result) => {
       if (error) {
     		callback('cannot connect to database', undefined);
@@ -26,14 +24,13 @@ exports.checkUserLogin = function(db, req, callback) {
 			}
     }
 		});
+	});
 }
 
 
-exports.checkUserSignup = function(db, req, callback) {
-  // Get the documents collection
-  var collection = db.collection('member');
-  // Find some documents
-  collection.find({username :req.body.username}).toArray((error, result) => {
+exports.checkUserSignup = function( req, callback) {
+	mongo.connect(connection, (error, database) => {
+		 database.collection('member').find({username :req.body.username}).toArray((error, result) => {
   if (error) {
     callback('cannot connect to database', undefined);
   } else {
@@ -58,5 +55,6 @@ exports.checkUserSignup = function(db, req, callback) {
     console.log('That username is taken. Try another.');
   }
 }
+});
 });
 }

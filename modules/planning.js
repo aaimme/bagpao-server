@@ -1,7 +1,7 @@
 "use strict";
 var assert = require('assert');
 let mongo = require('mongodb').MongoClient;
-let connection = 'mongodb://localhost:27017/bagpaotravel';
+let connection = 'mongodb://127.0.0.1:27017/bagpaotravel';
 var isodate = require("isodate");
 var ObjectId = require('mongodb').ObjectID;
 const async = require('async');
@@ -51,9 +51,9 @@ date = new Date();
 						console.log('create trip success');
 }
 
-		exports.transportation = function(db, req, callback) {
-	 			 var collection = db.collection('transportation');
-	 		   collection.find(
+		exports.transportation = function( req, callback) {
+				 mongo.connect(connection, (err, database) => {
+				   database.collection('transportation').find(
            {$or : [
              {origin:`${req.body.origin}`,destination:`${req.body.destination}`},
              {origin:`${req.body.destination}`,destination:`${req.body.origin}`}
@@ -73,12 +73,13 @@ date = new Date();
 	 		      }
 	 		   }
 	 		   });
+			 });
 	 	}
 
 
-	 exports.plan = function(db, req, callback) {
-		 			var collection = db.collection('place');
-		 		  collection.find({city:`${req.body.destination}`}).toArray(function(err, docs) {
+	 exports.plan = function( req, callback) {
+					mongo.connect(connection, (err, database) => {
+					  database.collection('place').find({city:`${req.body.destination}`}).toArray(function(err, docs) {
 		 			 if (err) {
 		 				 callback('cannot connect to database', undefined);
 		 			 } else{
@@ -89,11 +90,12 @@ date = new Date();
 		 				 }
 		 			}
 		 			});
+				});
 	 }
 
-	 exports.getplaces = function(db, req, _callback) {
+	 exports.getplaces = function( req, _callback) {
 		 var places = req.body.place;
-		 getAllPlaceDetail(places, db, (err, result) => {
+		 getAllPlaceDetail(places, (err, result) => {
 	           if (err) {
 	             console.log(`getAllPlaceDetail error message : ${err}`);
 	             _callback(undefined, result);
@@ -103,20 +105,22 @@ date = new Date();
 	         });
 	    }
 
-	    var getPlaceDetail = (placeId, db, callback) => {
+	    var getPlaceDetail = (placeId, callback) => {
 	      var find_obj = {
 	        _id : ObjectId(placeId)
 	      };
-	      db.collection('place').find(find_obj).toArray((err, docs) => {
+				mongo.connect(connection, (err, database) => {
+	      database.collection('place').find(find_obj).toArray((err, docs) => {
 	        if (err) {
 	          callback(err, undefined);
 	        }else{
 	          callback(undefined, docs);
 	        }
 	      });
+			});
 	    }
 
-	    var getAllPlaceDetail = (place_array, db, callback) => {
+	    var getAllPlaceDetail = (place_array, callback) => {
 	      if (place_array.length > 0) {
 	        var array_place_detail = [];
 	        async.forEachOf(place_array, (value, key) => {
@@ -141,7 +145,8 @@ date = new Date();
 	    }
 
 
-   exports.addReview = function (database, req){
+   exports.addReview = function ( req){
+		 mongo.connect(connection, (err, database) => {
      database.collection('reviews').find({creator :req.body.username ,trip: `${req.body.tripname}`})
      .toArray((error, result) =>{
 			 console.log(result.length,req.body);
@@ -181,6 +186,7 @@ date = new Date();
      );
        }
          });
+			 });
    }
 
 	 exports.review = function(req, callback) {

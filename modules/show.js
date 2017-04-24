@@ -1,7 +1,7 @@
 "use strict";
 var assert = require('assert');
 let mongo = require('mongodb').MongoClient;
-let connection = 'mongodb://localhost:27017/bagpaotravel';
+let connection = 'mongodb://127.0.0.1:27017/bagpaotravel';
 var ObjectId = require('mongodb').ObjectID;
 const async = require('async');
 
@@ -150,8 +150,15 @@ exports.tripsRecent = function(callback) {
 }
 
 
-exports.searchTripDetail = function(db, req, _callback) {
-  db.collection('trip').find({
+exports.searchTripDetail = function( req, _callback) {
+  console.log('1');
+  mongo.connect(connection, (err, database) => {
+    if (err) {
+      console.log("error", err);
+    }else{
+
+    }
+    database.collection('trip').find({
     name: req.body.name
   }).toArray(function(err, docs) {
     if (err) {
@@ -175,7 +182,7 @@ exports.searchTripDetail = function(db, req, _callback) {
           reviews: docs[0].reviews
         }];
 
-        getAllPlaceDetail(docs[0].place, db, (err, result) => {
+        getAllPlaceDetail(docs[0].place, (err, result) => {
           if (err) {
             array_result[0].place = [];
             console.log(`getAllPlaceDetail error message : ${err}`);
@@ -192,27 +199,30 @@ exports.searchTripDetail = function(db, req, _callback) {
       }
     }
     });
+  });
    }
 
-   var getPlaceDetail = (placeId, db, callback) => {
+   var getPlaceDetail = (placeId, callback) => {
      var find_obj = {
        _id : ObjectId(placeId)
      };
-     db.collection('place').find(find_obj).toArray((err, docs) => {
+     mongo.connect(connection, (err, database) => {
+       database.collection('place').find(find_obj).toArray((err, docs) => {
        if (err) {
          callback(err, undefined);
        }else{
          callback(undefined, docs);
        }
      });
+   });
    }
 
-   var getAllPlaceDetail = (place_array, db, callback) => {
+   var getAllPlaceDetail = (place_array, callback) => {
      if (place_array.length > 0) {
        var array_place_detail = [];
        async.forEachOf(place_array, (value, key) => {
          var temp_obj = {};
-         getPlaceDetail(value.placeid, db, (err,result) => {
+         getPlaceDetail(value.placeid, (err,result) => {
            temp_obj = {
              days: value.days,
              name: result[0].name,

@@ -4,7 +4,7 @@ var express = require('express');
 var app = express();
 var path = require('path');
 let mongo = require('mongodb').MongoClient;
-let connection = 'mongodb://localhost:27017/bagpaotravel';
+let connection = 'mongodb://127.0.0.1:27017/bagpaotravel';
 var formidable = require('formidable');
 var fs = require('fs');
 let body    = require('body-parser');
@@ -68,31 +68,24 @@ app.post(`/show`, (req, res) =>{
     show.tripsPopularHome(showtype);
     }
     else if (req.body.do == "mem"){
-      mongo.connect(connection, (error, database) => {
-        member.findUser(database ,req , showtype);
-      });
+        member.findUser(req , showtype);
+
    }
    else if (req.body.do == "detailtrip"){
-     mongo.connect(connection, (error, database) => {
-       search.searchTripAlladmin(database, req, showtype);
-     });
+       search.searchTripAlladmin( req, showtype);
   }
   else if (req.body.do == "showdetailtrip"){
-    mongo.connect(connection, (error, database) => {
-      show.searchTripDetail(database, req, showtype);
-    });
+      show.searchTripDetail( req, showtype);
  }
   else if (req.body.do == "detailplace"){
-    mongo.connect(connection, (error, database) => {
-      search.searchPlace(database, req, showtype);
-    });
+      search.searchPlace( req, showtype);
  }
 
 });
 
 app.post(`/signup`, (req, res) => {
 	mongo.connect(connection, (error, database) => {
-	login.checkUserSignup(database, req, (error, result) => {
+	login.checkUserSignup( req, (error, result) => {
     if (error) {
      	console.log(error);
      	var error_obj = {
@@ -113,9 +106,8 @@ app.post(`/signup`, (req, res) => {
 
 app.post(`/login`, (req, res) => {
 
-	console.log(req.body);
-  	mongo.connect(connection, (error, database) => {
-  	login.checkUserLogin(database, req, (error, result) => {
+	console.log("login: ",req.body);
+  	login.checkUserLogin( req, (error, result) => {
     if (error) {
      	console.log(error);
      	var error_obj = {
@@ -136,7 +128,6 @@ app.post(`/login`, (req, res) => {
       res.json(result_obj);
     }
   });
-	});
 });
 
 app.post(`/editprofile`, (req, res) => {
@@ -159,8 +150,7 @@ app.post(`/editprofile`, (req, res) => {
 
 app.post(`/places`, (req, res) => {
 
-    mongo.connect(connection, (error, database) => {
-     search.searchPlace(database, req, (error, result) => {
+     search.searchPlace( req, (error, result) => {
      	if (error) {
      		console.log(error);
      		var error_obj = {
@@ -182,12 +172,10 @@ app.post(`/places`, (req, res) => {
      		console.log('search success');
      	}
     });
-	});
 });
 
 app.post(`/trips`, (req, res) => {
-    mongo.connect(connection, (error, database) => {
-     search.searchTripAll(database, req, (error, result) => {
+     search.searchTripAll( req, (error, result) => {
      	if (error) {
      		console.log(error);
      		var error_obj = {
@@ -210,14 +198,12 @@ app.post(`/trips`, (req, res) => {
           console.log('search success');
       }
      });
-	});
+
 });
 
 app.post(`/planning`, (req, res) =>{
-
-    mongo.connect(connection, (error, database) => {
       if(req.body.numstep == 1){
-        plan.transportation(database, req, (error, result) => {
+        plan.transportation( req, (error, result) => {
             if (error) {
                console.log(error);
                var error_obj = {
@@ -250,7 +236,7 @@ app.post(`/planning`, (req, res) =>{
 
       }
       else if(req.body.numstep == 2){
-        plan.plan(database, req, (error, result) => {
+        plan.plan( req, (error, result) => {
           if (error) {
              console.log(error);
              var error_obj = {
@@ -277,7 +263,7 @@ app.post(`/planning`, (req, res) =>{
       }
       // search placeCategories reqeuir numstep and categories and(name or city)
       else if(req.body.numstep == 3){
-          search.searchPlace(database, req, (error, result) => {
+          search.searchPlace( req, (error, result) => {
         	if (error) {
         		console.log(error);
         		var error_obj = {
@@ -306,13 +292,12 @@ app.post(`/planning`, (req, res) =>{
       else if(req.body.numstep == 4){
         plan.end(req);
   }
-  });
 
 });
 
 app.post(`/getplaces`, (req, res) => {
 		mongo.connect(connection, (error, database) => {
-      plan.getplaces(database, req, (error, result) => {
+      plan.getplaces( req, (error, result) => {
         if (error) {
           console.log(error);
           var error_obj = {
@@ -428,7 +413,7 @@ app.post(`/favorite`, (req, res) => {
 
 app.post(`/mytrips`, (req, res) => {
   	mongo.connect(connection, (error, database) => {
-      member.myTrips(database, req, (error, result) => {
+      member.myTrips(req, (error, result) => {
           if (error) {
             console.log(error);
             var error_obj = {
@@ -445,7 +430,7 @@ app.post(`/mytrips`, (req, res) => {
 
 app.post(`/myfavorite`, (req, res) => {
 		mongo.connect(connection, (error, database) => {
-      member.myFavorite(database, req, (error, result) => {
+      member.myFavorite(req, (error, result) => {
         if (error) {
           console.log(error);
           var error_obj = {
@@ -462,13 +447,13 @@ app.post(`/myfavorite`, (req, res) => {
 
 
 app.post(`/addreviews`, (req, res) => {
-		mongo.connect(connection, (error, database) => {
-      plan.addReview(database, req);
+
+      plan.addReview( req);
     		var contactus_obj = {
     		'message' : 'success'
     	}
     	res.json(contactus_obj);
-      });
+
     });
 
     app.post(`/reviews`, (req, res) => {
@@ -543,11 +528,29 @@ app.get(`/apigeo`, (req, res) =>{
   });
 
 //image
-app.post('/upload', function(req, res){
-    var name = req.body.username;
-    var form = new formidable.IncomingForm();
-    path.uploadForm(form , name);
-});
+// app.post('/upload', function(req, res){
+//   // create an incoming form object
+//   var form = new formidable.IncomingForm();
+//   // specify that we want to allow the user to upload multiple files in a single request
+//   form.multiples = true;
+//   // store all uploads in the /uploads directory
+//   form.uploadDir = path.join(__dirname, '/uploads');
+//   // every time a file has been uploaded successfully,
+//   // rename it to it's orignal name
+//   form.on('file', function(field, file) {
+//     fs.rename(file.path, path.join(form.uploadDir, file.name));
+//   });
+//   // log any errors that occur
+//   form.on('error', function(err) {
+//     console.log('An error has occured: \n' + err);
+//   });
+//   // once all the files have been uploaded, send a response to the client
+//   form.on('end', function() {
+//     res.end('success');
+//   });
+//   // parse the incoming request containing the form data
+//   form.parse(req);
+// });
 
 app.listen(1200, function() {
   console.log('Server running on port 1200...')
