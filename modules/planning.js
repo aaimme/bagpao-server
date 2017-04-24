@@ -140,14 +140,14 @@ date = new Date();
 
 
    exports.addReview = function (database, req){
-     database.collection('reviews').find({creator :req.body.username ,trip: `${req.body.tripname}`})
+     database.collection('reviews').find({creator :req.body.username ,trip: `${req.body.trip}`})
      .toArray((error, result) =>{
 			 console.log(result.length,req.body);
        if(result.length !== 0){
          database
          .collection('reviews')
          .update(
-        { trip: `${req.body.tripname}`  },
+        { trip: `${req.body.trip}`  },
         {
           $push: {
                reviews: {
@@ -160,12 +160,13 @@ date = new Date();
           }
         }
        );
+			 console.log('11');
        }
        else {
          database
          .collection('reviews')
          .update(
-        { trip: `${req.body.tripname}`  },
+        { trip: `${req.body.trip}`  },
         {
           $push: {
                reviews: {
@@ -177,6 +178,7 @@ date = new Date();
           }
         }
      );
+		 console.log('aa');
        }
          });
    }
@@ -185,7 +187,7 @@ date = new Date();
 	     mongo.connect(connection, (err, database) => {
 	       database
 	       .collection('reviews')
-	       .find({trip: req.body.tripname}).toArray(function(err, docs) {
+	       .find({trip: req.body.trip}).toArray(function(err, docs) {
 	   	if (err) {
 	   		callback('cannot connect to database', undefined);
 	   	}else{
