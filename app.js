@@ -437,8 +437,7 @@ app.post(`/mytrips`, (req, res) => {
             res.json(error_obj);
           }
           else {
-            console.log(result);
-              res.json(result);
+            res.json(result);
         	}
         });
       });
@@ -455,7 +454,6 @@ app.post(`/myfavorite`, (req, res) => {
           res.json(error_obj);
         }
         else {
-          console.log(result);
           res.json(result);
       	}
       });
@@ -523,7 +521,7 @@ app.get(`/apidistance`, (req, res) =>{
     console.log('statusCode:', response && response.statusCode); // Print the response status code if a response was received
     // console.log('body:', body); // Print the HTML for the Google homepage.
     body = JSON.parse(body);
-    console.log(body);
+//    console.log(body);
     res.send(body);
     });
     });
@@ -538,7 +536,7 @@ app.get(`/apigeo`, (req, res) =>{
     console.log('statusCode:', response && response.statusCode); // Print the response status code if a response was received
     // console.log('body:', body); // Print the HTML for the Google homepage.
     body = JSON.parse(body);
-    console.log(body);
+//    console.log(body);
     res.send(body);
 
     });
