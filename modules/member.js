@@ -15,7 +15,7 @@ exports.findUser = function(db, req, callback) {
   		if (docs.length !== 0) {
   			callback(undefined, docs);
   	}else{
-  			callback('cannot found data',undefined);
+  			callback('cannot found User',undefined);
   		}
   	}
   });
@@ -39,6 +39,7 @@ exports.editProfile = function(req, callback) {
 			currentcity:`${req.body.currentcity}`,
 			interest: [],
 			bio:`${req.body.bio}`,
+      picture: `${req.body.picture}`,
       status: `public`
 			}
 			});
@@ -83,7 +84,7 @@ exports.editProfile = function(req, callback) {
     		if (docs.length !== 0) {
     			callback(undefined, docs);
     	}else{
-    			callback('cannot found data',undefined);
+    			callback('cannot found My trip',undefined);
     		}
     	}
     });
@@ -98,7 +99,7 @@ exports.editProfile = function(req, callback) {
     		if (docs.length !== 0) {
     			callback(undefined, docs);
     	}else{
-    			callback('cannot found data',undefined);
+    			callback('cannot found My draft',undefined);
     		}
     	}
     });
@@ -113,7 +114,7 @@ exports.editProfile = function(req, callback) {
     		if (docs.length !== 0) {
           callback(undefined, docs);
     	}else{
-    			callback('cannot found data',undefined);
+    			callback('cannot found My favorite',undefined);
     		}
     	}
     });

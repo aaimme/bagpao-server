@@ -21,6 +21,7 @@ date = new Date();
                 destination:`${req.body.destination}`,
 							  daytrip:`${req.body.daytrip}`,
 								picture:'http://amazingthaisea.com/wp-content/uploads/2015/03/Sulphor-Mountain_2.jpg',
+								tags:[],
 								place : [],
                 privacy:`${req.body.privacy}`,
 							  status:`active`,
@@ -126,6 +127,7 @@ date = new Date();
 	              name: result[0].name,
 	              city: result[0].city,
 	              picture: result[0].picture
+
 	            }
 	            array_place_detail.push(temp_obj);
 	            if (key+1 == place_array.length) {

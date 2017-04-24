@@ -359,7 +359,10 @@ app.post(`/admin`, (req, res) =>{
         admin.showProblem(json_object);
       }
       else if (req.body.types == 'trans') {
-        admin.showTransportation(json_object);
+        admin.showTransportationAll(json_object);
+      }
+      else if (req.body.types == 'transport') {
+        admin.showTransportation(req, json_object);
       }
     }
     if(req.body.admin == 'delete'){
@@ -434,8 +437,7 @@ app.post(`/mytrips`, (req, res) => {
             res.json(error_obj);
           }
           else {
-            console.log(result);
-              res.json(result);
+            res.json(result);
         	}
         });
       });
@@ -452,7 +454,6 @@ app.post(`/myfavorite`, (req, res) => {
           res.json(error_obj);
         }
         else {
-          console.log(result);
           res.json(result);
       	}
       });
@@ -520,7 +521,7 @@ app.get(`/apidistance`, (req, res) =>{
     console.log('statusCode:', response && response.statusCode); // Print the response status code if a response was received
     // console.log('body:', body); // Print the HTML for the Google homepage.
     body = JSON.parse(body);
-    console.log(body);
+//    console.log(body);
     res.send(body);
     });
     });
@@ -528,13 +529,14 @@ app.get(`/apidistance`, (req, res) =>{
 
 app.get(`/apigeo`, (req, res) =>{
   var request = require('request');
-  var url = 'https://maps.googleapis.com/maps/api/geocode/json?address='+req.query.address+'&key=AIzaSyDGFpo_nftbMYEro-Ff0lkXNdQV7sEwKN8'
-  request(url, function (error, response, body) {
+  var latlng = 'https://maps.googleapis.com/maps/api/geocode/json?latlng='+req.query.lat+','+req.query.lng+'&key=AIzaSyDGFpo_nftbMYEro-Ff0lkXNdQV7sEwKN8'
+  var address = 'https://maps.googleapis.com/maps/api/geocode/json?address='+req.query.address+'&key=AIzaSyDGFpo_nftbMYEro-Ff0lkXNdQV7sEwKN8'
+  request(latlng, function (error, response, body) {
     console.log('error:', error); // Print the error if one occurred
     console.log('statusCode:', response && response.statusCode); // Print the response status code if a response was received
     // console.log('body:', body); // Print the HTML for the Google homepage.
     body = JSON.parse(body);
-    console.log(body);
+//    console.log(body);
     res.send(body);
 
     });
