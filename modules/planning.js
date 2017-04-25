@@ -1,7 +1,7 @@
 "use strict";
 var assert = require('assert');
 let mongo = require('mongodb').MongoClient;
-let connection = 'mongodb://127.0.0.1:27017/bagpaotravel';
+let connection = 'mongodb://localhost:27017/bagpaotravel';
 var isodate = require("isodate");
 var ObjectId = require('mongodb').ObjectID;
 const async = require('async');
@@ -125,7 +125,7 @@ date = new Date();
 	        var array_place_detail = [];
 	        async.forEachOf(place_array, (value, key) => {
 	          var temp_obj = {};
-	          getPlaceDetail(value.placeid, db, (err,result) => {
+	          getPlaceDetail(value.placeid, (err,result) => {
 	            temp_obj = {
 	              days: value.days,
 	              name: result[0].name,

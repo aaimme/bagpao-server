@@ -1,7 +1,7 @@
 "use strict";
 var assert = require('assert');
 let mongo = require('mongodb').MongoClient;
-let connection = 'mongodb://127.0.0.1:27017/bagpaotravel';
+let connection = 'mongodb://localhost:27017/bagpaotravel';
 let crypto  = require('crypto');
 
 function encrypt(password) {
