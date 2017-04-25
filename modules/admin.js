@@ -61,7 +61,7 @@ app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
         });
    		  }
   		});
-      console.log('add data success');
+      console.log('add place success');
 	}
 
 	exports.updatePlaceToMongo = function(req, callback) {
@@ -71,7 +71,6 @@ app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
   			callback('cannot connect to database', undefined);
   			}
   			else {
-          console.log(req.body.name);
               callback(undefined,'update data success');
 
               database.collection('place').update({ name : `${req.body.name}`},
@@ -88,6 +87,7 @@ app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
             );
 	      }
       });
+    console.log('update place success');
     }
 
    exports.updateTransportation = function(req, callback) {
@@ -115,7 +115,7 @@ app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
         );
         }
       });
-      console.log('update data success');
+      console.log('update transportation success');
     }
 
   exports.deletePlace = function(req, callback) {
@@ -131,7 +131,7 @@ app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
 
 			}
 		});
-    console.log('delete data success');
+    console.log('delete place success');
 	}
 
   exports.deleteTransportation = function(req, callback) {
@@ -147,7 +147,7 @@ app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
           .remove({ _id : query });
   			}
   		});
-      console.log('delete data success');
+      console.log('delete transportation success');
   	}
 
   exports.deleteTrip = function(req, callback) {
@@ -168,7 +168,7 @@ app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
 
   			}
   		});
-      console.log('delete data success');
+      console.log('delete trip success');
   	}
 
     exports.deleteMember = function(req, callback) {
@@ -183,7 +183,7 @@ app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
           .remove({ username: `${req.body.name}` });
     			}
     		});
-        console.log('delete data success');
+        console.log('delete member success');
     	}
 
   exports.showProblem = function(callback) {
@@ -197,7 +197,7 @@ app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
     		if (docs.length !== 0) {
     			callback(undefined, docs);
     	}else{
-    			callback('no data',undefined);
+    			callback('no data problem',undefined);
     		}
     	}
     });
@@ -215,7 +215,7 @@ app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
     		if (docs.length !== 0) {
     			callback(undefined, docs);
     	}else{
-    			callback('no data',undefined);
+    			callback('no data transportation',undefined);
     		}
     	}
     });
@@ -234,7 +234,7 @@ app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
         if (docs.length !== 0) {
           callback(undefined, docs);
       }else{
-          callback('no data',undefined);
+          callback('no data transportation',undefined);
         }
       }
     });
@@ -254,7 +254,7 @@ app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
           .remove({ _id : query});
   			}
       });
-      console.log('delete data success');
+      console.log('delete problem success');
   	}
 
      exports.deleteReview = function(req, callback) {
@@ -273,5 +273,5 @@ app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
           );
       }
     });
-      console.log('delete data success');
+      console.log('delete reviews success');
     }

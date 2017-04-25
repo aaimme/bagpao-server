@@ -393,6 +393,9 @@ app.post(`/admin`, (req, res) =>{
       else if (req.body.types == 'member') {
         admin.deleteMember(req, json_object);
       }
+       else if (req.body.types == 'reviews') {
+        admin.deleteReview(req, json_object);
+      }
       }
     if(req.body.admin == 'update'){
       if(req.body.types == 'place'){
@@ -474,14 +477,20 @@ app.post(`/myfavorite`, (req, res) => {
 
 
 app.post(`/addreviews`, (req, res) => {
-
+    if(req.body.comment == ''){
+        var contactus_obj = {
+        'message' : 'No comment'
+      }
+      res.json(contactus_obj);
+    }
+    else{
       plan.addReview( req);
-    		var contactus_obj = {
-    		'message' : 'success'
-    	}
-    	res.json(contactus_obj);
-
-    });
+        var contactus_obj = {
+        'message' : 'success'
+      }
+      res.json(contactus_obj);
+      }
+    });  
 
     app.post(`/reviews`, (req, res) => {
           plan.review( req, (error, result) => {
