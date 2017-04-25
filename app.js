@@ -4,8 +4,7 @@ var express = require('express');
 var app = express();
  var path = require('path');
 let mongo = require('mongodb').MongoClient;
-let connection = 'mongodb://127.0.0.1:27017/bagpaotravel';
-var formidable = require('formidable');
+let connection = 'mongodb://localhost:27017/bagpaotravel';
 var multer  = require('multer');
 var fs = require('fs');
 let body    = require('body-parser');
@@ -27,8 +26,7 @@ var member = require('./modules/member');
 var plan = require('./modules/planning');
 var show = require('./modules/show');
 var algorithm = require('./modules/algorithm');
-var paths = require('./modules/path');
-
+//
 //can recieve api from another domain
 app.use(function(req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
@@ -86,7 +84,7 @@ app.post(`/show`, (req, res) =>{
 });
 
 app.post(`/signup`, (req, res) => {
-	mongo.connect(connection, (error, database) => {
+    console.log(req.body);
 	login.checkUserSignup( req, (error, result) => {
     if (error) {
      	console.log(error);
@@ -103,11 +101,9 @@ app.post(`/signup`, (req, res) => {
       res.json(result_obj);
     }
    	});
-	});
 });
 
 app.post(`/login`, (req, res) => {
-
 	console.log("login: ",req.body);
   	login.checkUserLogin( req, (error, result) => {
     if (error) {
@@ -120,10 +116,10 @@ app.post(`/login`, (req, res) => {
     else {
      	console.log(result);
      	var result_obj = {
-     		'message' : `success`,
+     	'message' : `success`,
       	'username' : result[0].username,
         'status': result[0].status,
-     		'interest': result[0].interest,
+     	'interest': result[0].interest,
         'bio': result[0].bio,
         'picture': result[0].picture,
      }
@@ -328,7 +324,7 @@ app.post(`/planning`, (req, res) =>{
 });
 
 app.post(`/getplaces`, (req, res) => {
-		mongo.connect(connection, (error, database) => {
+		
       plan.getplaces( req, (error, result) => {
         if (error) {
           console.log(error);
@@ -341,7 +337,7 @@ app.post(`/getplaces`, (req, res) => {
           res.json(result);
       	}
       });
-    });
+    
   });
 
 app.post(`/admin`, (req, res) =>{

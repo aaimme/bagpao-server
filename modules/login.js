@@ -10,7 +10,7 @@ function encrypt(password) {
 
 exports.checkUserLogin = function( req, callback) {
 	mongo.connect(connection, (error, database) => {
-		 database.collection('member').find({username:req.body.username, password: encrypt(req.body.password)})
+		 database.collection('member').find({username:`${req.body.username}`, password: encrypt(`${req.body.password}`)})
 		.toArray((error, result) => {
       if (error) {
     		callback('cannot connect to database', undefined);
@@ -30,13 +30,14 @@ exports.checkUserLogin = function( req, callback) {
 
 exports.checkUserSignup = function( req, callback) {
 	mongo.connect(connection, (error, database) => {
-		 database.collection('member').find({username :req.body.username}).toArray((error, result) => {
+		 database.collection('member').find({username :`${req.body.username}`}).toArray((error, result) => {
   if (error) {
     callback('cannot connect to database', undefined);
   } else {
     if (result.length == 0) {
       callback(undefined,'success');
-      collection.insert({
+      mongo.connect(connection, (error, database) => {
+     database.collection('member').insert({
       username: req.body.username,
       password: encrypt(req.body.password),
       email: req.body.email,
@@ -48,8 +49,10 @@ exports.checkUserSignup = function( req, callback) {
 			picture: 'app/img/icon.png'
 
     });
+     });
     console.log('signup success');
   }
+
   else {
     callback('That username is taken. Try another.',undefined);
     console.log('That username is taken. Try another.');
