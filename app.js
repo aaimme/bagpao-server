@@ -129,6 +129,7 @@ app.post(`/login`, (req, res) => {
 });
 
 app.post('/editprofile', upload.single('picture'), function (req, res, next) {
+
         member.editProfile(req, (error, result) => {
          if (error) {
             console.log(error);
@@ -145,6 +146,7 @@ app.post('/editprofile', upload.single('picture'), function (req, res, next) {
         });
   console.log("file:",req.file);
   console.log("body:",req.body);
+
   if (req.file) {
     fs.rename(`picture/${req.file.filename}`, `picture/${req.file.originalname}`, function(err) {
       if ( err ){
