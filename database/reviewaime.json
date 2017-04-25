@@ -1,0 +1,10 @@
+{"_id":{"$oid":"58fabfc1ae8e7a2798d7a922"},"trip":"Gogo CNX","creator":"qwerty","reviews":[{"user":"gg","comment":"So good","date":{"$date":"2017-04-25T04:42:27.474Z"}}]}
+{"_id":{"$oid":"58fac038ae8e7a2798d7a924"},"trip":"The Gang travel","creator":"qwerty","reviews":[]}
+{"_id":{"$oid":"58fac07dae8e7a2798d7a926"},"trip":"Bangkok chalala~","creator":"aime","reviews":[]}
+{"_id":{"$oid":"58fac18fae8e7a2798d7a928"},"trip":"BKK De Dee","creator":"aime","reviews":[]}
+{"_id":{"$oid":"58fac3bba7359e1c3ca5fb65"},"trip":"Ramp Trip!","creator":"yuto","reviews":[]}
+{"_id":{"$oid":"58fac420a7359e1c3ca5fb67"},"trip":"Alone in Bangkok","creator":"yuto","reviews":[{"user":"durs","comment":"น่าเที่ยวจุงเบย","date":{"$date":"2017-04-25T07:52:40.552Z"}}]}
+{"_id":{"$oid":"58fac5aaa7359e1c3ca5fb69"},"trip":"TaloninBKK","creator":"yuto","reviews":[]}
+{"_id":{"$oid":"58fdb5ddcd9f8d157cc30e64"},"trip":"CNX part II","creator":"yuto","reviews":[]}
+{"_id":{"$oid":"58fef333819d2004fcf2f647"},"trip":"mild","creator":"narutomild","reviews":[{"user":"narutomild","comment":"So bad","date":{"$date":"2017-04-25T05:15:28.586Z"}}]}
+{"_id":{"$oid":"58ff01b0a0961519e4ec5acf"},"trip":"เดิสต้า","creator":"durs","reviews":[]}
