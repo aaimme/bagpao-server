@@ -2,18 +2,20 @@
 var assert = require('assert');
 var express = require('express');
 var app = express();
-var path = require('path');
+ var path = require('path');
 let mongo = require('mongodb').MongoClient;
 let connection = 'mongodb://localhost:27017/bagpaotravel';
 var formidable = require('formidable');
+var multer  = require('multer');
 var fs = require('fs');
 let body    = require('body-parser');
+var upload = multer({ dest: 'picture/' })
 app.use( body.json() );       // to support JSON-encoded bodies
 app.use(body.urlencoded({     // to support URL-encoded bodies
   extended: true
 }));
 
-app.use(express.static(path.join(__dirname, 'modules/uploads')));
+app.use(express.static(path.join(__dirname, 'public')));
 
 var isodate = require("isodate");
 var date = new Date();
@@ -25,7 +27,7 @@ var member = require('./modules/member');
 var plan = require('./modules/planning');
 var show = require('./modules/show');
 var algorithm = require('./modules/algorithm');
-var path = require('./modules/path');
+var paths = require('./modules/path');
 
 //can recieve api from another domain
 app.use(function(req, res, next) {
@@ -130,22 +132,52 @@ app.post(`/login`, (req, res) => {
   });
 });
 
-app.post(`/editprofile`, (req, res) => {
-    member.editProfile(req, (error, result) => {
-     if (error) {
-        console.log(error);
-        var error_obj = {
-          'message' : `${error}`
-        }
-        res.json(error_obj);
+app.post('/editprofile', upload.single('picture'), function (req, res, next) {
+  console.log(req.file);
+  console.log(req.body);
+  if (req.file) {
+    fs.rename(`picture/${req.file.filename}`, `picture/${req.file.originalname}`, function(err) {
+      if ( err ){
+        console.log('error while change file name: ' + err);
+        fs.unlink(`picture/${req.file.filename}`, (err) => {
+          if (err) {
+            console.log(`successfully deleted picture/${req.file.filename}`);
+          }
+        });
+      }else{
+        //keep profile image path
+        mongo.connect(connection, (err, database) => {
+          if(req.body.table == 'member'){
+            database
+            .collection('member')
+            .update({username: req.body.name },
+            { $set : {
+            picture: "http://localhost:1200/"+`${req.file.filename}`
+            }
+            });
+          }
+        });
+
+        member.editProfile(req, (error, result) => {
+         if (error) {
+            console.log(error);
+            var error_obj = {
+              'message' : `${error}`
+            }
+            res.json(error_obj);
+          }else{
+            var result_obj = {
+              'message' : result
+            }
+          res.json(result_obj);
+          }
+        });
       }
-      else{
-        var result_obj = {
-        'message' : result
-    }
-  res.json(result_obj);
-      }
-  });
+    });
+  }else{
+    //upload error
+  }
+
 });
 
 app.post(`/places`, (req, res) => {
@@ -529,27 +561,7 @@ app.get(`/apigeo`, (req, res) =>{
 
 //image
 // app.post('/upload', function(req, res){
-//   // create an incoming form object
-//   var form = new formidable.IncomingForm();
-//   // specify that we want to allow the user to upload multiple files in a single request
-//   form.multiples = true;
-//   // store all uploads in the /uploads directory
-//   form.uploadDir = path.join(__dirname, '/uploads');
-//   // every time a file has been uploaded successfully,
-//   // rename it to it's orignal name
-//   form.on('file', function(field, file) {
-//     fs.rename(file.path, path.join(form.uploadDir, file.name));
-//   });
-//   // log any errors that occur
-//   form.on('error', function(err) {
-//     console.log('An error has occured: \n' + err);
-//   });
-//   // once all the files have been uploaded, send a response to the client
-//   form.on('end', function() {
-//     res.end('success');
-//   });
-//   // parse the incoming request containing the form data
-//   form.parse(req);
+//
 // });
 
 app.listen(1200, function() {
