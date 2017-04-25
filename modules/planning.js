@@ -109,7 +109,7 @@ date = new Date();
 	      var find_obj = {
 	        _id : ObjectId(placeId)
 	      };
-				mongo.connect(connection, (err, database) => {
+		mongo.connect(connection, (err, database) => {
 	      database.collection('place').find(find_obj).toArray((err, docs) => {
 	        if (err) {
 	          callback(err, undefined);
@@ -117,7 +117,7 @@ date = new Date();
 	          callback(undefined, docs);
 	        }
 	      });
-			});
+		});
 	    }
 
 	    var getAllPlaceDetail = (place_array, callback) => {

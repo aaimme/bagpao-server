@@ -2,10 +2,9 @@
 var assert = require('assert');
 var express = require('express');
 var app = express();
- var path = require('path');
+var path = require('path');
 let mongo = require('mongodb').MongoClient;
 let connection = 'mongodb://localhost:27017/bagpaotravel';
-var formidable = require('formidable');
 var multer  = require('multer');
 var fs = require('fs');
 let body    = require('body-parser');
@@ -28,8 +27,7 @@ var member = require('./modules/member');
 var plan = require('./modules/planning');
 var show = require('./modules/show');
 var algorithm = require('./modules/algorithm');
-var paths = require('./modules/path');
-
+//
 //can recieve api from another domain
 app.use(function(req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
@@ -87,6 +85,7 @@ app.post(`/show`, (req, res) =>{
 });
 
 app.post(`/signup`, (req, res) => {
+    console.log(req.body);
 	login.checkUserSignup( req, (error, result) => {
     if (error) {
      	console.log(error);
@@ -106,7 +105,6 @@ app.post(`/signup`, (req, res) => {
 });
 
 app.post(`/login`, (req, res) => {
-
 	console.log("login: ",req.body);
   	login.checkUserLogin( req, (error, result) => {
     if (error) {
@@ -119,10 +117,10 @@ app.post(`/login`, (req, res) => {
     else {
      	console.log(result);
      	var result_obj = {
-     		'message' : `success`,
+     	'message' : `success`,
       	'username' : result[0].username,
         'status': result[0].status,
-     		'interest': result[0].interest,
+     	'interest': result[0].interest,
         'bio': result[0].bio,
         'picture': result[0].picture,
      }
@@ -132,7 +130,9 @@ app.post(`/login`, (req, res) => {
 });
 
 app.post('/editprofile', upload.single('picture'), function (req, res, next) {
-  /*if (req.file) {
+
+  /*
+  if (req.file) {
     fs.rename(`picture/${req.file.filename}`, `picture/${req.file.originalname}`, function(err) {
       if ( err ){
         console.log('error while change file name: ' + err);
@@ -152,21 +152,6 @@ app.post('/editprofile', upload.single('picture'), function (req, res, next) {
             picture: "http://localhost:1200/"+`${req.file.filename}`
             }
             });
-          }
-        });
-
-        member.editProfile(req, (error, result) => {
-         if (error) {
-            console.log(error);
-            var error_obj = {
-              'message' : `${error}`
-            }
-            res.json(error_obj);
-          }else{
-            var result_obj = {
-              'message' : result
-            }
-          res.json(result_obj);
           }
         });
       }
@@ -338,7 +323,7 @@ app.post(`/planning`, (req, res) =>{
 });
 
 app.post(`/getplaces`, (req, res) => {
-		mongo.connect(connection, (error, database) => {
+
       plan.getplaces( req, (error, result) => {
         if (error) {
           console.log(error);
@@ -351,7 +336,7 @@ app.post(`/getplaces`, (req, res) => {
           res.json(result);
       	}
       });
-    });
+
   });
 
 app.post(`/admin`, (req, res) =>{
