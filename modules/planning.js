@@ -109,7 +109,7 @@ date = new Date();
 	      var find_obj = {
 	        _id : ObjectId(placeId)
 	      };
-				mongo.connect(connection, (err, database) => {
+		mongo.connect(connection, (err, database) => {
 	      database.collection('place').find(find_obj).toArray((err, docs) => {
 	        if (err) {
 	          callback(err, undefined);
@@ -117,7 +117,7 @@ date = new Date();
 	          callback(undefined, docs);
 	        }
 	      });
-			});
+		});
 	    }
 
 	    var getAllPlaceDetail = (place_array, callback) => {
@@ -125,7 +125,7 @@ date = new Date();
 	        var array_place_detail = [];
 	        async.forEachOf(place_array, (value, key) => {
 	          var temp_obj = {};
-	          getPlaceDetail(value.placeid, db, (err,result) => {
+	          getPlaceDetail(value.placeid, (err,result) => {
 	            temp_obj = {
 	              days: value.days,
 	              name: result[0].name,
