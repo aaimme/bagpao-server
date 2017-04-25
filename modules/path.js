@@ -29,22 +29,22 @@ app.post('/upload', function(req, res){
     fs.rename(file.path, path.join(form.uploadDir, file.name));
     console.log(file.name);
     mongo.connect(connection, (err, database) => {
-      // if(req.body.table == 'member'){
-      //   database
-  		// 	.collection('member')
-  		// 	.update({username: req.body.name },
-  		// 	{ $set : {
-  		// 	picture: `${file.name}`"
-  		// 	}
-  		// 	});
-      // }
-      // else if (req.body.table == 'trip') {
-        database.collection('trip').update({name:"CNX part II" },
+      if(req.body.table == 'member'){
+        database
+  			.collection('member')
+  			.update({username: req.body.name },
+  			{ $set : {
+  			picture: "http://localhost:1200/"+`${file.name}`
+  			}
+  			});
+      }
+      else if (req.body.table == 'trip') {
+        database.collection('trip').update({name: req.body.name },
   			{ $set : {
   			picture:"http://localhost:1200/"+`${file.name}`
   			}
   			});
-        // }
+        }
     });
   });
 
