@@ -258,7 +258,7 @@ app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
   	}
 
      exports.deleteReview = function(req, callback) {
-    var query = req.body.index;
+    var query = req.body.comment;
         mongo.connect(connection, (err, database) => {
         if (err) {
           callback('cannot connect to database', undefined);
@@ -267,8 +267,11 @@ app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
           callback(undefined, 'delete data success');
           database
           .collection('reviews')
-          .remove({ reviews: query});
-        }
-      });
+          .update(
+           { trip : req.body.name },
+            { $pull: { reviews : {comment : query}}}
+          );
+      }
+    });
       console.log('delete data success');
     }
