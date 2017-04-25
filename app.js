@@ -133,7 +133,6 @@ app.post(`/login`, (req, res) => {
 });
 
 app.post('/editprofile', upload.single('picture'), function (req, res, next) {
-  console.log(req.file);
   console.log(req.body);
   if (req.file) {
     fs.rename(`picture/${req.file.filename}`, `picture/${req.file.originalname}`, function(err) {
