@@ -25,7 +25,6 @@ date = new Date();
                 privacy:`${req.body.privacy}`,
 							  status:`active`,
 								like: 0,
-								share: 0,
 								favorite: [],
                 datesubmit: date,
 								picture:`${req.body.picture}`
