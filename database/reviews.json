@@ -1,0 +1,7 @@
+{"_id":{"$oid":"58fac43a78b5d515fcfa4d18"},"trip":"Go to chiangmai","creator":"boomprw","reviews":[{"user":"pleng","comment":"goodddd"},{"user":"karnsr","comment":"lfgdfcgfdxc"},{"user":"null","comment":"good trip :)","date":{"$date":"2017-04-25T16:49:58.304Z"}}]}
+{"_id":{"$oid":"58fac4fe78b5d515fcfa4d1b"},"trip":"MomoChiangmai","creator":"Karnsr","reviews":[]}
+{"_id":{"$oid":"58fac54e78b5d515fcfa4d1d"},"trip":"CNXTrip","creator":"Karnsr","reviews":[]}
+{"_id":{"$oid":"58fac62c78b5d515fcfa4d20"},"trip":"Chiangmai Kakkak","creator":"Dadadeeeda","reviews":[]}
+{"_id":{"$oid":"58fac6c578b5d515fcfa4d22"},"trip":"Chiangmai Chic chiccc","creator":"pleng","reviews":[]}
+{"_id":{"$oid":"58fac75e78b5d515fcfa4d24"},"trip":"BKK Grills","creator":"pleng","reviews":[]}
+{"_id":{"$oid":"58fe2d37b2b66403b48b3a22"},"trip":"KK GOING","creator":"boomprw","reviews":[]}
