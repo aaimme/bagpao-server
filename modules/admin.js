@@ -128,6 +128,7 @@ app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
   			database
 			.collection('place')
       .remove({ name: `${req.body.name}` });
+
 			}
 		});
     console.log('delete data success');
@@ -159,6 +160,12 @@ app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
     			database
   			.collection('trip')
         .remove({ name: `${req.body.name}` });
+        console.log("delete trips");
+        database
+      .collection('reviews')
+      .remove({ trip: `${req.body.name}` });
+      console.log("delete reviews");
+
   			}
   		});
       console.log('delete data success');
