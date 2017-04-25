@@ -249,3 +249,19 @@ app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
       });
       console.log('delete data success');
   	}
+
+     exports.deleteReview = function(req, callback) {
+    var query = req.body.index;
+        mongo.connect(connection, (err, database) => {
+        if (err) {
+          callback('cannot connect to database', undefined);
+          }
+          else {
+          callback(undefined, 'delete data success');
+          database
+          .collection('reviews')
+          .remove({ reviews: query});
+        }
+      });
+      console.log('delete data success');
+    }
