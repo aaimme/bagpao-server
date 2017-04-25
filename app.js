@@ -10,8 +10,9 @@ var multer  = require('multer');
 var fs = require('fs');
 let body    = require('body-parser');
 var upload = multer({ dest: 'picture/' })
-app.use( body.json() );       // to support JSON-encoded bodies
+app.use( body.json({limit: '50mb'}) );       // to support JSON-encoded bodies
 app.use(body.urlencoded({     // to support URL-encoded bodies
+  limit: '50mb',
   extended: true
 }));
 
@@ -86,7 +87,6 @@ app.post(`/show`, (req, res) =>{
 });
 
 app.post(`/signup`, (req, res) => {
-	mongo.connect(connection, (error, database) => {
 	login.checkUserSignup( req, (error, result) => {
     if (error) {
      	console.log(error);
@@ -103,7 +103,6 @@ app.post(`/signup`, (req, res) => {
       res.json(result_obj);
     }
    	});
-	});
 });
 
 app.post(`/login`, (req, res) => {
@@ -133,8 +132,7 @@ app.post(`/login`, (req, res) => {
 });
 
 app.post('/editprofile', upload.single('picture'), function (req, res, next) {
-  console.log(req.body);
-  if (req.file) {
+  /*if (req.file) {
     fs.rename(`picture/${req.file.filename}`, `picture/${req.file.originalname}`, function(err) {
       if ( err ){
         console.log('error while change file name: ' + err);
@@ -173,10 +171,23 @@ app.post('/editprofile', upload.single('picture'), function (req, res, next) {
         });
       }
     });
-  }else{
-    //upload error
   }
-
+  else{ */
+    member.editProfile(req, (error, result) => {
+     if (error) {
+        console.log(error);
+        var error_obj = {
+          'message' : `${error}`
+        }
+        res.json(error_obj);
+      }
+      else{
+        var result_obj = {
+          'message' : result
+        }
+      res.json(result_obj);
+      }
+    });
 });
 
 app.post(`/places`, (req, res) => {

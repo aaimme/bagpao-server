@@ -29,6 +29,7 @@ exports.checkUserLogin = function( req, callback) {
 
 
 exports.checkUserSignup = function( req, callback) {
+	console.log(req.body);
 	mongo.connect(connection, (error, database) => {
 		 database.collection('member').find({username :req.body.username}).toArray((error, result) => {
   if (error) {
@@ -36,7 +37,8 @@ exports.checkUserSignup = function( req, callback) {
   } else {
     if (result.length == 0) {
       callback(undefined,'success');
-      collection.insert({
+			mongo.connect(connection, (error, database) => {
+				 database.collection('member').insert({
       username: req.body.username,
       password: encrypt(req.body.password),
       email: req.body.email,
@@ -44,10 +46,10 @@ exports.checkUserSignup = function( req, callback) {
 			currentcity: '',
 			interest: [],
 			bio: '',
-			status: 'public',
 			picture: 'app/img/icon.png'
 
     });
+	});
     console.log('signup success');
   }
   else {

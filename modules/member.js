@@ -2,6 +2,7 @@
 var assert = require('assert');
 let mongo = require('mongodb').MongoClient;
 let connection = 'mongodb://localhost:27017/bagpaotravel';
+var fs = require('fs');
 
 
 exports.findUser = function(req, callback) {
@@ -22,7 +23,6 @@ mongo.connect(connection, (err, database) => {
 
 exports.editProfile = function(req, callback) {
     var results = req.body.interest;
-    console.log(req.body);
 		mongo.connect(connection, (err, database) => {
 			if (err) {
   			callback('cannot connect to database', undefined);
@@ -38,8 +38,7 @@ exports.editProfile = function(req, callback) {
 			currentcity:`${req.body.currentcity}`,
 			interest: [],
 			bio:`${req.body.bio}`,
-      picture: `${req.body.picture}`,
-      status: `public`
+      picture: `${req.body.picture}`
 			}
 			});
 
