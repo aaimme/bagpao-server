@@ -174,9 +174,7 @@ exports.searchTripDetail = function( req, _callback) {
           daytrip: docs[0].daytrip,
           picture: docs[0].picture,
           privacy: docs[0].privacy,
-          status: docs[0].status,
           like: docs[0].like,
-          share: docs[0].share,
           favorite: docs[0].favorite,
           datesubmit: docs[0].datesubmit,
           reviews: docs[0].reviews

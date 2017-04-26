@@ -23,7 +23,6 @@ date = new Date();
 								tags:[],
 								place : [],
                 privacy:`${req.body.privacy}`,
-							  status:`active`,
 								like: 0,
 								favorite: [],
                 datesubmit: date,

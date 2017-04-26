@@ -76,7 +76,7 @@ app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
               database.collection('place').update({ name : `${req.body.name}`},
                 { $set: {
                   contact: `${req.body.contact}`,
-                  city: `${req.body.city}`,
+                  city: `${req.body.city}`.split(","),
                   latitude: `${req.body.latitude}`,
                   longitude: `${req.body.longitude}`,
                   category: `${req.body.category}`,
