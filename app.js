@@ -5,10 +5,8 @@ var app = express();
 var path = require('path');
 let mongo = require('mongodb').MongoClient;
 let connection = 'mongodb://localhost:27017/bagpaotravel';
-var multer  = require('multer');
 var fs = require('fs');
 let body    = require('body-parser');
-var upload = multer({ dest: 'picture/' })
 app.use( body.json({limit: '50mb'}) );       // to support JSON-encoded bodies
 app.use(body.urlencoded({     // to support URL-encoded bodies
   limit: '50mb',
@@ -129,35 +127,7 @@ app.post(`/login`, (req, res) => {
   });
 });
 
-app.post('/editprofile', upload.single('picture'), function (req, res, next) {
-
-  /*
-  if (req.file) {
-    fs.rename(`picture/${req.file.filename}`, `picture/${req.file.originalname}`, function(err) {
-      if ( err ){
-        console.log('error while change file name: ' + err);
-        fs.unlink(`picture/${req.file.filename}`, (err) => {
-          if (err) {
-            console.log(`successfully deleted picture/${req.file.filename}`);
-          }
-        });
-      }else{
-        //keep profile image path
-        mongo.connect(connection, (err, database) => {
-          if(req.body.table == 'member'){
-            database
-            .collection('member')
-            .update({username: req.body.name },
-            { $set : {
-            picture: "http://localhost:1200/"+`${req.file.filename}`
-            }
-            });
-          }
-        });
-      }
-    });
-  }
-  else{ */
+app.post('/editprofile',function (req, res, next) {
     member.editProfile(req, (error, result) => {
      if (error) {
         console.log(error);

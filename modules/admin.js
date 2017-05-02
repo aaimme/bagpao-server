@@ -151,36 +151,29 @@ app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
   	}
 
   exports.deleteTrip = function(req, callback) {
-  			mongo.connect(connection, (err, database) => {
+  		mongo.connect(connection, (err, database) => {
   			if (err) {
     			callback('cannot connect to database', undefined);
     			}
     			else {
     			callback(undefined, 'delete data success');
-    			database
-  			.collection('trip')
-        .remove({ name: `${req.body.name}` });
-        console.log("delete trips");
-        database
-      .collection('reviews')
-      .remove({ trip: `${req.body.name}` });
-      console.log("delete reviews");
-
+    			database.collection('trip').remove({ name: `${req.body.name}` });
+            console.log("delete trips");
+          database.collection('reviews').remove({ trip: `${req.body.name}` });
+            console.log("delete reviews");
   			}
   		});
       console.log('delete trip success');
   	}
 
     exports.deleteMember = function(req, callback) {
-    			mongo.connect(connection, (err, database) => {
+    		mongo.connect(connection, (err, database) => {
     			if (err) {
       			callback('cannot connect to database', undefined);
-      			}
-      			else {
+      		}
+      		else {
       			callback(undefined, 'delete data success');
-      			database
-    			.collection('member')
-          .remove({ username: `${req.body.name}` });
+      			database.collection('member').remove({ username: `${req.body.name}` });
     			}
     		});
         console.log('delete member success');
@@ -188,9 +181,7 @@ app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
 
   exports.showProblem = function(callback) {
       mongo.connect(connection, (err, database) => {
-        database
-        .collection('contactus')
-        .find({}).toArray(function(err, docs) {
+        database.collection('contactus').find({}).toArray(function(err, docs) {
     	if (err) {
     		callback('cannot connect to database', undefined);
     	}else{
@@ -205,20 +196,18 @@ app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
   }
 
   exports.showTransportationAll = function(callback) {
-      mongo.connect(connection, (err, database) => {
-        database
-        .collection('transportation')
-        .find({}).toArray(function(err, docs) {
-    	if (err) {
-    		callback('cannot connect to database', undefined);
-    	}else{
-    		if (docs.length !== 0) {
-    			callback(undefined, docs);
-    	}else{
-    			callback('no data transportation',undefined);
-    		}
-    	}
-    });
+    mongo.connect(connection, (err, database) => {
+        database.collection('transportation').find({}).toArray(function(err, docs) {
+    	   if (err) {
+    		  callback('cannot connect to database', undefined);
+    	   }else{
+    		      if (docs.length !== 0) {
+    			       callback(undefined, docs);
+    	        }else{
+    			       callback('no data transportation',undefined);
+    		      }
+    	 }
+      });
     });
   }
 
@@ -258,20 +247,18 @@ app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
   	}
 
      exports.deleteReview = function(req, callback) {
-    var query = req.body.comment;
-        mongo.connect(connection, (err, database) => {
+      var query = req.body.comment;
+      mongo.connect(connection, (err, database) => {
         if (err) {
           callback('cannot connect to database', undefined);
           }
           else {
           callback(undefined, 'delete data success');
-          database
-          .collection('reviews')
-          .update(
-           { trip : req.body.name },
+          database.collection('reviews').update(
+            { trip : req.body.name },
             { $pull: { reviews : {comment : query}}}
           );
-      }
+        }
     });
       console.log('delete reviews success');
     }
