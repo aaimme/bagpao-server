@@ -249,7 +249,8 @@ app.post(`/planning`, (req, res) =>{
                'name' : result[i].name,
                'picture' : result[i].picture,
                'city' : result[i].city,
-               'category' : result[i].category
+               'category' : result[i].category,
+               'price' : result[i].price
            }
            results[i] = result_obj
          }
@@ -460,7 +461,7 @@ app.post(`/addreviews`, (req, res) => {
       }
       res.json(contactus_obj);
       }
-    });  
+    });
 
     app.post(`/reviews`, (req, res) => {
           plan.review( req, (error, result) => {
