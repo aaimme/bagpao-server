@@ -278,6 +278,7 @@ app.post(`/planning`, (req, res) =>{
                  'picture' : result[i].picture,
                  'city' : result[i].city,
                  'category' : result[i].category
+                 'price' : result[i].price
                }
                results[i] = result_obj
              }
@@ -519,20 +520,6 @@ var googleMapsClient = require('@google/maps').createClient({
 //     });
 
 
-// app.get(`/apigeo`, (req, res) =>{
-//   var request = require('request');
-//   var latlng = 'https://maps.googleapis.com/maps/api/geocode/json?latlng='+req.query.lat+','+req.query.lng+'&key=AIzaSyDGFpo_nftbMYEro-Ff0lkXNdQV7sEwKN8'
-//   var address = 'https://maps.googleapis.com/maps/api/geocode/json?address='+req.query.address+'&key=AIzaSyDGFpo_nftbMYEro-Ff0lkXNdQV7sEwKN8'
-//   request(latlng, function (error, response, body) {
-//     console.log('error:', error); // Print the error if one occurred
-//     console.log('statusCode:', response && response.statusCode); // Print the response status code if a response was received
-//     // console.log('body:', body); // Print the HTML for the Google homepage.
-//     body = JSON.parse(body);
-// //    console.log(body);
-//     res.send(body);
-
-//     });
-//   });
 
 app.listen(1200, function() {
   console.log('Server running on port 1200...')
