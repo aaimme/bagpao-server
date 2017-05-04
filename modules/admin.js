@@ -32,7 +32,7 @@ app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
       destination:`${req.body.destination}`,
       stationend:`${req.body.stationend}`,
       arrive:`${req.body.arrive}`,
-      price:`${req.body.price}`
+      price: req.body.price
     });
       }
     });
@@ -51,13 +51,13 @@ app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
 			.insert({
 				name:`${req.body.name}`.split(","),
         city:`${req.body.city}`.split(","),
-        latitude:`${req.body.latitude}`,
-        longitude:`${req.body.longitude}`,
+        latitude: req.body.latitude,
+        longitude: req.body.longitude,
         category: req.body.category,
         picture:`${req.body.picture}`,
         description:`${req.body.description}`,
 				contact:`${req.body.contact}`,
-        price:`${req.body.price}`,
+        price: req.body.price,
         view: 0
         });
    		  }
@@ -78,12 +78,12 @@ app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
                 { $set: {
                   contact: `${req.body.contact}`,
                   city: `${req.body.city}`.split(","),
-                  latitude: `${req.body.latitude}`,
-                  longitude: `${req.body.longitude}`,
+                  latitude: req.body.latitude,
+                  longitude: req.body.longitude,
                   category: `${req.body.category}`,
                   picture: `${req.body.picture}`,
                   description: `${req.body.description}`,
-                  price:`${req.body.price}`
+                  price: req.body.price
                       }
                 }
             );
@@ -111,7 +111,7 @@ app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
             destination:`${req.body.destination}`,
             stationend:`${req.body.stationend}`,
             arrive:`${req.body.arrive}`,
-            price:`${req.body.price}`
+            price: req.body.price
             }
           }
         );
