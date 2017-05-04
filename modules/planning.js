@@ -14,17 +14,17 @@ date = new Date();
 			mongo.connect(connection, (error, database) => {
 				database.collection('trip').insert([{
                 	name:`${req.body.name}`,
-    				creator:`${req.body.username}`,
+    							creator:`${req.body.username}`,
                 	origin:`${req.body.origin}`,
                 	destination:`${req.body.destination}`,
-					daytrip:`${req.body.daytrip}`,
-					tags:[],
-					place : [],
+									daytrip:`${req.body.daytrip}`,
+									tags:[],
+									place : [],
                 	privacy:`${req.body.privacy}`,
-					like: 0,
-					favorite: [],
+									like: 0,
+									favorite: [],
                 	datesubmit: date,
-					picture:`${req.body.picture}`
+									picture:`${req.body.picture}`
                 }]);
 
 								for(var i = 0; i < results.length; i++) {

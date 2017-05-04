@@ -57,6 +57,7 @@ app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
         picture:`${req.body.picture}`,
         description:`${req.body.description}`,
 				contact:`${req.body.contact}`,
+        price:`${req.body.price}`,
         view: 0
         });
    		  }
@@ -81,7 +82,8 @@ app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
                   longitude: `${req.body.longitude}`,
                   category: `${req.body.category}`,
                   picture: `${req.body.picture}`,
-                  description: `${req.body.description}`
+                  description: `${req.body.description}`,
+                  price:`${req.body.price}`
                       }
                 }
             );
