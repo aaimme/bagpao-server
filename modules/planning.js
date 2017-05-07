@@ -17,9 +17,11 @@ date = new Date();
     							creator:`${req.body.username}`,
                 	origin:`${req.body.origin}`,
                 	destination:`${req.body.destination}`,
+									depart:`${req.body.depart}`,
+									return:`${req.body.return}`,
 									daytrip:`${req.body.daytrip}`,
-									tags:[],
 									place : [],
+									prices: req.body.prices,
                 	privacy:`${req.body.privacy}`,
 									like: 0,
 									favorite: [],
@@ -124,6 +126,7 @@ date = new Date();
 	          getPlaceDetail(value.placeid, (err,result) => {
 	            temp_obj = {
 	              days: value.days,
+								time: value.time,
 	              name: result[0].name,
 	              city: result[0].city,
 	              picture: result[0].picture
