@@ -1,6 +1,7 @@
 let mongo = require('mongodb').MongoClient;
 var ObjectId = require('mongodb').ObjectID;
 let connection = 'mongodb://localhost:27017/bagpaotravel';
+var similarity = require("similarity");
 
 var newUser;
 var oldUser;
@@ -37,7 +38,7 @@ exports.recommendNewUser = function(req, callback) {
                    name:"$name",
                    creator:"$creator",
                    picture:"$picture",
-                   totalAmount: { $sum: [ "$like", "$share" ]}
+                   totalAmount:  "$like"
                  }
               },
               {
@@ -60,4 +61,36 @@ exports.recommendNewUser = function(req, callback) {
         });
       }
 
-    
+      exports.recommendInterestUser = function(req, callback) {
+                  mongo.connect(connection, (err, database) => {
+                    database
+                    .collection('trip')
+                    .find([
+                    {$match:
+                        { destination : req.body.destination,
+                         category : docs.category }
+                    },
+                    {
+                     $project:
+                       {
+                         name:"$name",
+                         creator:"$creator",
+                         picture:"$picture"
+                       }
+                    },
+                    {
+                      $limit : 3
+                    }
+                  ]).toArray(function(err, docs) {
+                	if (err) {
+                		callback('cannot connect to database', undefined);
+                	}else{
+                		if (docs.length !== 0) {
+                			callback(undefined, docs);
+                	}else{
+                			callback('no data',undefined);
+                		}
+                	}
+                });
+              });
+            }
