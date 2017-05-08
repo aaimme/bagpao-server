@@ -28,7 +28,7 @@ date = new Date();
                 	datesubmit: date,
 									picture:`${req.body.picture}`
                 }]);
-
+		
 								for(var i = 0; i < results.length; i++) {
 									var result_obj = {
 											'days': results[i].days,

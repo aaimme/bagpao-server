@@ -151,7 +151,7 @@ exports.tripsRecent = function(callback) {
 
 
 exports.searchTripDetail = function( req, _callback) {
-  console.log('1');
+
   mongo.connect(connection, (err, database) => {
     if (err) {
       console.log("error", err);
@@ -164,7 +164,6 @@ exports.searchTripDetail = function( req, _callback) {
     if (err) {
       callback('cannot connect to database', undefined);
     }else{
-
       if (docs.length !== 0) {
         var array_result = [{
           name: docs[0].name,

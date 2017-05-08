@@ -10,7 +10,8 @@ function encrypt(password) {
 
 exports.checkUserLogin = function( req, callback) {
 	mongo.connect(connection, (error, database) => {
-		 database.collection('member').find({username:`${req.body.username}`, password: encrypt(`${req.body.password}`)})
+		 database.collection('member').find({ $or: [ {username:`${req.body.username}`, password: encrypt(`${req.body.password}`)},
+			  {email:`${req.body.username}`, password: encrypt(`${req.body.password}`)} ] })
 		.toArray((error, result) => {
       if (error) {
     		callback('cannot connect to database', undefined);
@@ -31,10 +32,13 @@ exports.checkUserLogin = function( req, callback) {
 exports.checkUserSignup = function( req, callback) {
 	console.log(req.body);
 	mongo.connect(connection, (error, database) => {
-		 database.collection('member').find({username :`${req.body.username}`}).toArray((error, result) => {
+		 database.collection('member').find({ $or: [ {username :`${req.body.username}`},
+			  { email :`${req.body.email}`}] }
+		 ).toArray((error, result) => {
   if (error) {
     callback('cannot connect to database', undefined);
   } else {
+		console.log('length',result.length);
     if (result.length == 0) {
       callback(undefined,'success');
 			mongo.connect(connection, (error, database) => {
@@ -54,7 +58,7 @@ exports.checkUserSignup = function( req, callback) {
   }
 
   else {
-    callback('That username is taken. Try another.',undefined);
+    callback('That username/email is taken. Try another.',undefined);
     console.log('That username is taken. Try another.');
   }
 }
