@@ -33,6 +33,31 @@ app.use(function(req, res, next) {
   next();
 });
 
+app.post(`/recommend`, (req,res) =>{
+  algorithm.recommendInterestUser(req ,(error, result) => {
+  if (error) {
+    console.log(error);
+    var error_obj = {
+      'message' : `${error}`
+    }
+    res.json(error_obj);
+    }
+  else {
+    var results = []
+    for(var i = 0; i < result.length; i++) {
+    var result_obj = {
+      'creator' : result[i].creator,
+      'name' : result[i].name,
+      'picture' : result[i].picture,
+      'prices' : result[i].prices
+    }
+      results[i] = result_obj
+    }
+      res.json(results);
+  }
+  });
+});
+
 app.post(`/show`, (req, res) =>{
  console.log(req.body);
   var showtype = (error, result) => {
@@ -120,7 +145,7 @@ app.post(`/login`, (req, res) => {
         'status': result[0].status,
      	'interest': result[0].interest,
         'bio': result[0].bio,
-        'picture': result[0].picture,
+        'picture': result[0].picture
      }
       res.json(result_obj);
     }

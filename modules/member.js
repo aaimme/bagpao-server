@@ -4,6 +4,17 @@ let mongo = require('mongodb').MongoClient;
 let connection = 'mongodb://localhost:27017/bagpaotravel';
 var fs = require('fs');
 
+var crypto = require('crypto'),
+    algorithm = 'aes-256-ctr',
+    password = 'd6F3Efeq';
+
+    function decrypt(text){
+      var decipher = crypto.createDecipher(algorithm,password)
+      var dec = decipher.update(text,'hex','utf8')
+      dec += decipher.final('utf8');
+      return dec;
+    }
+
 
 exports.findUser = function(req, callback) {
 mongo.connect(connection, (err, database) => {
@@ -12,6 +23,8 @@ mongo.connect(connection, (err, database) => {
   		callback('cannot connect to database', undefined);
   	}else{
   		if (docs.length !== 0) {
+        var pass = decrypt(docs[0].password);
+        console.log(pass);
   			callback(undefined, docs);
   	}else{
   			callback('cannot found User',undefined);
