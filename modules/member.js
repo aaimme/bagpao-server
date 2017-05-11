@@ -4,7 +4,6 @@ let mongo = require('mongodb').MongoClient;
 let connection = 'mongodb://localhost:27017/bagpaotravel';
 var fs = require('fs');
 
-
 exports.findUser = function(req, callback) {
 mongo.connect(connection, (err, database) => {
   database.collection('member').find({username:{ $regex: `${req.body.username}`,$options:"$i"}}).toArray(function(err, docs) {
@@ -12,7 +11,7 @@ mongo.connect(connection, (err, database) => {
   		callback('cannot connect to database', undefined);
   	}else{
   		if (docs.length !== 0) {
-  			callback(undefined, docs);
+        callback(undefined, docs);
   	}else{
   			callback('cannot found User',undefined);
   		}

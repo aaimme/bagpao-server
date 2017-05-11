@@ -2,15 +2,30 @@
 var assert = require('assert');
 let mongo = require('mongodb').MongoClient;
 let connection = 'mongodb://localhost:27017/bagpaotravel';
-let crypto  = require('crypto');
 
-function encrypt(password) {
-	return crypto.createHash('sha256').update(password).digest('hex');
+var crypto = require('crypto'),
+    algorithm = 'aes-256-ctr',
+    password = 'd6F3Efeq';
+
+
+function encrypt(text){
+  var cipher = crypto.createCipher(algorithm,password)
+  var crypted = cipher.update(text,'utf8','hex')
+  crypted += cipher.final('hex');
+  return crypted;
+}
+
+function decrypt(text){
+  var decipher = crypto.createDecipher(algorithm,password)
+  var dec = decipher.update(text,'hex','utf8')
+  dec += decipher.final('utf8');
+  return dec;
 }
 
 exports.checkUserLogin = function( req, callback) {
 	mongo.connect(connection, (error, database) => {
-		 database.collection('member').find({username:`${req.body.username}`, password: encrypt(`${req.body.password}`)})
+		 database.collection('member').find({ $or: [ {username:`${req.body.username}`, password: encrypt(`${req.body.password}`)},
+			  {email:`${req.body.username}`, password: encrypt(`${req.body.password}`)} ] })
 		.toArray((error, result) => {
       if (error) {
     		callback('cannot connect to database', undefined);
@@ -31,10 +46,13 @@ exports.checkUserLogin = function( req, callback) {
 exports.checkUserSignup = function( req, callback) {
 	console.log(req.body);
 	mongo.connect(connection, (error, database) => {
-		 database.collection('member').find({username :`${req.body.username}`}).toArray((error, result) => {
+		 database.collection('member').find({ $or: [ {username :`${req.body.username}`},
+			  { email :`${req.body.email}`}] }
+		 ).toArray((error, result) => {
   if (error) {
     callback('cannot connect to database', undefined);
   } else {
+		console.log('length',result.length);
     if (result.length == 0) {
       callback(undefined,'success');
 			mongo.connect(connection, (error, database) => {
@@ -54,7 +72,7 @@ exports.checkUserSignup = function( req, callback) {
   }
 
   else {
-    callback('That username is taken. Try another.',undefined);
+    callback('That username/email is taken. Try another.',undefined);
     console.log('That username is taken. Try another.');
   }
 }

@@ -21,6 +21,7 @@ date = new Date();
 									return:`${req.body.return}`,
 									daytrip:`${req.body.daytrip}`,
 									place : [],
+									tag :[],
 									prices: req.body.prices,
                 	privacy:`${req.body.privacy}`,
 									like: 0,

@@ -25,7 +25,8 @@ var member = require('./modules/member');
 var plan = require('./modules/planning');
 var show = require('./modules/show');
 var algorithm = require('./modules/algorithm');
-//
+var object = require('./modules/object');
+
 //can recieve api from another domain
 app.use(function(req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
@@ -33,8 +34,72 @@ app.use(function(req, res, next) {
   next();
 });
 
+app.post(`/recommend`, (req,res) =>{
+  algorithm.recommendInterestUser(req ,(error, result) => {
+  if (error) {
+    console.log(error);
+    var error_obj = {
+      'message' : `${error}`
+    }
+    res.json(error_obj);
+    }
+  else {
+    var results = []
+    for(var i = 0; i < result.length; i++) {
+    var result_obj = {
+      'creator' : result[i].creator,
+      'name' : result[i].name,
+      'picture' : result[i].picture,
+      'prices' : result[i].prices
+    }
+      results[i] = result_obj
+    }
+      res.json(results);
+  }
+  });
+});
+
+var crypto = require('crypto'),
+    algorithm = 'aes-256-ctr',
+    password = 'd6F3Efeq';
+
+function decrypt(text){
+      var decipher = crypto.createDecipher(algorithm,password)
+      var dec = decipher.update(text,'hex','utf8')
+      dec += decipher.final('utf8');
+      return dec;
+    }
+
 app.post(`/show`, (req, res) =>{
  console.log(req.body);
+ var profile = (error, result) => {
+ if (error) {
+   console.log(error);
+   var error_obj = {
+     'message' : `${error}`
+   }
+   res.json(error_obj);
+   }
+ else {
+    var results = []
+    for(var i = 0; i < result.length; i++) {
+      var result_obj = {
+        '_id' : result[i].id,
+        'username' : result[i].username,
+        'password' : decrypt(result[i].password),
+        'email' : result[i].email,
+        'birthday' : result[i].birthday,
+        'currentcity' : result[i].currentcity,
+        'interest' : result[i].interest,
+        'bio' : result[i].bio,
+        'picture' : result[i].picture
+      }
+      results[i] = result_obj
+    }
+   res.json(results);
+ }
+ }
+
   var showtype = (error, result) => {
   if (error) {
     console.log(error);
@@ -67,7 +132,7 @@ app.post(`/show`, (req, res) =>{
     show.tripsPopularHome(showtype);
     }
     else if (req.body.do == "mem"){
-        member.findUser(req , showtype);
+        member.findUser(req , profile);
 
    }
    else if (req.body.do == "detailtrip"){
@@ -120,7 +185,7 @@ app.post(`/login`, (req, res) => {
         'status': result[0].status,
      	'interest': result[0].interest,
         'bio': result[0].bio,
-        'picture': result[0].picture,
+        'picture': result[0].picture
      }
       res.json(result_obj);
     }
