@@ -53,8 +53,7 @@ exports.tripsPopular = function(callback) {
          {
            name:"$name",
            creator:"$creator",
-           picture:"$picture",
-           totalAmount: { $sum: [ "$like", "$share" ]}
+           picture:"$picture"
          }
         },
         {
@@ -108,7 +107,8 @@ exports.tripsPopularHome = function(callback) {
            creator:"$creator",
            picture:"$picture",
            like:"$like",
-           totalAmount: { $sum: [ "$like", "$share" ]}
+           favname:"$favorite",
+           liker:"$liker"
          }
       },
       {
