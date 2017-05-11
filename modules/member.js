@@ -3,6 +3,17 @@ var assert = require('assert');
 let mongo = require('mongodb').MongoClient;
 let connection = 'mongodb://localhost:27017/bagpaotravel';
 var fs = require('fs');
+var crypto = require('crypto'),
+    algorithm = 'aes-256-ctr',
+    password = 'd6F3Efeq';
+
+
+function encrypt(text){
+  var cipher = crypto.createCipher(algorithm,password)
+  var crypted = cipher.update(text,'utf8','hex')
+  crypted += cipher.final('hex');
+  return crypted;
+}
 
 exports.findUser = function(req, callback) {
 mongo.connect(connection, (err, database) => {
@@ -21,6 +32,7 @@ mongo.connect(connection, (err, database) => {
 }
 
 exports.editProfile = function(req, callback) {
+
     var results = req.body.interest;
 		mongo.connect(connection, (err, database) => {
 			if (err) {
@@ -31,7 +43,7 @@ exports.editProfile = function(req, callback) {
   			database.collection('member')
 			.update({username:`${req.body.username}` },
 			{ $set : {
-			password:`${req.body.password}`,
+			password:encrypt(`${req.body.password}`),
 			email:`${req.body.email}`,
 			birthday: `${req.body.birthday}`,
 			currentcity:`${req.body.currentcity}`,
@@ -119,3 +131,33 @@ exports.editProfile = function(req, callback) {
     });
   });
   }
+
+  exports.like = function( req) {
+  if(req.body.username == ''){
+    mongo.connect(connection, (err, database) => {
+        database.collection('trip').update(
+          { name : req.body.name},
+          { $inc: { like: 1 } });
+      });
+      console.log("anonymous like");
+  }
+  else{
+    mongo.connect(connection, (err, database) => {
+    database.collection('trip').find({liker:`${req.body.username}`}).toArray(function(err, docs) {
+    if (err) {
+      callback('cannot connect to database', undefined);
+    }else{
+      if (docs.length == 0) {
+            database.collection('trip').update(
+              { name : req.body.name},
+              { $inc: { like: 1 } ,
+              	$push: {liker: `${req.body.username}`}});
+          console.log(req.body.username ,"like");
+    }else{
+          console.log("member liked");
+      }
+    }
+  });
+  });
+  }
+}

@@ -449,17 +449,10 @@ app.post(`/admin`, (req, res) =>{
 });
 
 app.post(`/like`, (req, res) => {
-  mongo.connect(connection, (err, database) => {
-      database.collection('trip').update({ name : req.body.name},{ $inc: { like: 1 } });
-    });
-    console.log("like");
+  console.log(req.body);
+  member.like(req)
 });
 
-app.post(`/share`, (req, res) => {
-  mongo.connect(connection, (err, database) => {
-      database.collection('trip').update({ name : req.body.name},{ $inc: { share: 1 } });
-    });
-});
 
 app.post(`/view`, (req, res) => {
   mongo.connect(connection, (err, database) => {
