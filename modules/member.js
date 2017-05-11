@@ -65,24 +65,6 @@ exports.editProfile = function(req, callback) {
    	}
 
 
-  exports.addFavorite = function(req) {
-          mongo.connect(connection, (error, database) => {
-            database.collection('trip').update({ name:`${req.body.name}`},
-                {	$push: {favorite: `${req.body.username}`}});
-          });
-          console.log("add favorite by :",req.body.username,"trip :",req.body.name);
-  }
-
-  exports.removeFavorite = function(req) {
-          mongo.connect(connection, (error, database) => {
-            database.collection('trip').update(
-                { name:`${req.body.name}`,favorite: `${req.body.username}`},
-                { $pull: { favorite :`${req.body.username}` }
-          });
-          console.log("remove favorite by :",req.body.username,"trip :",req.body.name);
-  });
-}
-
 
   exports.myTrips = function( req, callback) {
     mongo.connect(connection, (err, database) => {
@@ -100,21 +82,6 @@ exports.editProfile = function(req, callback) {
   });
 }
 
-  exports.myDraft = function( req, callback) {
-    mongo.connect(connection, (err, database) => {
-      database.collection('trip').find({creator:`${req.body.username}`,status:'notactive'}).toArray(function(err, docs) {
-    	if (err) {
-    		callback('cannot connect to database', undefined);
-    	}else{
-    		if (docs.length !== 0) {
-    			callback(undefined, docs);
-    	}else{
-    			callback('cannot found My draft',undefined);
-    		}
-    	}
-    });
-  });
-}
 
   exports.myFavorite = function( req, callback) {
     mongo.connect(connection, (err, database) => {
@@ -160,4 +127,34 @@ exports.editProfile = function(req, callback) {
   });
   });
   }
+}
+
+
+  exports.addFavorite = function(req) {
+    mongo.connect(connection, (err, database) => {
+    database.collection('trip').find({favorite:`${req.body.username}`}).toArray(function(err, docs) {
+    if (err) {
+      callback('cannot connect to database', undefined);
+    }else{
+      if (docs.length == 0) {
+            database.collection('trip').update(
+              { name : req.body.name},
+              {	$push: {favorite: `${req.body.username}`}});
+          console.log("add favorite by :",req.body.username,"trip :",req.body.name);
+    }else{
+          console.log("member favorited");
+      }
+    }
+  });
+  });
+  }
+
+  exports.removeFavorite = function(req) {
+          mongo.connect(connection, (error, database) => {
+            database.collection('trip').update(
+                { name:`${req.body.name}`,favorite: `${req.body.username}`},
+                { $pull: { favorite :`${req.body.username}` }
+          });
+          console.log("remove favorite by :",req.body.username,"trip :",req.body.name);
+  });
 }
