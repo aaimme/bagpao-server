@@ -21,7 +21,6 @@ date = new Date();
 									return:`${req.body.return}`,
 									daytrip:`${req.body.daytrip}`,
 									place : [],
-									tag :[],
 									prices: req.body.prices,
                 	privacy:`${req.body.privacy}`,
 									like: 0,
@@ -35,6 +34,7 @@ date = new Date();
 									var result_obj = {
 											'days': results[i].days,
 											'placeid': ObjectId(results[i].placeid),
+											'category': results[i].category
 									}
 									results[i] = result_obj
 									database.collection('trip').update({ name:`${req.body.name}`},

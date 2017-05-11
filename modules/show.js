@@ -57,7 +57,7 @@ exports.tripsPopular = function(callback) {
          }
         },
         {
-        $sort : {totalAmount : -1}
+        $sort : {like : -1}
         }
     ]).toArray(function(err, docs) {
   	if (err) {
@@ -112,7 +112,7 @@ exports.tripsPopularHome = function(callback) {
          }
       },
       {
-        $sort : {totalAmount : -1}
+        $sort : {like : -1}
       },
       {
         $limit : 3
