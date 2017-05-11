@@ -110,7 +110,7 @@ exports.editProfile = function(req, callback) {
   }
   else{
     mongo.connect(connection, (err, database) => {
-    database.collection('trip').find({liker:`${req.body.username}`}).toArray(function(err, docs) {
+    database.collection('trip').find({liker:`${req.body.username}`,name :req.body.name }).toArray(function(err, docs) {
     if (err) {
       callback('cannot connect to database', undefined);
     }else{
