@@ -39,11 +39,9 @@ app.post(`/recommend`, (req,res) =>{
   recom.countLike ( req,(error, result) => {
     recom.countFav(req,(error, result2) => {
       var mulobj2 = recom.multiply(result2);
-    //  console.log('result2', result2 ,mulobj2);
       var old_result_obj = recom.addition(result,mulobj2);
       recom.countInterest (req,(error, result3) => {
          var mulobj3 = recom.multiply(result3);
-    //     console.log('result3', result3,mulobj3);
          var final_result_obj = recom.addition(old_result_obj,mulobj3);
         recom.updateTableUser(req ,final_result_obj);
       });
@@ -51,6 +49,7 @@ app.post(`/recommend`, (req,res) =>{
   });
 
   //find trip
+  
 });
 
 var crypto = require('crypto'),

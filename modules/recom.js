@@ -4,6 +4,7 @@ var ObjectId = require('mongodb').ObjectID;
 let connection = 'mongodb://localhost:27017/bagpaotravel';
 
     exports.multiply = function(result_obj){
+  //    console.log("before",result_obj.beach,result_obj);
       result_obj.beach = result_obj.beach*2
       result_obj.zoo = result_obj.zoo*2
       result_obj.temple = result_obj.temple*2
@@ -13,6 +14,7 @@ let connection = 'mongodb://localhost:27017/bagpaotravel';
       result_obj.departmentstore = result_obj.departmentstore*2
       result_obj.nationalpark = result_obj.nationalpark*2
       result_obj.publicpark = result_obj.publicpark*2
+  //    console.log("after",result_obj.beach,result_obj);
       return result_obj;
     }
 
@@ -335,3 +337,5 @@ let connection = 'mongodb://localhost:27017/bagpaotravel';
         });
       });
     }
+
+    
