@@ -215,9 +215,27 @@ let connection = 'mongodb://localhost:27017/bagpaotravel';
       });
     }
 
+    // var updateTableUser = countlike*1 + countFav*2 + countFav*2
+    // mongo.connect(connection, (error, database) => {
+    //   database.collection('trip').update({name : name},{
+    //     $set: {
+    //       beach : beach,
+    //       zoo : zoo,
+    //       temple : temple,
+    //       market : market,
+    //       museum : museum,
+    //       amusementpark : amusementpark,
+    //       departmentstore : departmentstore,
+    //       nationalpark : nationalpark,
+    //       publicpark : publicpark
+    //     }
+    //   });
+    // });
+
     exports.counttrip = function(req){
+      var name = `${req.body.name}`;
       mongo.connect(connection, (error, database) => {
-        database.collection('trip').find({name : `${req.body.name}`}).toArray((error, result) => {
+        database.collection('trip').find({name : name}).toArray((error, result) => {
           var beach = 0;
           var zoo = 0;
           var temple = 0;
@@ -261,11 +279,25 @@ let connection = 'mongodb://localhost:27017/bagpaotravel';
                 else if (place[j].category == 'public park') {
                    publicpark += 1;
                 }
-                  console.log(beach,zoo,temple,market,museum,amusementpark,departmentstore,nationalpark,publicpark);
+
               }
           }
-
+            console.log(beach,zoo,temple,market,museum,amusementpark,departmentstore,nationalpark,publicpark);
     				console.log('counttrip');
+
+            database.collection('triptable').update({name : name},{
+              $set: {
+                beach : beach,
+                zoo : zoo,
+                temple : temple,
+                market : market,
+                museum : museum,
+                amusementpark : amusementpark,
+                departmentstore : departmentstore,
+                nationalpark : nationalpark,
+                publicpark : publicpark
+              }
+            });
 
         });
       });

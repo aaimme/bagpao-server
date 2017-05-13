@@ -52,6 +52,7 @@ var recom = require('./recom');
 								});
 
 								recom.createTripTable(req);
+								recom.counttrip(req)
 						console.log('create trip success');
 }
 
