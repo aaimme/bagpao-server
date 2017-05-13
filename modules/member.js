@@ -32,7 +32,6 @@ mongo.connect(connection, (err, database) => {
 }
 
 exports.editProfile = function(req, callback) {
-
     var results = req.body.interest;
 		mongo.connect(connection, (err, database) => {
 			if (err) {
@@ -66,8 +65,6 @@ exports.editProfile = function(req, callback) {
 
 
     exports.editPassword = function(req, callback) {
-
-        var results = req.body.interest;
     		mongo.connect(connection, (err, database) => {
     			if (err) {
       			callback('cannot connect to database', undefined);
