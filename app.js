@@ -49,7 +49,30 @@ app.post(`/recommend`, (req,res) =>{
   });
 
   //find trip
-  
+  recom.recommendUser(req,(error, result) => {
+   if (error) {
+      console.log(error);
+      var error_obj = {
+        'message' : `${error}`
+      }
+      res.json(error_obj);
+    }
+    else {
+       var results = []
+       for(var i = 0; i < result.length; i++) {
+         var result_obj = {
+           'name' : result[i].name,
+           'creator' : result[i].creator,
+           'prices' : result[i].prices,
+           'days' : result[i].daytrip
+        //   'picture' : result[i].picture
+         }
+         results[i] = result_obj
+       }
+      res.json(results);
+    }
+  });
+
 });
 
 var crypto = require('crypto'),
