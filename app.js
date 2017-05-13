@@ -202,6 +202,24 @@ app.post('/editprofile',function (req, res, next) {
     });
 });
 
+app.post('/editpassword',function (req, res, next) {
+    member.editPassword(req, (error, result) => {
+     if (error) {
+        console.log(error);
+        var error_obj = {
+          'message' : `${error}`
+        }
+        res.json(error_obj);
+      }
+      else{
+        var result_obj = {
+          'message' : result
+        }
+      res.json(result_obj);
+      }
+    });
+});
+
 app.post(`/places`, (req, res) => {
 
      search.searchPlace( req, (error, result) => {
