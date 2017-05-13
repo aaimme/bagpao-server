@@ -25,7 +25,7 @@ function decrypt(text){
 exports.checkUserLogin = function( req, callback) {
 	mongo.connect(connection, (error, database) => {
 		 database.collection('member').find({ $or: [ {username:`${req.body.username}`, password: encrypt(`${req.body.password}`)},
-			  {email:`${req.body.username}`, password: encrypt(`${req.body.password}`)} ] })
+			  {username:`${req.body.username}`, email: `${req.body.email}`} ] })
 		.toArray((error, result) => {
       if (error) {
     		callback('cannot connect to database', undefined);

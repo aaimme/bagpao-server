@@ -65,6 +65,27 @@ exports.editProfile = function(req, callback) {
    	}
 
 
+    exports.editPassword = function(req, callback) {
+
+        var results = req.body.interest;
+    		mongo.connect(connection, (err, database) => {
+    			if (err) {
+      			callback('cannot connect to database', undefined);
+      			}
+      			else {
+      			callback(undefined, 'edit success');
+      			database.collection('member')
+    			.update({username:`${req.body.username}` },
+    			{ $set : {
+    			password:encrypt(`${req.body.password}`)
+    			}
+    			});
+          }
+          console.log("Password has been changed");
+        });
+       	}
+
+
 
   exports.myTrips = function( req, callback) {
     mongo.connect(connection, (err, database) => {
