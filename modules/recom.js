@@ -2,7 +2,6 @@
 let mongo = require('mongodb').MongoClient;
 var ObjectId = require('mongodb').ObjectID;
 let connection = 'mongodb://localhost:27017/bagpaotravel';
-var resemblance = require('resemblance');
 var knn = require('alike');
 
     exports.multiply = function(result_obj){
@@ -356,18 +355,21 @@ var knn = require('alike');
       });
     }
 
-    var weights = {
-      username : 0,
-      name : 0,
-      beach : 1,
-      zoo : 1,
-      temple : 1,
-      market : 1,
-      museum : 1,
-      amusementpark : 1,
-      departmentstore : 1,
-      nationalpark : 1,
-      publicpark : 1
+
+    var options = {
+      k: 5,
+      weights: {
+        name : 0,
+        beach : 0.11,
+        zoo : 0.11,
+        temple : 0.11,
+        market : 0.11,
+        museum : 0.11,
+        amusementpark : 0.11,
+        departmentstore : 0.11,
+        nationalpark : 0.11,
+        publicpark : 0.11
+      }
     };
 
     exports.recommendUser = function(req ,callback){
@@ -382,7 +384,6 @@ var knn = require('alike');
          var user = []
          for(var i = 0; i < result.length; i++) {
            var result_obj = {
-             'username' : result[i].username,
              'beach' : result[i].beach,
              'zoo' : result[i].zoo,
              'temple' : result[i].temple,
@@ -395,7 +396,7 @@ var knn = require('alike');
            }
            user[i] = result_obj
          }
-    //     console.log("user",user);
+      //   console.log("user",user[0]);
 
          tripTable(req, (error, result) => {
          if (error) {
@@ -422,18 +423,17 @@ var knn = require('alike');
               results[i] = result_obj
             }
         //   console.log("trip",results);
-            var reccommenduser = resemblance.getSimilar(user, results, weights, 0.5);
-            console.log("reccommenduser",reccommenduser);
+
+            var reccommenduser = knn(user[0], results, options);
+    //        console.log("reccommenduser",reccommenduser);
             var triprecommend = [];
-            for(var i = 0; i < 5 ; i++){
+            for(var i = 0; i < reccommenduser.length ; i++){
               var trip_obj = {
                 "i" : i,
-                "resemblance" : reccommenduser[i].resemblance,
-                "name" : reccommenduser[i].obj.name
+                "name" : reccommenduser[i].name
               }
               triprecommend[i] = trip_obj
             }
-
             console.log(triprecommend);
             var trip1 = triprecommend[0].name;
             var trip2 = triprecommend[1].name;
