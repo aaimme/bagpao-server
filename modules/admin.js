@@ -163,6 +163,8 @@ app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
             console.log("delete trips");
           database.collection('reviews').remove({ trip: `${req.body.name}` });
             console.log("delete reviews");
+            database.collection('triptable').remove({ name: `${req.body.name}` });
+            console.log("delete triptable");
   			}
   		});
       console.log('delete trip success');
@@ -176,6 +178,7 @@ app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
       		else {
       			callback(undefined, 'delete data success');
       			database.collection('member').remove({ username: `${req.body.name}` });
+            database.collection('usertable').remove({ username: `${req.body.name}` });
     			}
     		});
         console.log('delete member success');

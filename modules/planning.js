@@ -9,6 +9,8 @@ var date;
 // Write current date as ISO 8601 string.
 date = new Date();
 
+var recom = require('./recom');
+
 		exports.end = function(req) {
 			var results = req.body.place;
 			mongo.connect(connection, (error, database) => {
@@ -48,6 +50,8 @@ date = new Date();
 										reviews: []
 									});
 								});
+
+								recom.createTripTable(req);
 						console.log('create trip success');
 }
 

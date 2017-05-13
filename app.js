@@ -24,8 +24,8 @@ var admin = require('./modules/admin');
 var member = require('./modules/member');
 var plan = require('./modules/planning');
 var show = require('./modules/show');
-var algorithm = require('./modules/algorithm');
-var object = require('./modules/object');
+var recom = require('./modules/recom');
+var callbackClass = require('./modules/object');
 
 //can recieve api from another domain
 app.use(function(req, res, next) {
@@ -35,28 +35,7 @@ app.use(function(req, res, next) {
 });
 
 app.post(`/recommend`, (req,res) =>{
-  algorithm.recommendInterestUser(req ,(error, result) => {
-  if (error) {
-    console.log(error);
-    var error_obj = {
-      'message' : `${error}`
-    }
-    res.json(error_obj);
-    }
-  else {
-    var results = []
-    for(var i = 0; i < result.length; i++) {
-    var result_obj = {
-      'creator' : result[i].creator,
-      'name' : result[i].name,
-      'picture' : result[i].picture,
-      'prices' : result[i].prices
-    }
-      results[i] = result_obj
-    }
-      res.json(results);
-  }
-  });
+  recom.counttrip( req);
 });
 
 var crypto = require('crypto'),
@@ -133,22 +112,20 @@ app.post(`/show`, (req, res) =>{
     }
     else if (req.body.do == "mem"){
         member.findUser(req , profile);
-
    }
    else if (req.body.do == "detailtrip"){
        search.searchTripAlladmin( req, showtype);
-  }
-  else if (req.body.do == "showdetailtrip"){
+   }
+   else if (req.body.do == "showdetailtrip"){
       show.searchTripDetail( req, showtype);
- }
-  else if (req.body.do == "detailplace"){
+   }
+   else if (req.body.do == "detailplace"){
       search.searchPlace( req, showtype);
- }
+   }
 
 });
 
 app.post(`/signup`, (req, res) => {
-    console.log(req.body);
 	login.checkUserSignup( req, (error, result) => {
     if (error) {
      	console.log(error);

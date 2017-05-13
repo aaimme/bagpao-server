@@ -42,6 +42,7 @@ exports.checkUserLogin = function( req, callback) {
 	});
 }
 
+var recom = require('./recom');
 
 exports.checkUserSignup = function( req, callback) {
 	console.log(req.body);
@@ -52,7 +53,6 @@ exports.checkUserSignup = function( req, callback) {
   if (error) {
     callback('cannot connect to database', undefined);
   } else {
-		console.log('length',result.length);
     if (result.length == 0) {
       callback(undefined,'success');
 			mongo.connect(connection, (error, database) => {
@@ -65,9 +65,10 @@ exports.checkUserSignup = function( req, callback) {
 			interest: [],
 			bio: '',
 			picture: 'app/img/icon.png'
-
     });
 	});
+
+    recom.createUserTable(req);
     console.log('signup success');
   }
 
