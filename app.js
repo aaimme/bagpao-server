@@ -64,7 +64,7 @@ app.post(`/recommend`, (req,res) =>{
            'name' : result[i].name,
            'creator' : result[i].creator,
            'prices' : result[i].prices,
-           'days' : result[i].daytrip
+           'days' : result[i].daytrip,
            'picture' : result[i].picture
          }
          results[i] = result_obj
