@@ -35,6 +35,10 @@ app.use(function(req, res, next) {
 });
 
 app.post(`/recommend`, (req,res) =>{
+  if(req.body.username == 'null'){
+    console.log("no user");
+  }
+  else {
 // Table User relation
 console.log(req.body);
   recom.countLike ( req,(error, result) => {
@@ -51,10 +55,6 @@ console.log(req.body);
 
   //find trip
   recom.recommendUser(req,(error, result) => {
-    if(req.body.username = null){
-      console.log("no user");
-    }
-    else {
       if (error) {
          console.log(error);
          var error_obj = {
@@ -76,10 +76,8 @@ console.log(req.body);
           }
          res.json(results);
        }
-    }
-
   });
-
+  }
 });
 
 var crypto = require('crypto'),

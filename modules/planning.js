@@ -14,46 +14,57 @@ var recom = require('./recom');
 		exports.end = function(req) {
 			var results = req.body.place;
 			mongo.connect(connection, (error, database) => {
-				database.collection('trip').insert([{
-                	name:`${req.body.name}`,
-    							creator:`${req.body.username}`,
-                	origin:`${req.body.origin}`,
-                	destination:`${req.body.destination}`,
-									depart:`${req.body.depart}`,
-									return:`${req.body.return}`,
-									daytrip:`${req.body.daytrip}`,
-									place : [],
-									prices: req.body.prices,
-                	privacy:`${req.body.privacy}`,
-									like: 0,
-									favorite: [],
-									liker: [],
-                	datesubmit: date,
-									picture:`${req.body.picture}`
-                }]);
+				database.collection('trip').find({name : `${req.body.name}`}).toArray(function(err, docs) {
+			 if (err) {
+				 callback('cannot connect to database', undefined);
+			 } else{
+				 if (docs.length == 0) {
 
-								for(var i = 0; i < results.length; i++) {
-									var result_obj = {
-											'days': results[i].days,
-											'placeid': ObjectId(results[i].placeid),
-											'category': results[i].category
-									}
-									results[i] = result_obj
-									database.collection('trip').update({ name:`${req.body.name}`},
-												{	$push: {place: {	$each: [results[i]]	}}});
-									}
+		 			mongo.connect(connection, (error, database) => {
+		 				database.collection('trip').insert([{
+		                 	name:`${req.body.name}`,
+		     							creator:`${req.body.username}`,
+		                 	origin:`${req.body.origin}`,
+		                 	destination:`${req.body.destination}`,
+		 									depart:`${req.body.depart}`,
+		 									return:`${req.body.return}`,
+		 									daytrip:`${req.body.daytrip}`,
+		 									place : [],
+		 									prices: req.body.prices,
+		                 	privacy:`${req.body.privacy}`,
+		 									like: 0,
+		 									favorite: [],
+		 									liker: [],
+		                 	datesubmit: date,
+		 									picture:`${req.body.picture}`
+		                 }]);
+
+		 								for(var i = 0; i < results.length; i++) {
+		 									var result_obj = {
+		 											'days': results[i].days,
+		 											'placeid': ObjectId(results[i].placeid),
+		 											'category': results[i].category
+		 									}
+		 									results[i] = result_obj
+		 									database.collection('trip').update({ name:`${req.body.name}`},
+		 												{	$push: {place: {	$each: [results[i]]	}}});
+		 									}
 
 
-									database.collection('reviews').insert({
-										trip:`${req.body.name}`,
-										creator: `${req.body.username}`,
-										reviews: []
-									});
-								});
+		 									database.collection('reviews').insert({
+		 										trip:`${req.body.name}`,
+		 										creator: `${req.body.username}`,
+		 										reviews: []
+		 									});
+		 								});
 
-								recom.createTripTable(req);
-								recom.counttrip(req)
-						console.log('create trip success');
+		 								recom.createTripTable(req);
+		 								recom.counttrip(req)
+		 						console.log('create trip success');
+				 }
+				}
+			});
+		});
 }
 
 		exports.transportation = function( req, callback) {
