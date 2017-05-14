@@ -35,7 +35,7 @@ app.use(function(req, res, next) {
 });
 
 app.post(`/recommend`, (req,res) =>{
-  if(req.body.username == 'null'){
+  if(req.body.username == null){
     console.log("no user");
   }
   else {

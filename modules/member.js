@@ -118,7 +118,7 @@ exports.editProfile = function(req, callback) {
   }
 
   exports.like = function( req) {
-  if(req.body.username == ''){
+  if(req.body.username == null){
     mongo.connect(connection, (err, database) => {
         database.collection('trip').update(
           { name : req.body.name},
