@@ -4,7 +4,7 @@ var express = require('express');
 var app = express();
 var path = require('path');
 let mongo = require('mongodb').MongoClient;
-let connection = 'mongodb://localhost:27017/bagpaotravel';
+let connection = 'mongodb://admin:admin@ds143081.mlab.com:43081/bagpao';
 var fs = require('fs');
 let body    = require('body-parser');
 app.use( body.json({limit: '50mb'}) );       // to support JSON-encoded bodies
