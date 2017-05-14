@@ -1,7 +1,7 @@
 "use strict";
 var assert = require('assert');
 let mongo = require('mongodb').MongoClient;
-let connection = 'mongodb://localhost:27017/bagpaotravel';
+let connection = 'mongodb://admin:admin@ds143081.mlab.com:43081/bagpao';
 
 var crypto = require('crypto'),
     algorithm = 'aes-256-ctr',

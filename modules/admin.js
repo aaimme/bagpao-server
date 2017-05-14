@@ -4,7 +4,7 @@ var express = require('express');
 var app = express();
 let mongo = require('mongodb').MongoClient;
 var ObjectId = require('mongodb').ObjectID;
-let connection = 'mongodb://localhost:27017/bagpaotravel';
+let connection = 'mongodb://admin:admin@ds143081.mlab.com:43081/bagpao';
 var bodyParser = require('body-parser')
 app.use( bodyParser.json() );       // to support JSON-encoded bodies
 app.use(bodyParser.urlencoded({     // to support URL-encoded bodies

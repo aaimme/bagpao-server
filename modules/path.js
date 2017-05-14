@@ -4,7 +4,7 @@ var path = require('path');
 var formidable = require('formidable');
 var fs = require('fs');
 let mongo = require('mongodb').MongoClient;
-let connection = 'mongodb://localhost:27017/bagpaotravel';
+let connection = 'mongodb://admin:admin@ds143081.mlab.com:43081/bagpao';
 
 app.use(express.static(path.join(__dirname, 'public')));
 

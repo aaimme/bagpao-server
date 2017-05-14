@@ -4,7 +4,7 @@ var express = require('express');
 var app = express();
 var path = require('path');
 let mongo = require('mongodb').MongoClient;
-let connection = 'mongodb://localhost:27017/bagpaotravel';
+let connection = 'mongodb://admin:admin@ds143081.mlab.com:43081/bagpao';
 var fs = require('fs');
 let body    = require('body-parser');
 app.use( body.json({limit: '50mb'}) );       // to support JSON-encoded bodies
@@ -25,7 +25,7 @@ var member = require('./modules/member');
 var plan = require('./modules/planning');
 var show = require('./modules/show');
 var recom = require('./modules/recom');
-var callbackClass = require('./modules/object');
+//var callbackClass = require('./modules/object');
 
 //can recieve api from another domain
 app.use(function(req, res, next) {
@@ -35,7 +35,12 @@ app.use(function(req, res, next) {
 });
 
 app.post(`/recommend`, (req,res) =>{
+  if(req.body.username == 'null'){
+    console.log("no user");
+  }
+  else {
 // Table User relation
+console.log(req.body);
   recom.countLike ( req,(error, result) => {
     recom.countFav(req,(error, result2) => {
       var mulobj2 = recom.multiply(result2);
@@ -50,29 +55,29 @@ app.post(`/recommend`, (req,res) =>{
 
   //find trip
   recom.recommendUser(req,(error, result) => {
-   if (error) {
-      console.log(error);
-      var error_obj = {
-        'message' : `${error}`
-      }
-      res.json(error_obj);
-    }
-    else {
-       var results = []
-       for(var i = 0; i < result.length; i++) {
-         var result_obj = {
-           'name' : result[i].name,
-           'creator' : result[i].creator,
-           'prices' : result[i].prices,
-           'days' : result[i].daytrip,
-           'picture' : result[i].picture
+      if (error) {
+         console.log(error);
+         var error_obj = {
+           'message' : `${error}`
          }
-         results[i] = result_obj
+         res.json(error_obj);
        }
-      res.json(results);
-    }
+       else {
+          var results = []
+          for(var i = 0; i < result.length; i++) {
+            var result_obj = {
+              'name' : result[i].name,
+              'creator' : result[i].creator,
+              'prices' : result[i].prices,
+              'days' : result[i].daytrip,
+              'picture' : result[i].picture
+            }
+            results[i] = result_obj
+          }
+         res.json(results);
+       }
   });
-
+  }
 });
 
 var crypto = require('crypto'),
