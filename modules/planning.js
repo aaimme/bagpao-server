@@ -43,7 +43,8 @@ var recom = require('./recom');
 		 									var result_obj = {
 		 											'days': results[i].days,
 		 											'placeid': ObjectId(results[i].placeid),
-		 											'category': results[i].category
+		 											'category': results[i].category,
+													'time': results[i].time
 		 									}
 		 									results[i] = result_obj
 		 									database.collection('trip').update({ name:`${req.body.name}`},
