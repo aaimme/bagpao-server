@@ -118,7 +118,7 @@ exports.editProfile = function(req, callback) {
   }
 
   exports.like = function( req) {
-  if(req.body.username == ''){
+  if(req.body.username == null){
     mongo.connect(connection, (err, database) => {
         database.collection('trip').update(
           { name : req.body.name},
@@ -150,7 +150,7 @@ exports.editProfile = function(req, callback) {
 
   exports.addFavorite = function(req) {
     mongo.connect(connection, (err, database) => {
-    database.collection('trip').find({favorite:`${req.body.username}`}).toArray(function(err, docs) {
+    database.collection('trip').find({favorite:`${req.body.username}`,name : req.body.name}).toArray(function(err, docs) {
     if (err) {
       callback('cannot connect to database', undefined);
     }else{
@@ -160,7 +160,7 @@ exports.editProfile = function(req, callback) {
               {	$push: {favorite: `${req.body.username}`}});
           console.log("add favorite by :",req.body.username,"trip :",req.body.name);
     }else{
-          console.log("member favorited");
+          console.log(req.body.username,"favorited");
       }
     }
   });
