@@ -62,7 +62,7 @@ var recom = require('./recom');
 											mongo.connect(connection, (error, database) => {
 							        database.collection('trip').find({name : `${req.body.name}`}).toArray(function(err, docs) {
 							          console.log(`${req.body.name}`,docs);
-							      //    recom.counttrip(req)
+							          recom.counttrip(req)
 							    });
 							        });
 		 						console.log('create trip success');
@@ -78,12 +78,7 @@ var recom = require('./recom');
            {$or : [
              {origin:`${req.body.origin}`,destination:`${req.body.destination}`},
              {origin:`${req.body.destination}`,destination:`${req.body.origin}`}
-					 ]}
-					//  ,
-					//  {
-	        //  $sort : {depart : -1}
-	        //  }
-				 ).toArray(function(err, docs) {
+					 ]}).toArray(function(err, docs) {
 	 		    if (err) {
 	 		      callback('cannot connect to database', undefined);
 	 		    } else{
@@ -189,7 +184,6 @@ var recom = require('./recom');
           }
         }
        );
-			 console.log('11');
        }
        else {
          database
@@ -207,7 +201,6 @@ var recom = require('./recom');
           }
         }
      );
-		 console.log('aa');
        }
          });
 			 });
