@@ -170,13 +170,16 @@ exports.searchTripDetail = function( req, _callback) {
           creator: docs[0].creator,
           origin: docs[0].origin,
           destination: docs[0].destination,
+          depart: docs[0].depart,
+          return: docs[0].return,
           daytrip: docs[0].daytrip,
+          prices: docs[0].prices,
           picture: docs[0].picture,
           privacy: docs[0].privacy,
           like: docs[0].like,
           favorite: docs[0].favorite,
           datesubmit: docs[0].datesubmit,
-          reviews: docs[0].reviews
+          reviews: docs[0].reviews,
         }];
 
         getAllPlaceDetail(docs[0].place, (err, result) => {

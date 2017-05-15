@@ -43,7 +43,8 @@ var recom = require('./recom');
 		 									var result_obj = {
 		 											'days': results[i].days,
 		 											'placeid': ObjectId(results[i].placeid),
-		 											'category': results[i].category
+		 											'category': results[i].category,
+													'time': results[i].time
 		 									}
 		 									results[i] = result_obj
 		 									database.collection('trip').update({ name:`${req.body.name}`},
@@ -143,12 +144,13 @@ var recom = require('./recom');
 	          var temp_obj = {};
 	          getPlaceDetail(value.placeid, (err,result) => {
 	            temp_obj = {
+								placeid: value.placeid,
 	              days: value.days,
 								time: value.time,
 	              name: result[0].name,
 	              city: result[0].city,
-	              picture: result[0].picture
-
+	              picture: result[0].picture,
+								category: result[0].category
 	            }
 	            array_place_detail.push(temp_obj);
 	            if (key+1 == place_array.length) {

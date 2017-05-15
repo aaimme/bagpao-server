@@ -6,7 +6,7 @@ var path = require('path');
 let mongo = require('mongodb').MongoClient;
 let connection = 'mongodb://admin:admin@ds143081.mlab.com:43081/bagpao';
 var fs = require('fs');
-let body    = require('body-parser');
+let body = require('body-parser');
 app.use( body.json({limit: '50mb'}) );       // to support JSON-encoded bodies
 app.use(body.urlencoded({     // to support URL-encoded bodies
   limit: '50mb',
