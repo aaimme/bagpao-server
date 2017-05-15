@@ -55,6 +55,7 @@ console.log(req.body);
 
   //find trip
   recom.recommendUser(req,(error, result) => {
+    console.log("reccom");
       if (error) {
          console.log(error);
          var error_obj = {

@@ -284,12 +284,12 @@ var knn = require('alike');
           var departmentstore = 0;
           var nationalpark = 0;
           var publicpark = 0;
-
+          console.log("aa",result);
           for(var i = 0; i < result.length; i++) {
             var place = result[i].place
-    //        console.log('trip :' , result[i].name);
+            console.log('trip :' , result[i].name);
               for(var j = 0; j < place.length; j++) {
-        //        console.log('category :' , place[j].category);
+                console.log('category :' , place[j].category);
 
                 if(place[j].category == 'beach'){
                    beach += 1;
@@ -322,7 +322,7 @@ var knn = require('alike');
               }
           }
     				console.log('counttrip');
-
+            console.log(beach,zoo,temple,market,museum,amusementpark,departmentstore,nationalpark,publicpark);
             database.collection('triptable').update({name : name},{
               $set: {
                 beach : beach,
@@ -351,9 +351,7 @@ var knn = require('alike');
 
     var tripTable = function (req ,callback) {
       mongo.connect(connection, (error, database) => {
-        database.collection('triptable').find({ $or: [
-          { creator: { "$ne": `${req.body.username}` }},
-          { favorite: { "$ne": `${req.body.username}` } } ] }).toArray((error, result) => {
+        database.collection('triptable').find({ creator: { "$ne": `${req.body.username}` }, favorite: { "$ne": `${req.body.username}` } }).toArray((error, result) => {
           callback(undefined,result);
         });
       });
@@ -376,81 +374,132 @@ var knn = require('alike');
     };
 
     exports.recommendUser = function(req ,callback){
-      userTable(req, (error, result) => {
-      if (error) {
-        console.log(error);
-        var error_obj = {
-          'message' : `${error}`
-        }
-        }
-      else {
-         var user = []
-         for(var i = 0; i < result.length; i++) {
-           var result_obj = {
-             'beach' : result[i].beach,
-             'zoo' : result[i].zoo,
-             'temple' : result[i].temple,
-             'market' : result[i].market,
-             'museum' : result[i].museum,
-             'amusementpark' : result[i].amusementpark,
-             'departmentstore' : result[i].departmentstore,
-             'nationalpark' : result[i].nationalpark,
-             'publicpark' : result[i].publicpark
-           }
-           user[i] = result_obj
-         }
-      //   console.log("user",user[0]);
-
-         tripTable(req, (error, result) => {
-         if (error) {
-           console.log(error);
-           var error_obj = {
-             'message' : `${error}`
-           }
-           }
-         else {
-            var results = []
-            for(var i = 0; i < result.length; i++) {
-              var result_obj = {
-                'name' : result[i].name,
-                'beach' :result[i].beach,
-                'zoo' : result[i].zoo,
-                'temple' : result[i].temple,
-                'market' : result[i].market,
-                'museum' : result[i].museum,
-                'amusementpark' : result[i].amusementpark,
-                'departmentstore' : result[i].departmentstore,
-                'nationalpark' : result[i].nationalpark,
-                'publicpark' : result[i].publicpark
-              }
-              results[i] = result_obj
-            }
-        //   console.log("trip",results);
-
-            var reccommenduser = knn(user[0], results, options);
-    //        console.log("reccommenduser",reccommenduser);
-            var triprecommend = [];
-            for(var i = 0; i < reccommenduser.length ; i++){
-              var trip_obj = {
-                "i" : i,
-                "name" : reccommenduser[i].name
-              }
-              triprecommend[i] = trip_obj
-            }
-          //  console.log(triprecommend);
-            var trip1 = triprecommend[0].name;
-            var trip2 = triprecommend[1].name;
-            var trip3 = triprecommend[2].name;
-            console.log(trip1,trip2,trip3);
-            mongo.connect(connection, (error, database) => {
-              database.collection('trip').find({$or: [{name : trip1},{name : trip2},{name : trip3} ]}).toArray((error, result) => {
-                callback(undefined,result);
-            //    console.log(result[0].name,result[1].name,result[2].name);
+      mongo.connect(connection, (error, database) => {
+        database.collection('trip').find({ favorite: `${req.body.username}` , liker: `${req.body.username}` }).toArray((error, result) => {
+          if(result.length == 0){
+            database.collection('member').find({ username : `${req.body.username}` }).toArray((error, resultmember) => {
+          //    console.log(resultmember.interest);
+              if(resultmember.interest == undefined){
+                console.log("New user");
+                  mongo.connect(connection, (err, database) => {
+                    database
+                    .collection('trip')
+                    .aggregate([
+                    {
+                      $match : {privacy:"public"}
+                    },
+                    {
+                     $project:
+                       {
+                         name:"$name",
+                         creator:"$creator",
+                         picture:"$picture",
+                         like:"$like",
+                         favname:"$favorite",
+                         liker:"$liker"
+                       }
+                    },
+                    {
+                      $sort : {like : -1}
+                    },
+                    {
+                      $limit : 3
+                    }
+                  ]).toArray(function(err, docs) {
+                	if (err) {
+                		callback('cannot connect to database', undefined);
+                	}else{
+                		if (docs.length !== 0) {
+                			callback(undefined, docs);
+                	}else{
+                			callback('please input data',undefined);
+                		}
+                	}
+                });
               });
+            }
+          });
+          }
+          else{
+
+            userTable(req, (error, result) => {
+            if (error) {
+              console.log(error);
+              var error_obj = {
+                'message' : `${error}`
+              }
+              }
+            else {
+               var user = []
+               for(var i = 0; i < result.length; i++) {
+                 var result_obj = {
+                   'beach' : result[i].beach,
+                   'zoo' : result[i].zoo,
+                   'temple' : result[i].temple,
+                   'market' : result[i].market,
+                   'museum' : result[i].museum,
+                   'amusementpark' : result[i].amusementpark,
+                   'departmentstore' : result[i].departmentstore,
+                   'nationalpark' : result[i].nationalpark,
+                   'publicpark' : result[i].publicpark
+                 }
+                 user[i] = result_obj
+               }
+            //   console.log("user",user[0]);
+
+               tripTable(req, (error, result) => {
+               if (error) {
+                 console.log(error);
+                 var error_obj = {
+                   'message' : `${error}`
+                 }
+                 }
+               else {
+                  var results = []
+                  for(var i = 0; i < result.length; i++) {
+                    var result_obj = {
+                      'name' : result[i].name,
+                      'beach' :result[i].beach,
+                      'zoo' : result[i].zoo,
+                      'temple' : result[i].temple,
+                      'market' : result[i].market,
+                      'museum' : result[i].museum,
+                      'amusementpark' : result[i].amusementpark,
+                      'departmentstore' : result[i].departmentstore,
+                      'nationalpark' : result[i].nationalpark,
+                      'publicpark' : result[i].publicpark
+                    }
+                    results[i] = result_obj
+                  }
+              //   console.log("trip",results);
+
+                  var reccommenduser = knn(user[0], results, options);
+          //        console.log("reccommenduser",reccommenduser);
+                  var triprecommend = [];
+                  for(var i = 0; i < reccommenduser.length ; i++){
+                    var trip_obj = {
+                      "i" : i,
+                      "name" : reccommenduser[i].name
+                    }
+                    triprecommend[i] = trip_obj
+                  }
+                //  console.log(triprecommend);
+                  var trip1 = triprecommend[0].name;
+                  var trip2 = triprecommend[1].name;
+                  var trip3 = triprecommend[2].name;
+              //    console.log(trip1,trip2,trip3);
+                  mongo.connect(connection, (error, database) => {
+                    database.collection('trip').find({$or: [{name : trip1},{name : trip2},{name : trip3} ]}).toArray((error, result) => {
+                      callback(undefined,result);
+                  //    console.log(result[0].name,result[1].name,result[2].name);
+                    });
+                  });
+               }
+               });
+            }
             });
-         }
-         });
-      }
+          }
+        });
       });
 
     }

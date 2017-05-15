@@ -58,9 +58,13 @@ var recom = require('./recom');
 		 										reviews: []
 		 									});
 		 								});
-
-		 								recom.createTripTable(req);
-		 								recom.counttrip(req)
+											recom.createTripTable(req);
+											mongo.connect(connection, (error, database) => {
+							        database.collection('trip').find({name : `${req.body.name}`}).toArray(function(err, docs) {
+							          console.log(`${req.body.name}`,docs);
+							      //    recom.counttrip(req)
+							    });
+							        });
 		 						console.log('create trip success');
 				 }
 				}
