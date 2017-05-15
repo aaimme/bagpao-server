@@ -437,14 +437,15 @@ var knn = require('alike');
               }
               triprecommend[i] = trip_obj
             }
-            console.log(triprecommend);
+          //  console.log(triprecommend);
             var trip1 = triprecommend[0].name;
             var trip2 = triprecommend[1].name;
             var trip3 = triprecommend[2].name;
             console.log(trip1,trip2,trip3);
             mongo.connect(connection, (error, database) => {
-              database.collection('trip').find({$or: [   {name : trip1},{name : trip2},{name : trip3} ]}).toArray((error, result) => {
+              database.collection('trip').find({$or: [{name : trip1},{name : trip2},{name : trip3} ]}).toArray((error, result) => {
                 callback(undefined,result);
+            //    console.log(result[0].name,result[1].name,result[2].name);
               });
             });
          }
