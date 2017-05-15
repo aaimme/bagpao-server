@@ -40,6 +40,8 @@ var knn = require('alike');
           else {
           database.collection('triptable').insert({
           name:`${req.body.name}`,
+          creator : `${req.body.username}`,
+          favorite : [],
           beach: 0,
           zoo: 0,
           temple: 0,
@@ -349,12 +351,13 @@ var knn = require('alike');
 
     var tripTable = function (req ,callback) {
       mongo.connect(connection, (error, database) => {
-        database.collection('triptable').find({}).toArray((error, result) => {
+        database.collection('triptable').find({ $or: [
+          { creator: { "$ne": `${req.body.username}` }},
+          { favorite: { "$ne": `${req.body.username}` } } ] }).toArray((error, result) => {
           callback(undefined,result);
         });
       });
     }
-
 
     var options = {
       k: 5,

@@ -158,6 +158,9 @@ exports.editProfile = function(req, callback) {
             database.collection('trip').update(
               { name : req.body.name},
               {	$push: {favorite: `${req.body.username}`}});
+              database.collection('triptable').update(
+                { name : req.body.name},
+                {	$push: {favorite: `${req.body.username}`}});
           console.log("add favorite by :",req.body.username,"trip :",req.body.name);
     }else{
           console.log(req.body.username,"favorited");
