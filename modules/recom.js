@@ -114,16 +114,16 @@ var knn = require('alike');
                 else if (place[j].category == 'museum') {
                    result_obj.museum += 1;
                 }
-                else if (place[j].category == 'amusement park') {
+                else if (place[j].category == 'amusementpark') {
                    result_obj.amusementpark += 1;
                 }
-                else if (place[j].category == 'department store') {
+                else if (place[j].category == 'departmentstore') {
                    result_obj.departmentstore += 1;
                 }
-                else if (place[j].category == 'national park') {
+                else if (place[j].category == 'nationalpark') {
                    result_obj.nationalpark += 1;
                 }
-                else if (place[j].category == 'public park') {
+                else if (place[j].category == 'publicpark') {
                    result_obj.publicpark += 1;
                 }
               }
@@ -170,16 +170,16 @@ var knn = require('alike');
                 else if (place[j].category == 'museum') {
                    result_obj.museum += 1;
                 }
-                else if (place[j].category == 'amusement park') {
+                else if (place[j].category == 'amusementpark') {
                    result_obj.amusementpark += 1;
                 }
-                else if (place[j].category == 'department store') {
+                else if (place[j].category == 'departmentstore') {
                    result_obj.departmentstore += 1;
                 }
-                else if (place[j].category == 'national park') {
+                else if (place[j].category == 'nationalpark') {
                    result_obj.nationalpark += 1;
                 }
-                else if (place[j].category == 'public park') {
+                else if (place[j].category == 'publicpark') {
                    result_obj.publicpark += 1;
                 }
               }
@@ -226,16 +226,16 @@ var knn = require('alike');
                 else if (interest[j] == 'museum') {
                    result_obj.museum += 1;
                 }
-                else if (interest[j] == 'amusement park') {
+                else if (interest[j] == 'amusementpark') {
                    result_obj.amusementpark += 1;
                 }
-                else if (interest[j] == 'department store') {
+                else if (interest[j] == 'departmentstore') {
                    result_obj.departmentstore += 1;
                 }
-                else if (interest[j] == 'national park') {
+                else if (interest[j] == 'nationalpark') {
                    result_obj.nationalpark += 1;
                 }
-                else if (interest[j] == 'public park') {
+                else if (interest[j] == 'publicpark') {
                    result_obj.publicpark += 1;
                 }
 
@@ -304,16 +304,16 @@ var knn = require('alike');
                 else if (place[j].category == 'museum') {
                    museum += 1;
                 }
-                else if (place[j].category == 'amusement park') {
+                else if (place[j].category == 'amusementpark') {
                    amusementpark += 1;
                 }
-                else if (place[j].category == 'department store') {
+                else if (place[j].category == 'departmentstore') {
                    departmentstore += 1;
                 }
-                else if (place[j].category == 'national park') {
+                else if (place[j].category == 'nationalpark') {
                    nationalpark += 1;
                 }
-                else if (place[j].category == 'public park') {
+                else if (place[j].category == 'publicpark') {
                    publicpark += 1;
                 }
 
