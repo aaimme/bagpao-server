@@ -617,6 +617,6 @@ var googleMapsClient = require('@google/maps').createClient({
 
 
 
-app.listen(1200, function() {
+app.listen(80, function() {
   console.log('Server running on port 1200...')
 });
