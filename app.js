@@ -599,5 +599,5 @@ app.post(`/contactus`, (req, res) => {
 var port = 80;
 
 app.listen(port, function() {
-  console.log('Server running on port ',port,'...')
+  console.log('Server running on port ',port)
 });
